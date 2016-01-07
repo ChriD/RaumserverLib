@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="includes">
+      <UniqueIdentifier>{d9226bae-05ee-4874-9f8a-6f4e2995b6c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumserver">
+      <UniqueIdentifier>{88877adf-d8c3-4cdb-9f27-7f12c8b6686e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webserver">
+      <UniqueIdentifier>{7cedfc4a-7f11-415f-ab17-723c54204e06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumserver\webserver">
+      <UniqueIdentifier>{24a3bf15-c9ec-44cf-8e3f-77d05eba9bf5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumserver\webserver\mongoose">
+      <UniqueIdentifier>{b461b0e2-acd8-47d2-b78b-7e48000dd901}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webserver\mongoose">
+      <UniqueIdentifier>{4a6a7aab-4c1e-4457-acaa-2cef2be91202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumserver\webserver\mongoose\cpp">
+      <UniqueIdentifier>{f104f5fc-51ba-4f2b-a571-5ba6594a3361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="webserver\mongoose\cpp">
+      <UniqueIdentifier>{913e24e1-05f6-4512-9ba2-aab469c64df3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumserver\json">
+      <UniqueIdentifier>{8fc6299a-6c75-47ff-9378-83b88a47b247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="json">
+      <UniqueIdentifier>{bf9f0fa6-7e2f-442d-b562-5c9527cf656a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\raumserver\raumserver.h">
+      <Filter>includes\raumserver</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\webserver.h">
+      <Filter>includes\raumserver\webserver</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\mongoose.h">
+      <Filter>includes\raumserver\webserver\mongoose</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Controller.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\JsonController.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\JsonResponse.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Mutex.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Request.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\RequestHandler.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Response.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Server.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Session.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Sessions.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\StreamResponse.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\UploadFile.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Utils.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebController.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebSocket.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebSockets.h">
+      <Filter>includes\raumserver\webserver\mongoose\cpp</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\assertions.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\autolink.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\config.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\features.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\forwards.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\json.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\reader.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\value.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\version.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\writer.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
+    <ClInclude Include="json\json_tool.h">
+      <Filter>json</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="raumserver.cpp" />
+    <ClCompile Include="webserver\webserver.cpp">
+      <Filter>webserver</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\mongoose.c">
+      <Filter>webserver\mongoose</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Controller.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\JsonController.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\JsonResponse.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Mutex.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Request.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Response.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Server.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Session.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Sessions.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\StreamResponse.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\UploadFile.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\Utils.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\WebController.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\WebSocket.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\mongoose\cpp\WebSockets.cpp">
+      <Filter>webserver\mongoose\cpp</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_reader.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_value.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="json\json_writer.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="json\json_valueiterator.inl">
+      <Filter>json</Filter>
+    </None>
+  </ItemGroup>
+</Project>

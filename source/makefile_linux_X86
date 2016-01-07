@@ -1,0 +1,39 @@
+# Makefile template for shared library
+
+INCPATH = -I includes/
+
+CC = g++-4.9
+CXX = g++-4.9
+CFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
+CXXFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
+LDFLAGS = -shared -pthread -static-libgcc -static-libstdc++
+
+LIBSDEF =  libs/linux_x86/raumkernel.so
+
+RM = rm -f 
+TARGET_LIB = libs/linux_x86/raumserver.so
+
+SRCS = raumserver.cpp webserver/mongoose.c webserver/webserver.cpp
+
+OBJS = $(SRCS:.cpp=.o)
+
+#.PHONY: test
+#test: $(SRCS)
+#	$(CC) -o $(TARGET_LIB) $(SRCS) -shared -fPIC -Wall -Wextra -O2
+
+
+.PHONY: all
+all: ${TARGET_LIB}
+ 
+$(TARGET_LIB): $(OBJS)
+	$(CC) ${LDFLAGS} -o $@ $^ $(LIBSDEF)
+ 
+$(SRCS:.cpp=.d):%.d:%.cpp
+	$(CC) $(CFLAGS) -MM $< >$@
+ 
+include $(SRCS:.cpp=.d)
+ 
+
+.PHONY: clean
+clean:
+	-${RM} ${TARGET_LIB} ${OBJS} $(SRCS:.cpp=.d) 

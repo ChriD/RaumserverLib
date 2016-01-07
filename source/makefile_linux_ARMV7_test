@@ -1,0 +1,35 @@
+# Makefile template for shared library
+ 
+INCPATH = -I includes/
+
+CC = arm-linux-gnueabihf-g++-4.8
+CXX = arm-linux-gnueabihf-g++-4.8
+CFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
+CXXFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
+LDFLAGS = -pthread -static-libgcc -static-libstdc++
+
+LIBSDEF = libs/linux_ARMV7/raumserver.so
+
+RM = rm -f 
+TARGET_EXEC = test
+ 
+SRCS = test.cpp
+
+OBJS = $(SRCS:.cpp=.o)
+
+
+.PHONY: all
+all: ${TARGET_EXEC}
+ 
+$(TARGET_EXEC): $(OBJS)
+	$(CC) ${LDFLAGS} -o $@ $^ $(LIBSDEF)
+ 
+$(SRCS:.cpp=.d):%.d:%.cpp
+	$(CC) $(CFLAGS) -MM $< >$@
+ 
+include $(SRCS:.cpp=.d)
+ 
+
+.PHONY: clean
+clean:
+	-${RM} ${TARGET_EXEC} ${OBJS} $(SRCS:.cpp=.d) 

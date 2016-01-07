@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D9C64B4A-E195-4866-BEEC-638C776334F6}</ProjectGuid>
+    <RootNamespace>Raumserver2</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes;..\..\Raumkernel2\source\includes</IncludePath>
+    <IntDir>$(SolutionDir)_temp\$(Configuration)\</IntDir>
+    <TargetName>raumserver</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes</IncludePath>
+    <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(SolutionDir)_temp\$(Configuration)\</IntDir>
+    <TargetName>raumserver</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>raumkernel.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libs\windows_x86\Debug\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>raumkernel.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\libs\windows_x86\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\raumserver\json\assertions.h" />
+    <ClInclude Include="includes\raumserver\json\autolink.h" />
+    <ClInclude Include="includes\raumserver\json\config.h" />
+    <ClInclude Include="includes\raumserver\json\features.h" />
+    <ClInclude Include="includes\raumserver\json\forwards.h" />
+    <ClInclude Include="includes\raumserver\json\json.h" />
+    <ClInclude Include="includes\raumserver\json\reader.h" />
+    <ClInclude Include="includes\raumserver\json\value.h" />
+    <ClInclude Include="includes\raumserver\json\version.h" />
+    <ClInclude Include="includes\raumserver\json\writer.h" />
+    <ClInclude Include="includes\raumserver\raumserver.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Controller.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\JsonController.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\JsonResponse.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Mutex.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Request.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\RequestHandler.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Response.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Server.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Session.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Sessions.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\StreamResponse.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\UploadFile.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Utils.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebController.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebSocket.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebSockets.h" />
+    <ClInclude Include="includes\raumserver\webserver\mongoose\mongoose.h" />
+    <ClInclude Include="includes\raumserver\webserver\webserver.h" />
+    <ClInclude Include="json\json_tool.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="json\json_reader.cpp" />
+    <ClCompile Include="json\json_value.cpp" />
+    <ClCompile Include="json\json_writer.cpp" />
+    <ClCompile Include="raumserver.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Controller.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\JsonController.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\JsonResponse.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Mutex.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Request.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Response.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Server.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Session.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Sessions.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\StreamResponse.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\UploadFile.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\Utils.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\WebController.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\WebSocket.cpp" />
+    <ClCompile Include="webserver\mongoose\cpp\WebSockets.cpp" />
+    <ClCompile Include="webserver\mongoose\mongoose.c" />
+    <ClCompile Include="webserver\webserver.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="json\json_valueiterator.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
