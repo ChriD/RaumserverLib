@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D9C64B4A-E195-4866-BEEC-638C776334F6}</ProjectGuid>
     <RootNamespace>Raumserver2</RootNamespace>
+    <ProjectName>RaumserverLib</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,12 +40,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes;..\..\Raumkernel2\source\includes</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes;..\..\RaumkernelLib\source\includes</IncludePath>
     <IntDir>$(SolutionDir)_temp\$(Configuration)\</IntDir>
     <TargetName>raumserver</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);includes;..\..\RaumkernelLib\source\includes</IncludePath>
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)_temp\$(Configuration)\</IntDir>
     <TargetName>raumserver</TargetName>
