@@ -42,11 +42,14 @@ namespace Raumserver
             EXPORT virtual ~Raumserver();
             EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
             EXPORT std::shared_ptr<Raumkernel::Raumkernel> getRaumkernelObject();
+            EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
 
     protected:
         std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
         std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineer;
         std::shared_ptr<Server::Webserver> webserver;
+
+        Raumkernel::Tools::VersionInfo versionInfo;
     };
 
 }

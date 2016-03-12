@@ -7,6 +7,10 @@ namespace Raumserver
 
     Raumserver::Raumserver() : RaumkernelBase()
     {
+        // set the current version info of the library
+        versionInfo.appName = "Raumserver Library";
+        versionInfo.appVersion = "0.0.1";
+        versionInfo.isBeta = false;
     }
 
 
@@ -17,12 +21,13 @@ namespace Raumserver
 
     void Raumserver::init(Raumkernel::Log::LogType _defaultLogLevel)
     {
-        
+        // create a new log object for this library which we will provide to the kernel library too so both libraries use the same logger object
         logObject = std::shared_ptr<Raumkernel::Log::Log>(new Raumkernel::Log::Log());
         logObject->registerAdapter(std::shared_ptr<Raumkernel::Log::LogAdapter>(new Raumkernel::Log::LogAdapter_Console()));
         logObject->registerAdapter(std::shared_ptr<Raumkernel::Log::LogAdapter>(new Raumkernel::Log::LogAdapter_File()));        
         logObject->setLogLevel(_defaultLogLevel);               
 
+        // create the raumkernel object and init the kernel from the settings given in the raumserver.xml
         raumkernel = std::shared_ptr<Raumkernel::Raumkernel>(new Raumkernel::Raumkernel());      
         raumkernel->setLogObject(getLogObject());
         raumkernel->init(_defaultLogLevel, "raumserver.xml");
@@ -37,6 +42,8 @@ namespace Raumserver
             serverPort = SETTINGS_RAUMSERVER_PORT_DEFAULT;
         }
 
+        // create the webserver object and try to start it. 
+        // If the Webserver can not be startet the lib will throw an error which should be non recoverable
         webserver = std::shared_ptr<Server::Webserver>(new Server::Webserver());
         webserver->setLogObject(getLogObject());
         webserver->start(std::stoi(serverPort));
@@ -46,5 +53,11 @@ namespace Raumserver
     std::shared_ptr<Raumkernel::Raumkernel> Raumserver::getRaumkernelObject()
     {
         return raumkernel;
+    }
+
+
+    Raumkernel::Tools::VersionInfo Raumserver::getVersionInfo()
+    {
+        return versionInfo;
     }
 }

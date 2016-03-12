@@ -37,6 +37,11 @@ namespace Raumserver
                 isStarted = true;
             }    
             // errors when starting the server should lead to apprash!
+            catch (Raumkernel::Exception::RaumkernelException &e)
+            {          
+                logError(e.what(), CURRENT_FUNCTION);
+                throw e;
+            }
             catch (std::exception &e)
             {
                 logError(e.what(), CURRENT_POSITION);
@@ -51,8 +56,7 @@ namespace Raumserver
             {
                 logError("Unknown exception!", CURRENT_POSITION);
                 throw std::runtime_error("Unknown exception!");
-            }
-            
+            }                       
         }
 
 

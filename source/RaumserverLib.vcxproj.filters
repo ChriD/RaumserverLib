@@ -191,5 +191,6 @@
     <None Include="json\json_valueiterator.inl">
       <Filter>json</Filter>
     </None>
+    <None Include="..\README.md" />
   </ItemGroup>
 </Project>
