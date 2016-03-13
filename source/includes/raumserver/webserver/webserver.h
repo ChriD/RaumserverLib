@@ -30,6 +30,7 @@
 
 #include <raumkernel/raumkernel.h>
 #include <raumserver/raumserverBase.h>
+#include <raumserver/manager/managerEngineerServer.h>
 #include <raumserver/webserver/civetweb/civetServer.h>
 
 namespace Raumserver
@@ -37,10 +38,16 @@ namespace Raumserver
     namespace Server
     {
 
-
         class RequestHandlerBase : public CivetHandler
         {
-            protected:    
+            public:
+                void setManagerEngineerServer(std::shared_ptr<Manager::ManagerEngineerServer> _managerEngineer);
+                void setManagerEngineerKernel(std::shared_ptr<Raumkernel::Manager::ManagerEngineer> _managerEngineer);
+                EXPORT std::shared_ptr<Manager::ManagerEngineerServer> getManagerEngineerServer();
+                EXPORT std::shared_ptr<Raumkernel::Manager::ManagerEngineer> getManagerEngineerKernel();
+            protected:
+                std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
+                std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
         };
 
 
@@ -58,7 +65,7 @@ namespace Raumserver
         };
 
 
-        class Webserver : public RaumserverBase
+        class Webserver : public RaumserverBaseMgr
         {
             public:
                 EXPORT Webserver();

@@ -97,6 +97,8 @@
     <ClInclude Include="includes\raumserver\raumserver.h" />
     <ClInclude Include="includes\raumserver\raumserverBase.h" />
     <ClInclude Include="includes\raumserver\raumserverBaseMgr.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionExecutor.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\CivetServer.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h" />
     <ClInclude Include="includes\raumserver\webserver\webserver.h" />
@@ -112,6 +114,8 @@
     <ClCompile Include="raumserver.cpp" />
     <ClCompile Include="raumserverBase.cpp" />
     <ClCompile Include="raumserverBaseMgr.cpp" />
+    <ClCompile Include="request\requestAction.cpp" />
+    <ClCompile Include="request\requestActionExecutor.cpp" />
     <ClCompile Include="webserver\civetweb\CivetServer.cpp" />
     <ClCompile Include="webserver\civetweb\civetweb.c" />
     <ClCompile Include="webserver\webserver.cpp" />

@@ -22,35 +22,20 @@
 //
 
 #pragma once
-#ifndef RAUMSERVER_REQUESTACTIONMANAGER_H
-#define RAUMSERVER_REQUESTACTIONMANAGER_H
+#ifndef RAUMSERVER_REQUESTACTIONEXECUTOR_H
+#define RAUMSERVER_REQUESTACTIONEXECUTOR_H
 
-#include <list>
-#include <raumserver/manager/managerBaseServer.h>
-//#include <raumserver/webserver/webserver.h>
-
+#include <raumserver/raumserverBaseMgr.h>
 
 namespace Raumserver
 {
-    namespace Manager
-    {        
-        class RequestActionManager : public ManagerBaseServer
+    namespace Request
+    {
+        class RequestActionExecutor : public RaumserverBaseMgr
         {
-            public:
-                EXPORT RequestActionManager();
-                EXPORT virtual ~RequestActionManager(); 
-
-                //EXPORT void handleZoneRequest(mg_connection *conn);
-                //EXPORT void handleRoomRequest(mg_connection *conn);
-
-            protected:               
-                // a mutex that will secure our request action list 
-                std::mutex mutexRequestActionList;              
-
-                // a list which contains all request Actions whch are not already processed
-                // TODO: @@@
-                //std::list<std::string, std::string> requestActionList;
-                
+        public:
+            EXPORT RequestActionExecutor();
+            EXPORT virtual ~RequestActionExecutor();
         };
     }
 }

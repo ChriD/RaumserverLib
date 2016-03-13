@@ -15,6 +15,20 @@ namespace Raumserver
         {            
         }
 
+        /*
+        void RequestActionManager::handleZoneRequest(mg_connection *_conn)
+        {
+            // TODO: @@@
+
+            // create requestAction object if a valid request and return request
+        }
+        
+
+        void RequestActionManager::handleRoomRequest(mg_connection *_conn)
+        {
+            // TODO: @@@
+        }
+        */
        
     }
 }

@@ -13,7 +13,7 @@ LIBSDEF =  libs/linux_x86/raumkernel.so
 RM = rm -f 
 TARGET_LIB = libs/linux_x86/raumserver.so
 
-SRCS = raumserver.cpp raumserverBase.cpp raumserverBaseMgr.cpp manager/managerBaseServer manager/managerEngineerServer.cpp manager/requestActionManager.cpp webserver/mongoose.c webserver/webserver.cpp webserver/civetweb/civetweb.c webserver/civetweb/civetServer.cpp
+SRCS = raumserver.cpp raumserverBase.cpp raumserverBaseMgr.cpp manager/managerBaseServer manager/managerEngineerServer.cpp manager/requestActionManager.cpp webserver/mongoose.c webserver/webserver.cpp webserver/civetweb/civetweb.c webserver/civetweb/civetServer.cpp request/requestAction.cpp request/requestActionExecutor.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

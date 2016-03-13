@@ -7,7 +7,7 @@ namespace Raumserver
     {
         ManagerEngineerServer::ManagerEngineerServer() : RaumserverBase()
         {
-            //requestActionManager = nullptr;          
+            requestActionManager = nullptr;          
         }
 
 

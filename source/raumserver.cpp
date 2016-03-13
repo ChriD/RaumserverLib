@@ -48,8 +48,7 @@ namespace Raumserver
         managerEngineerServer->getRequestActionManager()->setManagerEngineer(managerEngineerKernel);
         managerEngineerServer->getRequestActionManager()->setManagerEngineerServer(managerEngineerServer);
  
-
-        logDebug("Raumkernel Manager-Engineer is prepared", CURRENT_POSITION);
+        logDebug("Raumserver Manager-Engineer is prepared", CURRENT_POSITION);
 
         std::string serverPort = managerEngineerKernel->getSettingsManager()->getValue(SETTINGS_RAUMSERVER_PORT);
         if (serverPort.empty())
@@ -61,6 +60,8 @@ namespace Raumserver
         // create the webserver object and try to start it. 
         // If the Webserver can not be startet the lib will throw an error which should be non recoverable
         webserver = std::shared_ptr<Server::Webserver>(new Server::Webserver());
+        webserver->setManagerEngineer(managerEngineerKernel); 
+        webserver->setManagerEngineerServer(managerEngineerServer);
         webserver->setLogObject(getLogObject());
         webserver->start(std::stoi(serverPort));
     }

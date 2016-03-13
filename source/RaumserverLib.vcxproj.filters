@@ -43,6 +43,12 @@
     <Filter Include="manager">
       <UniqueIdentifier>{5559c7ea-3889-494a-9d67-95c580051c17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumserver\request">
+      <UniqueIdentifier>{0839d863-7c46-45ed-9261-31bcd139e9b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="request">
+      <UniqueIdentifier>{f173531a-f35d-400f-91f2-2262e7ac7c4d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumserver\raumserver.h">
@@ -105,6 +111,12 @@
     <ClInclude Include="includes\raumserver\raumserverBaseMgr.h">
       <Filter>includes\raumserver</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionExecutor.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -137,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="raumserverBase.cpp" />
     <ClCompile Include="raumserverBaseMgr.cpp" />
+    <ClCompile Include="request\requestAction.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionExecutor.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="json\json_valueiterator.inl">
