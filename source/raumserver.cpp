@@ -32,10 +32,26 @@ namespace Raumserver
         raumkernel->setLogObject(getLogObject());
         raumkernel->init(_defaultLogLevel, "raumserver.xml");
 
-        // after init of the kernel we do have the manager engineer
-        managerEngineer = raumkernel->getManagerEngineer();
+        // after init of the kernel we do have the kernel manager engineer
+        managerEngineerKernel = raumkernel->getManagerEngineer();
 
-        std::string serverPort = managerEngineer->getSettingsManager()->getValue(SETTINGS_RAUMSERVER_PORT);
+        logDebug("Preparing Server-Manager-Engineer...", CURRENT_POSITION);
+
+        // create the manager engineer which will hold references to all managers. this engineer will be present in each manager and each class
+        // which is inherited from 'RaumfeldBaseMgr', but has to be set explicit
+        managerEngineerServer = std::shared_ptr<Manager::ManagerEngineerServer>(new Manager::ManagerEngineerServer());
+        managerEngineerServer->setLogObject(logObject);
+        managerEngineerServer->createManagers();
+
+        // set links to the manager engineer for all managers (this is a little bit of circular dependencies because the managers have a link to the
+        // managerEngineer, which has links to the managers again. But this should be no problem, in this case)
+        managerEngineerServer->getRequestActionManager()->setManagerEngineer(managerEngineerKernel);
+        managerEngineerServer->getRequestActionManager()->setManagerEngineerServer(managerEngineerServer);
+ 
+
+        logDebug("Raumkernel Manager-Engineer is prepared", CURRENT_POSITION);
+
+        std::string serverPort = managerEngineerKernel->getSettingsManager()->getValue(SETTINGS_RAUMSERVER_PORT);
         if (serverPort.empty())
         {
             logWarning("No port is specified for the server! Using port '" + SETTINGS_RAUMSERVER_PORT_DEFAULT  + "'", CURRENT_POSITION);

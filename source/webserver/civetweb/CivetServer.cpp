@@ -4,7 +4,7 @@
  * License http://opensource.org/licenses/mit-license.php MIT License
  */
 
-#include "raumserver/webserver/civetweb/CivetServer.h"
+#include "raumserver/webserver/civetweb/civetServer.h"
 
 #include <stdlib.h>
 #include <string.h>

@@ -6,7 +6,7 @@ namespace Raumserver
     namespace Server
     {
 
-        Webserver::Webserver() : RaumkernelBase()
+        Webserver::Webserver() : RaumserverBase()
         {
             serverObject = nullptr;
             isStarted = false;

@@ -22,38 +22,33 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_RAUMSERVER_H
-#define RAUMKERNEL_RAUMSERVER_H
+#ifndef RAUMSERVER_REQUESTACTIONMANAGER_H
+#define RAUMSERVER_REQUESTACTIONMANAGER_H
 
-#include <raumkernel/raumkernel.h>
-#include <raumserver/webserver/webserver.h>
-#include <raumserver/manager/managerEngineerServer.h>
+#include <list>
+#include <raumserver/manager/managerBaseServer.h>
 
 
 namespace Raumserver
 {
+    namespace Manager
+    {        
+        class RequestActionManager : public ManagerBaseServer
+        {
+            public:
+                EXPORT RequestActionManager();
+                EXPORT virtual ~RequestActionManager();                    
 
-    const std::string SETTINGS_RAUMSERVER_PORT_DEFAULT = "8080";
-    const std::string SETTINGS_RAUMSERVER_PORT = "/Raumserver/Port";
+            protected:               
+                // a mutex that will secure our request action list 
+                std::mutex mutexRequestActionList;              
 
-    class Raumserver : public Raumkernel::RaumkernelBase
-    {
-        public:
-            EXPORT Raumserver();
-            EXPORT virtual ~Raumserver();
-            EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
-            EXPORT std::shared_ptr<Raumkernel::Raumkernel> getRaumkernelObject();
-            EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
-
-    protected:
-        std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
-        std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
-        std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
-        std::shared_ptr<Server::Webserver> webserver;
-
-        Raumkernel::Tools::VersionInfo versionInfo;
-    };
-
+                // a list which contains all request Actions whch are not already processed
+                // TODO: @@@
+                //std::list<std::string, std::string> requestActionList;
+                
+        };
+    }
 }
 
 

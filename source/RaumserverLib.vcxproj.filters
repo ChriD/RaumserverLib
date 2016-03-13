@@ -37,6 +37,12 @@
     <Filter Include="includes\raumserver\civetweb">
       <UniqueIdentifier>{34d4a456-10ca-4146-a853-1418d1954477}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumserver\manager">
+      <UniqueIdentifier>{973c0ac5-f986-4c5c-96ca-d5c9c583a558}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="manager">
+      <UniqueIdentifier>{5559c7ea-3889-494a-9d67-95c580051c17}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumserver\raumserver.h">
@@ -84,6 +90,21 @@
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h">
       <Filter>includes\raumserver\civetweb</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\manager\requestActionManager.h">
+      <Filter>includes\raumserver\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\manager\managerBaseServer.h">
+      <Filter>includes\raumserver\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\manager\managerEngineerServer.h">
+      <Filter>includes\raumserver\manager</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\raumserverBase.h">
+      <Filter>includes\raumserver</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\raumserverBaseMgr.h">
+      <Filter>includes\raumserver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -105,6 +126,17 @@
     <ClCompile Include="webserver\civetweb\civetweb.c">
       <Filter>webserver\civetweb</Filter>
     </ClCompile>
+    <ClCompile Include="manager\requestActionManager.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\managerBaseServer.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\managerEngineerServer.cpp">
+      <Filter>manager</Filter>
+    </ClCompile>
+    <ClCompile Include="raumserverBase.cpp" />
+    <ClCompile Include="raumserverBaseMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="json\json_valueiterator.inl">

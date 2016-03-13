@@ -22,36 +22,19 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_RAUMSERVER_H
-#define RAUMKERNEL_RAUMSERVER_H
+#ifndef RAUMSERVER_RAUMSERVERBASE_H
+#define RAUMSERVER_RAUMSERVERBASE_H
 
-#include <raumkernel/raumkernel.h>
-#include <raumserver/webserver/webserver.h>
-#include <raumserver/manager/managerEngineerServer.h>
-
+#include <raumkernel/raumkernelBase.h>
 
 namespace Raumserver
 {
 
-    const std::string SETTINGS_RAUMSERVER_PORT_DEFAULT = "8080";
-    const std::string SETTINGS_RAUMSERVER_PORT = "/Raumserver/Port";
-
-    class Raumserver : public Raumkernel::RaumkernelBase
+    class RaumserverBase : public Raumkernel::RaumkernelBase
     {
         public:
-            EXPORT Raumserver();
-            EXPORT virtual ~Raumserver();
-            EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
-            EXPORT std::shared_ptr<Raumkernel::Raumkernel> getRaumkernelObject();
-            EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
-
-    protected:
-        std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
-        std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
-        std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
-        std::shared_ptr<Server::Webserver> webserver;
-
-        Raumkernel::Tools::VersionInfo versionInfo;
+            EXPORT RaumserverBase();
+            EXPORT virtual ~RaumserverBase();       
     };
 
 }

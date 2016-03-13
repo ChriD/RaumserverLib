@@ -22,38 +22,33 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_RAUMSERVER_H
-#define RAUMKERNEL_RAUMSERVER_H
+#ifndef RAUMSERVER_MANAGERENGINEERSERVER_H
+#define RAUMSERVER_MANAGERENGINEERSERVER_H
 
-#include <raumkernel/raumkernel.h>
-#include <raumserver/webserver/webserver.h>
-#include <raumserver/manager/managerEngineerServer.h>
-
+#include <raumserver/raumserverBase.h>
+#include <raumserver/manager/requestActionManager.h>
 
 namespace Raumserver
 {
-
-    const std::string SETTINGS_RAUMSERVER_PORT_DEFAULT = "8080";
-    const std::string SETTINGS_RAUMSERVER_PORT = "/Raumserver/Port";
-
-    class Raumserver : public Raumkernel::RaumkernelBase
+    namespace Manager
     {
-        public:
-            EXPORT Raumserver();
-            EXPORT virtual ~Raumserver();
-            EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
-            EXPORT std::shared_ptr<Raumkernel::Raumkernel> getRaumkernelObject();
-            EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
+        /*
+        This class holds pointers to all the available managers loaded in the server object
+        */
+        class ManagerEngineerServer : public RaumserverBase
+        {
+            public:
+                EXPORT ManagerEngineerServer();
+                EXPORT virtual ~ManagerEngineerServer();
+                void createManagers();
 
-    protected:
-        std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
-        std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
-        std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
-        std::shared_ptr<Server::Webserver> webserver;
+                EXPORT std::shared_ptr<Manager::RequestActionManager> getRequestActionManager();              
 
-        Raumkernel::Tools::VersionInfo versionInfo;
-    };
-
+            protected:
+                std::shared_ptr<Manager::RequestActionManager> requestActionManager;
+               
+        };
+    }
 }
 
 

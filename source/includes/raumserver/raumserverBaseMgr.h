@@ -22,39 +22,35 @@
 //
 
 #pragma once
-#ifndef RAUMKERNEL_RAUMSERVER_H
-#define RAUMKERNEL_RAUMSERVER_H
+#ifndef RAUMSERVER_RAUMSERVERBASEMGR_H
+#define RAUMSERVER_RAUMSERVERBASEMGR_H
 
-#include <raumkernel/raumkernel.h>
-#include <raumserver/webserver/webserver.h>
-#include <raumserver/manager/managerEngineerServer.h>
-
+#include <raumserver/raumserverBase.h>
+#include <raumkernel/raumKernelBaseMgr.h>
 
 namespace Raumserver
 {
 
-    const std::string SETTINGS_RAUMSERVER_PORT_DEFAULT = "8080";
-    const std::string SETTINGS_RAUMSERVER_PORT = "/Raumserver/Port";
+    // we cannot include 'managerEngineerServer.h' file because this would lead to an recursive problem due the manager engineer incudes all
+    // managers and those include the 'raumserverBaseMgr.h' file, so we create a dummy ManagerEngineerServer class for the compiler
+    namespace Manager
+    {
+        class ManagerEngineerServer;       
+    }
 
-    class Raumserver : public Raumkernel::RaumkernelBase
+
+    class RaumserverBaseMgr : public Raumkernel::RaumkernelBaseMgr
     {
         public:
-            EXPORT Raumserver();
-            EXPORT virtual ~Raumserver();
-            EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
-            EXPORT std::shared_ptr<Raumkernel::Raumkernel> getRaumkernelObject();
-            EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
+            RaumserverBaseMgr();
+            virtual ~RaumserverBaseMgr();
+            void setManagerEngineerServer(std::shared_ptr<Manager::ManagerEngineerServer> _managerEngineer);
+            EXPORT std::shared_ptr<Manager::ManagerEngineerServer> getManagerEngineerServer();
 
-    protected:
-        std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
-        std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
-        std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
-        std::shared_ptr<Server::Webserver> webserver;
-
-        Raumkernel::Tools::VersionInfo versionInfo;
+        protected:
+            std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;            
     };
-
 }
 
 
-#endif
+#endif 

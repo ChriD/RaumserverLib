@@ -91,7 +91,12 @@
     <ClInclude Include="includes\raumserver\json\value.h" />
     <ClInclude Include="includes\raumserver\json\version.h" />
     <ClInclude Include="includes\raumserver\json\writer.h" />
+    <ClInclude Include="includes\raumserver\manager\managerBaseServer.h" />
+    <ClInclude Include="includes\raumserver\manager\managerEngineerServer.h" />
+    <ClInclude Include="includes\raumserver\manager\requestActionManager.h" />
     <ClInclude Include="includes\raumserver\raumserver.h" />
+    <ClInclude Include="includes\raumserver\raumserverBase.h" />
+    <ClInclude Include="includes\raumserver\raumserverBaseMgr.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\CivetServer.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h" />
     <ClInclude Include="includes\raumserver\webserver\webserver.h" />
@@ -101,7 +106,12 @@
     <ClCompile Include="json\json_reader.cpp" />
     <ClCompile Include="json\json_value.cpp" />
     <ClCompile Include="json\json_writer.cpp" />
+    <ClCompile Include="manager\managerBaseServer.cpp" />
+    <ClCompile Include="manager\managerEngineerServer.cpp" />
+    <ClCompile Include="manager\requestActionManager.cpp" />
     <ClCompile Include="raumserver.cpp" />
+    <ClCompile Include="raumserverBase.cpp" />
+    <ClCompile Include="raumserverBaseMgr.cpp" />
     <ClCompile Include="webserver\civetweb\CivetServer.cpp" />
     <ClCompile Include="webserver\civetweb\civetweb.c" />
     <ClCompile Include="webserver\webserver.cpp" />
