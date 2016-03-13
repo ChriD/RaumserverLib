@@ -8,6 +8,7 @@ namespace Raumserver
 
         Webserver::Webserver() : RaumkernelBase()
         {
+            serverObject = nullptr;
             isStarted = false;
         }
 
@@ -23,16 +24,25 @@ namespace Raumserver
             if (isStarted)
                 return;
 
+            std::vector<std::string> serverOptions;
+
             try
             {
                 logDebug("Starting webserver for requests on port: " + std::to_string(_port), CURRENT_POSITION);
 
-                server = std::shared_ptr<Mongoose::Server>(new Mongoose::Server(_port));
-                requestController = std::shared_ptr<RequestController>(new RequestController());
+                serverOptions.push_back("listening_ports");
+                serverOptions.push_back(std::to_string(_port));
 
-                server->registerController(requestController.get());
-                server->start();
+                serverObject = std::shared_ptr<CivetServer>(new CivetServer(serverOptions));
 
+                // add a general handler for the raumserver zone action handlings (like zone volume, zone mute, next, prev, aso...)
+                serverRequestHandlerZone = std::shared_ptr<RequestHandlerZone>(new RequestHandlerZone());
+                serverObject->addHandler("/raumserver/zone", serverRequestHandlerZone.get());
+
+                // add a general handler for the raumserver room action handlings (like removing from zone or add to zone or room volumes, room mutes, aso...)
+                serverRequestHandlerRoom = std::shared_ptr<RequestHandlerRoom>(new RequestHandlerRoom());
+                serverObject->addHandler("/raumserver/room", serverRequestHandlerRoom.get());
+                                                         
                 logInfo("Webserver for requests started (Port: " + std::to_string(_port) + ")", CURRENT_POSITION);
                 isStarted = true;
             }    
@@ -56,41 +66,47 @@ namespace Raumserver
             {
                 logError("Unknown exception!", CURRENT_POSITION);
                 throw std::runtime_error("Unknown exception!");
-            }                       
+            }         
         }
 
 
         void Webserver::stop()
-        {
-            if (server && isStarted)
-                server->stop();
-        }
-
-
-
-        void RequestController::setup()
         {            
-            //server->resource["^/raumserver/room/(.*)/(.*)"]["POST"] = std::bind(&RaumkernServer::HandleRoomRequests, this, std::placeholders::_1, std::placeholders::_2);
-            //server->resource["^/raumserver/room/(.*)/(.*)"]["GET"] = std::bind(&RaumkernServer::HandleRoomRequests, this, std::placeholders::_1, std::placeholders::_2);
-            //server->resource["^/raumserver/zone/(.*)/(.*)"]["POST"] = std::bind(&RaumkernServer::HandleZoneRequests, this, std::placeholders::_1, std::placeholders::_2);
-            //server->resource["^/raumserver/zone/(.*)/(.*)"]["GET"] = std::bind(&RaumkernServer::HandleZoneRequests, this, std::placeholders::_1, std::placeholders::_2);
-
-            //registerRoute("GET", "^/raumserver/room/(.*)/(.*)", new Mongoose::RequestHandler<RequestController, Mongoose::StreamResponse>(this, &RequestController::handleRequest));
-            // http://10.0.0.4:8080/raumserver/request?zone=Wohnzimmer&action=play           
-            // http://10.0.0.4:8080/raumserver/request?zone=Wohnzimmer&action=stop
-            // http://10.0.0.4:8080/raumserver/request?room=Wohnzimmer&action=volume&value=-10
-            registerRoute("GET", "/request", new Mongoose::RequestHandler<RequestController, Mongoose::StreamResponse>(this, &RequestController::handleRequest));
-            //registerRoute("GET", "/request/play", new Mongoose::RequestHandler<RequestController, Mongoose::StreamResponse>(this, &RequestController::handleRequest));
-            //registerRoute("GET", "/request/stop", new Mongoose::RequestHandler<RequestController, Mongoose::StreamResponse>(this, &RequestController::handleRequest));
+            if (serverObject && isStarted)
+                serverObject->close();
         }
 
 
-        void RequestController::handleRequest(Mongoose::Request &_request, Mongoose::StreamResponse &_response)
+ 
+        bool RequestHandlerRoom::handleGet(CivetServer *server, struct mg_connection *conn)
+        {            
+            //logDebug("Webserver for requests started (Port: " + std::to_string(_port) + ")", CURRENT_POSITION);
+
+            mg_printf(conn,
+                "HTTP/1.1 200 OK\r\nContent-Type: "
+                "text/html\r\nConnection: close\r\n\r\n");
+            mg_printf(conn, "<html><body>\r\n");
+            mg_printf(conn,
+                "<h2>Room Request</h2>\r\n");         
+            mg_printf(conn, "</body></html>\r\n");
+            return true;                
+        }
+
+
+        bool RequestHandlerZone::handleGet(CivetServer *server, struct mg_connection *conn)
         {
-             std::string method = _request.getMethod();
-            //_response << "Raumserver is not finished yet! " << Mongoose::Utils::htmlEntities(_request.get("name", "... what's your name ?")) << endl;
-             _response << "Raumserver is not finished yet! " << std::endl;
+
+            mg_printf(conn,
+                "HTTP/1.1 200 OK\r\nContent-Type: "
+                "text/html\r\nConnection: close\r\n\r\n");
+            mg_printf(conn, "<html><body>\r\n");
+            mg_printf(conn,
+                "<h2>Zone Request</h2>\r\n");
+            mg_printf(conn, "</body></html>\r\n");
+            return true;
         }
+
+
        
 
     }

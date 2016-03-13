@@ -92,23 +92,8 @@
     <ClInclude Include="includes\raumserver\json\version.h" />
     <ClInclude Include="includes\raumserver\json\writer.h" />
     <ClInclude Include="includes\raumserver\raumserver.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Controller.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\JsonController.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\JsonResponse.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Mutex.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Request.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\RequestHandler.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Response.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Server.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Session.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Sessions.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\StreamResponse.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\UploadFile.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\Utils.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebController.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebSocket.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\cpp\WebSockets.h" />
-    <ClInclude Include="includes\raumserver\webserver\mongoose\mongoose.h" />
+    <ClInclude Include="includes\raumserver\webserver\civetweb\CivetServer.h" />
+    <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h" />
     <ClInclude Include="includes\raumserver\webserver\webserver.h" />
     <ClInclude Include="json\json_tool.h" />
   </ItemGroup>
@@ -117,22 +102,8 @@
     <ClCompile Include="json\json_value.cpp" />
     <ClCompile Include="json\json_writer.cpp" />
     <ClCompile Include="raumserver.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Controller.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\JsonController.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\JsonResponse.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Mutex.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Request.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Response.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Server.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Session.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Sessions.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\StreamResponse.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\UploadFile.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\Utils.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\WebController.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\WebSocket.cpp" />
-    <ClCompile Include="webserver\mongoose\cpp\WebSockets.cpp" />
-    <ClCompile Include="webserver\mongoose\mongoose.c" />
+    <ClCompile Include="webserver\civetweb\CivetServer.cpp" />
+    <ClCompile Include="webserver\civetweb\civetweb.c" />
     <ClCompile Include="webserver\webserver.cpp" />
   </ItemGroup>
   <ItemGroup>

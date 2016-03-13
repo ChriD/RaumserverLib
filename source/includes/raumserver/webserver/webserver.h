@@ -29,13 +29,28 @@
 #include <chrono>
 
 #include <raumkernel/raumkernel.h>
-#include <raumserver/webserver/mongoose/cpp/Server.h>
-#include <raumserver/webserver/mongoose/cpp/WebController.h>
+//#include <raumserver/webserver/mongoose/cpp/Server.h>
+//#include <raumserver/webserver/mongoose/cpp/WebController.h>
+#include <raumserver/webserver/civetweb/CivetServer.h>
 
 namespace Raumserver
 {
     namespace Server
     {
+
+        class RequestHandlerRoom : public CivetHandler
+        {
+            public:
+                bool handleGet(CivetServer *server, struct mg_connection *conn);
+        };
+
+
+        class RequestHandlerZone : public CivetHandler
+        {
+            public:
+                bool handleGet(CivetServer *server, struct mg_connection *conn);
+        };
+
 
         class Webserver : public Raumkernel::RaumkernelBase
         {
@@ -46,18 +61,23 @@ namespace Raumserver
                 EXPORT virtual void stop();
 
             protected:   
-                std::shared_ptr<Mongoose::Server> server;
-                std::shared_ptr<Mongoose::WebController> requestController;
+                std::shared_ptr<CivetServer> serverObject;
+                std::shared_ptr<RequestHandlerRoom> serverRequestHandlerRoom;
+                std::shared_ptr<RequestHandlerZone> serverRequestHandlerZone;
+
                 bool isStarted;
         };
 
-
+        /*
         class RequestController : public Mongoose::WebController
         {
             public:
                 void handleRequest(Mongoose::Request &_request, Mongoose::StreamResponse &_response);
                 void setup();                         
         };
+        */
+
+       
 
     }
 }

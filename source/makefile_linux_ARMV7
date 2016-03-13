@@ -13,7 +13,7 @@ LIBSDEF = libs/linux_ARMV7/raumkernel.so
 RM = rm -f 
 TARGET_LIB = libs/linux_ARMV7/raumserver.so
  
-SRCS = raumserver.cpp webserver/mongoose.c webserver/webserver.cpp
+SRCS = raumserver.cpp webserver/mongoose.c webserver/webserver.cpp webserver/mongoose/cpp/Controller.cpp webserver/mongoose/cpp/JsonController.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
