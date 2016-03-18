@@ -34,7 +34,8 @@ namespace Raumserver
         class RequestAction_Stop : public RequestAction
         {
             public:
-                EXPORT RequestAction_Stop();
+                EXPORT RequestAction_Stop(std::string _url);
+                EXPORT RequestAction_Stop(std::string _path, std::string _query);
                 EXPORT virtual ~RequestAction_Stop();
                 EXPORT virtual bool executeAction() override;
                 EXPORT virtual bool isValid() override;

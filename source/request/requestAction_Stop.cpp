@@ -5,8 +5,15 @@ namespace Raumserver
 {
     namespace Request
     {
-        RequestAction_Stop::RequestAction_Stop() : RequestAction()
+        RequestAction_Stop::RequestAction_Stop(std::string _url) : RequestAction(_url)
         {
+            action = RequestActionType::RAA_STOP;
+        }
+
+
+        RequestAction_Stop::RequestAction_Stop(std::string _path, std::string _query) : RequestAction(_path, _query)
+        {
+            action = RequestActionType::RAA_STOP;
         }
 
 

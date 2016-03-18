@@ -40,7 +40,8 @@ namespace Raumserver
         class RequestAction : public RaumserverBaseMgr
         {
             public:
-                EXPORT RequestAction();
+                EXPORT RequestAction(std::string _url);
+                EXPORT RequestAction(std::string _path, std::string _query);
                 EXPORT virtual ~RequestAction();
 
                 /**
@@ -74,6 +75,14 @@ namespace Raumserver
                 * returns true if the request may be executed (if all options / query values are there for processing the request)
                 */
                 virtual bool isValid();
+                /**
+                *  craeted an requestAction object from an url
+                */
+                EXPORT static std::shared_ptr<RequestAction> createFromUrl(std::string _url);
+                /**
+                *  craeted an requestAction object from an path
+                */
+                EXPORT static std::shared_ptr<RequestAction> createFromPath(std::string _path, std::string _queryString);
      
             protected:                
                 /**
@@ -101,6 +110,10 @@ namespace Raumserver
                 * the whole url of the request
                 */
                 std::string url;
+                /**
+                * the query of the request
+                */
+                std::string query;
                 /**
                 * the action we have to perform
                 */
@@ -131,7 +144,8 @@ namespace Raumserver
         class RequestActionReturnable : public RequestAction
         {
             public:
-                EXPORT RequestActionReturnable();
+                EXPORT RequestActionReturnable(std::string _url);
+                EXPORT RequestActionReturnable(std::string _path, std::string _query);                
                 EXPORT virtual ~RequestActionReturnable();              
                 
                 EXPORT virtual bool isStackable();

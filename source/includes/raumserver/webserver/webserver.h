@@ -42,35 +42,32 @@ namespace Raumserver
         class RequestHandlerBase : public CivetHandler
         {
             public:
-                void setManagerEngineerServer(std::shared_ptr<Manager::ManagerEngineerServer> _managerEngineer);
-                void setManagerEngineerKernel(std::shared_ptr<Raumkernel::Manager::ManagerEngineer> _managerEngineer);
+                EXPORT void setManagerEngineerServer(std::shared_ptr<Manager::ManagerEngineerServer> _managerEngineer);
+                EXPORT void setManagerEngineerKernel(std::shared_ptr<Raumkernel::Manager::ManagerEngineer> _managerEngineer);
+                EXPORT void setLogObject(std::shared_ptr<Raumkernel::Log::Log> _logObject);
                 EXPORT std::shared_ptr<Manager::ManagerEngineerServer> getManagerEngineerServer();
                 EXPORT std::shared_ptr<Raumkernel::Manager::ManagerEngineer> getManagerEngineerKernel();
+                EXPORT std::shared_ptr<Raumkernel::Log::Log> getLogObject();
             protected:
+                virtual void sendResponse(struct mg_connection *_conn, std::string _string, bool _error = false);
                 std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
                 std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
+                std::shared_ptr<Raumkernel::Log::Log> logObject;
         };
 
 
-        /*
-        class RequestHandlerRoom : public RequestHandlerBase
-        {
-            public:
-                bool handleGet(CivetServer *server, struct mg_connection *conn);            
-        };
-
-
-        class RequestHandlerZone : public RequestHandlerBase
-        {
-            public:
-                bool handleGet(CivetServer *server, struct mg_connection *conn);
-        };
-        */
 
         class RequestHandlerController : public RequestHandlerBase
         {
             public:
                 bool handleGet(CivetServer *_server, struct mg_connection *_conn);
+        };
+
+
+        class RequestHandlerVoid : public RequestHandlerBase
+        {
+        public:
+            bool handleGet(CivetServer *_server, struct mg_connection *_conn);
         };
 
 
@@ -83,11 +80,10 @@ namespace Raumserver
                 EXPORT virtual void start(std::uint32_t _port);
                 EXPORT virtual void stop();
 
-            protected:   
-                std::shared_ptr<CivetServer> serverObject;
-                //std::shared_ptr<RequestHandlerRoom> serverRequestHandlerRoom;
-                //std::shared_ptr<RequestHandlerZone> serverRequestHandlerZone;
+            protected:                  
+                std::shared_ptr<CivetServer> serverObject;             
                 std::shared_ptr<RequestHandlerController> serverRequestHandlerController;
+                std::shared_ptr<RequestHandlerVoid> serverRequestHandlerVoid;
 
                 bool isStarted;
         };

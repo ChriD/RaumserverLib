@@ -22,8 +22,8 @@
 //
 
 #pragma once
-#ifndef RAUMSERVER_REQUESTACTION_STOP_H
-#define RAUMSERVER_REQUESTACTION_STOP_H
+#ifndef RAUMSERVER_REQUESTACTION_PAUSE_H
+#define RAUMSERVER_REQUESTACTION_PAUSE_H
 
 #include <raumserver/request/requestAction.h>
 
@@ -34,7 +34,8 @@ namespace Raumserver
         class RequestAction_Pause : public RequestAction
         {
             public:
-                EXPORT RequestAction_Pause();
+                EXPORT RequestAction_Pause(std::string _url);
+                EXPORT RequestAction_Pause(std::string _path, std::string _query);
                 EXPORT virtual ~RequestAction_Pause();
                 EXPORT virtual bool executeAction() override;
 

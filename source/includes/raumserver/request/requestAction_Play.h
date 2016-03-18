@@ -33,8 +33,9 @@ namespace Raumserver
     {
         class RequestAction_Play : public RequestAction
         {
-            public:
-                EXPORT RequestAction_Play();
+            public:                
+                EXPORT RequestAction_Play(std::string _url);
+                EXPORT RequestAction_Play(std::string _path, std::string _query);
                 EXPORT virtual ~RequestAction_Play();
                 EXPORT virtual bool executeAction() override;
 
