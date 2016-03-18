@@ -114,7 +114,16 @@
     <ClInclude Include="includes\raumserver\request\requestAction.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumserver\request\requestActionExecutor.h">
+    <ClInclude Include="includes\raumserver\request\requestAction_Pause.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_Play.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_Stop.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActions.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,7 +161,13 @@
     <ClCompile Include="request\requestAction.cpp">
       <Filter>request</Filter>
     </ClCompile>
-    <ClCompile Include="request\requestActionExecutor.cpp">
+    <ClCompile Include="request\requestAction_Pause.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_Play.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_Stop.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

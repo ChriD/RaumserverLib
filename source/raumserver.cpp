@@ -47,6 +47,7 @@ namespace Raumserver
         // managerEngineer, which has links to the managers again. But this should be no problem, in this case)
         managerEngineerServer->getRequestActionManager()->setManagerEngineer(managerEngineerKernel);
         managerEngineerServer->getRequestActionManager()->setManagerEngineerServer(managerEngineerServer);
+        managerEngineerServer->getRequestActionManager()->init();
  
         logDebug("Raumserver Manager-Engineer is prepared", CURRENT_POSITION);
 

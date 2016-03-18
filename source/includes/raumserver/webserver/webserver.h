@@ -29,6 +29,7 @@
 #include <chrono>
 
 #include <raumkernel/raumkernel.h>
+#include <raumserver/request/requestAction.h>
 #include <raumserver/raumserverBase.h>
 #include <raumserver/manager/managerEngineerServer.h>
 #include <raumserver/webserver/civetweb/civetServer.h>
@@ -51,6 +52,7 @@ namespace Raumserver
         };
 
 
+        /*
         class RequestHandlerRoom : public RequestHandlerBase
         {
             public:
@@ -63,6 +65,14 @@ namespace Raumserver
             public:
                 bool handleGet(CivetServer *server, struct mg_connection *conn);
         };
+        */
+
+        class RequestHandlerController : public RequestHandlerBase
+        {
+            public:
+                bool handleGet(CivetServer *_server, struct mg_connection *_conn);
+        };
+
 
 
         class Webserver : public RaumserverBaseMgr
@@ -75,8 +85,9 @@ namespace Raumserver
 
             protected:   
                 std::shared_ptr<CivetServer> serverObject;
-                std::shared_ptr<RequestHandlerRoom> serverRequestHandlerRoom;
-                std::shared_ptr<RequestHandlerZone> serverRequestHandlerZone;
+                //std::shared_ptr<RequestHandlerRoom> serverRequestHandlerRoom;
+                //std::shared_ptr<RequestHandlerZone> serverRequestHandlerZone;
+                std::shared_ptr<RequestHandlerController> serverRequestHandlerController;
 
                 bool isStarted;
         };

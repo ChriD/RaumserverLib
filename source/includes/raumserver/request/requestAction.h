@@ -26,12 +26,16 @@
 #define RAUMSERVER_REQUESTACTION_H
 
 #include <raumserver/raumserverBaseMgr.h>
+#include <raumkernel/manager/managerEngineer.h>
+#include <raumkernel/manager/zoneManager.h>
+#include <raumkernel/manager/deviceManager.h>
 
 namespace Raumserver
 {
     namespace Request
     {
-        enum class RequestActionType { RAA_PLAY, RAA_PAUSE, RAA_STOP, RAA_NEXT, RAA_PREV, RAA_VOLUMEUP, RAA_VOLUMEDOWN, RAA_SETVOLUME};
+        enum class RequestActionType { RAA_UNDEFINED, RAA_PLAY, RAA_PAUSE, RAA_STOP, RAA_NEXT, RAA_PREV, RAA_VOLUMEUP, RAA_VOLUMEDOWN, RAA_SETVOLUME };
+        enum class RequestReceiver { RR_ROOM, RR_ZONE, RR_JSON };
      
         class RequestAction : public RaumserverBaseMgr
         {
@@ -53,9 +57,45 @@ namespace Raumserver
                 * executes the given action either in a sync mode or async (as given in 'sync' var)
                 * This method has to be overwritten 
                 */
-                EXPORT virtual void execute();
+                EXPORT virtual bool execute();                
+                /**
+                * returns a string identification for the requestActionType enum
+                */
+                EXPORT static std::string requestActionTypeToString(RequestActionType _requestActionType);
+                /**
+                * returns a requestActionType enum fro a string
+                */
+                EXPORT static RequestActionType stringToRequestActionType(std::string _requestActionType);
+                /**
+                * returns a string with the action code and the option parameters
+                */
+                EXPORT std::string getRequestInfo();
+                /**
+                * returns true if the request may be executed (if all options / query values are there for processing the request)
+                */
+                virtual bool isValid();
      
-            protected:
+            protected:                
+                /**
+                * parses the query options to a map
+                */
+                virtual void parseQueryOptions();
+                /**
+                * returns a shared pointer to a vertiual media renderer (zone)
+                * all actions will be performed on that rendeerer (even volume for each rooms)
+                */
+                virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> getVirtualMediaRenderer(std::string _id);
+                /**
+                * returns true if the request may be executed (if all options / query values are there for processing the request)
+                */
+                virtual std::string getOptionValue(std::string _key, std::string _default = "");
+                /**
+                * the execute action itself
+                */
+                EXPORT virtual bool executeAction();
+           
+                virtual void logError(std::string _log, std::string _location) override;
+                virtual void logCritical(std::string _log, std::string _location) override;
 
                 /**
                 * the whole url of the request
@@ -66,13 +106,21 @@ namespace Raumserver
                 */
                 RequestActionType action;
                 /**
+                * the receiver of the request (may be a zone or a room or.....)
+                */
+                RequestReceiver receiver;
+                /**
                 * if set the executor will wait with the response until the requestAction is finished
                 */
                 bool sync;
                 /**
-                * TODO: query values as options?!
+                * query values as request options
                 */
-                //map<std::string, std::string>                
+                std::unordered_map<std::string, std::string> requestOptions;   
+                /**
+                * contains some error if the request may not be executed. This error may be written back to the user
+                */
+                std::string error;
         };
 
 

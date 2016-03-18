@@ -35,6 +35,7 @@ namespace Raumserver
 
                 serverObject = std::shared_ptr<CivetServer>(new CivetServer(serverOptions));
 
+                /*
                 // add a general handler for the raumserver zone action handlings (like zone volume, zone mute, next, prev, aso...)
                 serverRequestHandlerZone = std::shared_ptr<RequestHandlerZone>(new RequestHandlerZone());
                 serverRequestHandlerZone->setManagerEngineerServer(getManagerEngineerServer());
@@ -46,6 +47,13 @@ namespace Raumserver
                 serverRequestHandlerRoom->setManagerEngineerServer(getManagerEngineerServer());
                 serverRequestHandlerRoom->setManagerEngineerKernel(getManagerEngineer());
                 serverObject->addHandler("/raumserver/room", serverRequestHandlerRoom.get());
+                */
+
+                // add a general handler for the raumserver room and zone action handlings (like removing from zone or add to zone or room volumes, room mutes, aso...)
+                serverRequestHandlerController = std::shared_ptr<RequestHandlerController>(new RequestHandlerController());
+                serverRequestHandlerController->setManagerEngineerServer(getManagerEngineerServer());
+                serverRequestHandlerController->setManagerEngineerKernel(getManagerEngineer());
+                serverObject->addHandler("/raumserver/controller", serverRequestHandlerController.get());
                                                          
                 logInfo("Webserver for requests started (Port: " + std::to_string(_port) + ")", CURRENT_POSITION);
                 isStarted = true;
@@ -105,7 +113,53 @@ namespace Raumserver
 
 
 
+        bool RequestHandlerController::handleGet(CivetServer *_server, struct mg_connection *_conn)
+        {
+            if (!getManagerEngineerServer())
+                return false;
+
+            std::shared_ptr<Request::RequestAction>     requestAction;
+
+            // TOSO: @@@
+            // create request action object from url 
+
+            // if we should stack the request we have to add it to the request manager and return the error values of the validate if there are some
+            // the Reuest-Manager will take care of the Request from now on
+            if (requestAction->isStackable())
+            {
+                if (requestAction->isValid())
+                {
+                    getManagerEngineerServer()->getRequestActionManager()->addRequestAction(requestAction);
+                    // TODO: return info that request was added to quere
+                }
+                else
+                {
+                    // TODO: return error from request object
+                }
+            }
+            // the request is not stackable, that means we have to execute it right now
+            // if the request is a returnable item we have to return the data string from the requestAction
+            else
+            {
+                // a returnable request ist always a sync and non stackable request
+                if (std::dynamic_pointer_cast<Request::RequestActionReturnable>(requestAction))
+                {
+                    requestAction->execute();
+                    // TODO: return dataString from request object
+                }
+                else
+                {
+                    requestAction->execute();
+                    // TODO: return info that request was performed
+                }
+            }
+            
  
+            return true;
+        }
+
+
+        /*
         bool RequestHandlerRoom::handleGet(CivetServer *server, struct mg_connection *conn)
         {            
             if (!getManagerEngineerServer())
@@ -121,20 +175,8 @@ namespace Raumserver
 
             //std::this_thread::sleep_for(std::chrono::seconds(10));
 
-            return true;
-            /*
-            mg_printf(conn,
-                "HTTP/1.1 200 OK\r\nContent-Type: "
-                "text/html\r\nConnection: close\r\n\r\n");
-            mg_printf(conn, "<html><body>\r\n");
-            mg_printf(conn,
-                "<h2>Room Request</h2>\r\n");         
-            mg_printf(conn, "</body></html>\r\n");
-            return true;    
-            */
+            return true;      
         }
-
-
 
 
         bool RequestHandlerZone::handleGet(CivetServer *server, struct mg_connection *conn)
@@ -143,7 +185,7 @@ namespace Raumserver
                 return false;
             //getManagerEngineerServer()->getRequestActionManager()->handleZoneRequest(conn);
             return true;
-            /*
+            
             mg_printf(conn,
                 "HTTP/1.1 200 OK\r\nContent-Type: "
                 "text/html\r\nConnection: close\r\n\r\n");
@@ -152,8 +194,9 @@ namespace Raumserver
                 "<h2>Zone Request</h2>\r\n");
             mg_printf(conn, "</body></html>\r\n");
             return true;
-            */
+            
         }
+        */
 
 
        

@@ -22,23 +22,11 @@
 //
 
 #pragma once
-#ifndef RAUMSERVER_REQUESTACTIONEXECUTOR_H
-#define RAUMSERVER_REQUESTACTIONEXECUTOR_H
+#ifndef RAUMSERVER_REQUESTACTIONS_H
+#define RAUMSERVER_REQUESTACTIONS_H
 
-#include <raumserver/raumserverBaseMgr.h>
-
-namespace Raumserver
-{
-    namespace Request
-    {
-        class RequestActionExecutor : public RaumserverBaseMgr
-        {
-        public:
-            EXPORT RequestActionExecutor();
-            EXPORT virtual ~RequestActionExecutor();
-        };
-    }
-}
-
+#include <raumserver/request/requestAction_Pause.h>
+#include <raumserver/request/requestAction_Play.h>
+#include <raumserver/request/requestAction_Stop.h>
 
 #endif

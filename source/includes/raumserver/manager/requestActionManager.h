@@ -25,8 +25,10 @@
 #ifndef RAUMSERVER_REQUESTACTIONMANAGER_H
 #define RAUMSERVER_REQUESTACTIONMANAGER_H
 
-#include <list>
+#include <queue>
+#include <thread>
 #include <raumserver/manager/managerBaseServer.h>
+#include <raumserver/request/requestActions.h>
 //#include <raumserver/webserver/webserver.h>
 
 
@@ -39,17 +41,34 @@ namespace Raumserver
             public:
                 EXPORT RequestActionManager();
                 EXPORT virtual ~RequestActionManager(); 
+                /**
+                * starting the thread for processing requests
+                */
+                EXPORT virtual void init();
+                /**
+                * add a requestAction to the queue which will be processed by the thread method
+                */
+                EXPORT virtual void addRequestAction(std::shared_ptr<Request::RequestAction> _requestAction);
+                /**
+                * The thread method which will process the queue
+                */
+                EXPORT virtual void requestProcessingWorkerThread();
 
-                //EXPORT void handleZoneRequest(mg_connection *conn);
-                //EXPORT void handleRoomRequest(mg_connection *conn);
+            protected:          
 
-            protected:               
+                /**
+                * this method runs as thread and checks id the stack is filled with some requests
+                * if so it will perform the requests in a FIFO order
+                */
+                void doRequests();
+                std::thread doRequestsThreadObject;
+                std::atomic_bool stopThreads;
+
                 // a mutex that will secure our request action list 
-                std::mutex mutexRequestActionList;              
+                std::mutex mutexRequestActionQueue;              
 
-                // a list which contains all request Actions whch are not already processed
-                // TODO: @@@
-                //std::list<std::string, std::string> requestActionList;
+                // a list which contains all request Actions whch are not already processed                    
+                std::queue<std::shared_ptr<Request::RequestAction>> requestActionQueue;
                 
         };
     }
