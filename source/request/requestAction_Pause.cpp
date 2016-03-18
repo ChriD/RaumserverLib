@@ -22,6 +22,19 @@ namespace Raumserver
         }
 
 
+        bool RequestAction_Pause::isValid()
+        {
+            bool isValid = RequestAction::isValid();
+
+            // examples for valid requests:
+            // raumserver/controller/pause
+            // raumserver/controller/pause?id=Schlafzimmer
+            // raumserver/controller/pause?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88
+
+            return isValid;
+        }
+
+
         bool RequestAction_Pause::executeAction()
         {
             //
