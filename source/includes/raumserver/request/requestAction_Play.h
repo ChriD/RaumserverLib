@@ -38,6 +38,7 @@ namespace Raumserver
                 EXPORT RequestAction_Play(std::string _path, std::string _query);
                 EXPORT virtual ~RequestAction_Play();
                 EXPORT virtual bool executeAction() override;
+                EXPORT virtual bool isValid() override;
 
             protected:
         };

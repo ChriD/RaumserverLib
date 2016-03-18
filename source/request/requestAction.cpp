@@ -188,8 +188,8 @@ namespace Raumserver
                 // TODO: @@@
                 case RequestActionType::RAA_UNDEFINED: return nullptr;
                 case RequestActionType::RAA_NEXT: return nullptr;
-                case RequestActionType::RAA_PAUSE: return nullptr;
-                case RequestActionType::RAA_PLAY: return nullptr;
+                case RequestActionType::RAA_PAUSE: return std::shared_ptr<RequestAction_Pause>(new RequestAction_Pause(_path, _queryString));
+                case RequestActionType::RAA_PLAY: return std::shared_ptr<RequestAction_Play>(new RequestAction_Play(_path, _queryString));
                 case RequestActionType::RAA_PREV: return nullptr;
                 case RequestActionType::RAA_SETVOLUME: return nullptr;
                 case RequestActionType::RAA_STOP: return std::shared_ptr<RequestAction_Stop>(new RequestAction_Stop(_path, _queryString));

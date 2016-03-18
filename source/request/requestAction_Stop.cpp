@@ -26,21 +26,10 @@ namespace Raumserver
         {
             bool isValid = RequestAction::isValid();
 
+            // examples for valid requests:
+            // raumserver/controller/stop
             // raumserver/controller/stop?id=Schlafzimmer
             // raumserver/controller/stop?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88
-
-            /*
-            if (getOptionValue("id").empty())
-            {
-                logError("", CURRENT_FUNCTION);
-                isValid = false;
-            }*/
-
-          
-            // a stop action may onot nly be performed if we have a id. If there is no id all zones will be stopped            
-            // We do only check if the options are provided, not if they are correct. This check will be done on execution itself
-
-            // TODO: @@@
 
             return isValid;
         }
@@ -62,7 +51,7 @@ namespace Raumserver
                 mediaRenderer->stop(sync);
                 // TODO: we may wait until the stop has reached our kernel and we know it..?!?!?
             }
-            // if we have no id provided, then  we stop all zones
+            // if we have no id provided, then we stop all zones
             else
             {
                 auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
