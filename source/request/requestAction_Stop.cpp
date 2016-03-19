@@ -49,7 +49,6 @@ namespace Raumserver
                     return false;
                 }
                 mediaRenderer->stop(sync);
-                // TODO: we may wait until the stop has reached our kernel and we know it..?!?!?
             }
             // if we have no id provided, then we stop all zones
             else
@@ -62,7 +61,6 @@ namespace Raumserver
                     if (mediaRenderer)
                         mediaRenderer->stop(sync);                        
                 }   
-                // TODO: we may wait until the stop has reached our kernel and we know it..?!?!?
             }            
 
             return true;

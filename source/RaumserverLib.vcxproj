@@ -99,8 +99,13 @@
     <ClInclude Include="includes\raumserver\raumserverBaseMgr.h" />
     <ClInclude Include="includes\raumserver\request\requestAction.h" />
     <ClInclude Include="includes\raumserver\request\requestActions.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_AddToZone.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_CreateZone.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_DropFromZone.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_Next.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Pause.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Play.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_Prev.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Stop.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\CivetServer.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h" />
@@ -118,8 +123,13 @@
     <ClCompile Include="raumserverBase.cpp" />
     <ClCompile Include="raumserverBaseMgr.cpp" />
     <ClCompile Include="request\requestAction.cpp" />
+    <ClCompile Include="request\requestAction_AddToZone.cpp" />
+    <ClCompile Include="request\requestAction_CreateZone.cpp" />
+    <ClCompile Include="request\requestAction_DropFromZone.cpp" />
+    <ClCompile Include="request\requestAction_Next.cpp" />
     <ClCompile Include="request\requestAction_Pause.cpp" />
     <ClCompile Include="request\requestAction_Play.cpp" />
+    <ClCompile Include="request\requestAction_Prev.cpp" />
     <ClCompile Include="request\requestAction_Stop.cpp" />
     <ClCompile Include="webserver\civetweb\CivetServer.cpp" />
     <ClCompile Include="webserver\civetweb\civetweb.c" />

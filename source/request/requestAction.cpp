@@ -11,6 +11,10 @@ namespace Raumserver
             url = _url;
             query = "";
             sync = true;
+            error = "";
+            waitTimeAfterExecution = 0;
+            timeout = 5000;
+            waitTimeForRequestActionKernelResponse = 25;
         }
 
         RequestAction::RequestAction(std::string _path, std::string _query) : RaumserverBaseMgr()
@@ -18,6 +22,10 @@ namespace Raumserver
             url = _path;
             query = _query;
             sync = true;
+            error = "";
+            waitTimeAfterExecution = 0;
+            timeout = 5000;
+            waitTimeForRequestActionKernelResponse = 25;
         }
 
 
@@ -64,20 +72,41 @@ namespace Raumserver
                 return _default;            
             return it->second;
         }
+
+
+        std::string RequestAction::getRoomUDNFromId(std::string _id)
+        {
+            auto roomUDN = getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName(_id);
+            if (roomUDN.empty())
+                roomUDN = _id;
+            // check if room UDN is valid, otherwise return empty string
+            if (!getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
+                return "";
+            return roomUDN;
+        }
+
+
+        std::string RequestAction::getZoneUDNFromId(std::string _id)
+        {
+            std::string zoneUDN = "", roomUDN = "";
+            roomUDN = getRoomUDNFromId(_id);
+            if (!roomUDN.empty())
+                zoneUDN = getManagerEngineer()->getZoneManager()->getZoneUDNForRoomUDN(roomUDN);
+            if (zoneUDN.empty())
+                zoneUDN = _id;
+            // check if zone UDN is valid, otherwise return an empty string
+            if (!getManagerEngineer()->getZoneManager()->existsZoneUDN(roomUDN))
+                return "";          
+            return zoneUDN;
+        }
           
 
         std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> RequestAction::getVirtualMediaRenderer(std::string _id)
         {
             if (!_id.empty())
-            {
-                std::string roomUDN, zoneUDN, rendererUDN;
-
-                roomUDN = getManagerEngineer()->getZoneManager()->getRoomUDNForRoomName(_id);
-                if (roomUDN.empty())                
-                    roomUDN = _id;                                    
-                zoneUDN = getManagerEngineer()->getZoneManager()->getZoneUDNForRoomUDN(roomUDN);
-                if (zoneUDN.empty())                
-                    zoneUDN = _id;                
+            {                
+                std::string zoneUDN = "", rendererUDN = "";
+                zoneUDN = getZoneUDNFromId(_id);                               
                 rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(zoneUDN);                
                 if (!rendererUDN.empty())
                     return std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
@@ -104,9 +133,22 @@ namespace Raumserver
 
         bool RequestAction::execute()
         {            
+            bool ret = false;
+            std::uint32_t waitTime = waitTimeAfterExecution;
+
             // check if the request is valid (mostly used for chekcing mandatory request options)
             if (isValid())
-                return executeAction();
+            {
+                ret = executeAction();
+
+                // after execution of the request there may be a wait time we have to wait. The wait time may be provided
+                // by the query of the uri or its defined directly on the request object
+                auto waitStr = getOptionValue("wait", "0");
+                if (!waitStr.empty())                
+                    waitTime = std::stoi(waitStr);
+                if (waitTime)
+                    std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
+            }
             else
             {                
                 logError("Invalid request options! Please validate path and query keys and values!", CURRENT_FUNCTION);
@@ -123,7 +165,7 @@ namespace Raumserver
 
 
         std::string RequestAction::requestActionTypeToString(RequestActionType _requestActionType)
-        {
+        {            
             if (_requestActionType == RequestActionType::RAA_NEXT) return "NEXT";
             if (_requestActionType == RequestActionType::RAA_PAUSE) return "PAUSE";
             if (_requestActionType == RequestActionType::RAA_PLAY) return "PLAY";
@@ -132,6 +174,16 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_STOP) return "STOP";
             if (_requestActionType == RequestActionType::RAA_VOLUMEDOWN) return "VOLUMEDOWN";
             if (_requestActionType == RequestActionType::RAA_VOLUMEUP) return "VOLUMEUP";
+            if (_requestActionType == RequestActionType::RAA_VOLUMECHANGE) return "VOLUMECHANGE";
+            if (_requestActionType == RequestActionType::RAA_CREATEZONE) return "CREATEZONE";
+            if (_requestActionType == RequestActionType::RAA_ADDTOZONE) return "ADDTOZONE";
+            if (_requestActionType == RequestActionType::RAA_DROPFROMZONE) return "DROPFROMZONE";
+            if (_requestActionType == RequestActionType::RAA_MUTE) return "MUTE";
+            if (_requestActionType == RequestActionType::RAA_UNMUTE) return "UNMUTE";
+            if (_requestActionType == RequestActionType::RAA_SETPLAYMODE) return "SETPLAYMODE";
+            if (_requestActionType == RequestActionType::RAA_LOADPLAYLIST) return "LOADPLAYLIST";
+            if (_requestActionType == RequestActionType::RAA_LOADCONTAINER) return "LOADCONTAINER";
+            if (_requestActionType == RequestActionType::RAA_LOADURI) return "LOADURI";
             return "";
         }
 
@@ -147,6 +199,17 @@ namespace Raumserver
             if (_requestActionTypeString == "STOP") return RequestActionType::RAA_STOP;
             if (_requestActionTypeString == "VOLUMEDOWN") return RequestActionType::RAA_VOLUMEDOWN;
             if (_requestActionTypeString == "VOLUMEUP") return RequestActionType::RAA_VOLUMEUP;  
+            if (_requestActionTypeString == "VOLUMECHANGE") return RequestActionType::RAA_VOLUMECHANGE;
+            if (_requestActionTypeString == "CREATEZONE") return RequestActionType::RAA_CREATEZONE;
+            if (_requestActionTypeString == "ADDTOZONE") return RequestActionType::RAA_ADDTOZONE;
+            if (_requestActionTypeString == "DROPFROMZONE") return RequestActionType::RAA_DROPFROMZONE;
+            if (_requestActionTypeString == "MUTE") return RequestActionType::RAA_MUTE;
+            if (_requestActionTypeString == "UNMUTE") return RequestActionType::RAA_UNMUTE;
+            if (_requestActionTypeString == "SETPLAYMODE") return RequestActionType::RAA_SETPLAYMODE;
+            if (_requestActionTypeString == "LOADPLAYLIST") return RequestActionType::RAA_LOADPLAYLIST;
+            if (_requestActionTypeString == "LOADCONTAINER") return RequestActionType::RAA_LOADCONTAINER;
+            if (_requestActionTypeString == "LOADURI") return RequestActionType::RAA_LOADURI;
+
             return RequestActionType::RAA_UNDEFINED;
         }
 
@@ -171,6 +234,12 @@ namespace Raumserver
         }
 
 
+        std::string RequestAction::getErrors()
+        {
+            return error;
+        }
+
+
         std::shared_ptr<RequestAction> RequestAction::createFromPath(std::string _path, std::string _queryString)
         {          
             auto pathParts = Raumkernel::Tools::StringUtil::explodeString(_path, "/");
@@ -187,14 +256,23 @@ namespace Raumserver
             {
                 // TODO: @@@
                 case RequestActionType::RAA_UNDEFINED: return nullptr;
-                case RequestActionType::RAA_NEXT: return nullptr;
+                case RequestActionType::RAA_NEXT: return std::shared_ptr<RequestAction_Next>(new RequestAction_Next(_path, _queryString));;
                 case RequestActionType::RAA_PAUSE: return std::shared_ptr<RequestAction_Pause>(new RequestAction_Pause(_path, _queryString));
                 case RequestActionType::RAA_PLAY: return std::shared_ptr<RequestAction_Play>(new RequestAction_Play(_path, _queryString));
-                case RequestActionType::RAA_PREV: return nullptr;
+                case RequestActionType::RAA_PREV: return std::shared_ptr<RequestAction_Prev>(new RequestAction_Prev(_path, _queryString));;
                 case RequestActionType::RAA_SETVOLUME: return nullptr;
                 case RequestActionType::RAA_STOP: return std::shared_ptr<RequestAction_Stop>(new RequestAction_Stop(_path, _queryString));
                 case RequestActionType::RAA_VOLUMEDOWN: return nullptr;
-                case RequestActionType::RAA_VOLUMEUP: return nullptr;
+                case RequestActionType::RAA_VOLUMEUP: return nullptr;                    
+                case RequestActionType::RAA_CREATEZONE: return nullptr;
+                case RequestActionType::RAA_ADDTOZONE: return nullptr;
+                case RequestActionType::RAA_DROPFROMZONE: return nullptr;
+                case RequestActionType::RAA_MUTE: return nullptr;
+                case RequestActionType::RAA_UNMUTE: return nullptr;
+                case RequestActionType::RAA_SETPLAYMODE: return nullptr;
+                case RequestActionType::RAA_LOADPLAYLIST: return nullptr;
+                case RequestActionType::RAA_LOADCONTAINER: return nullptr;
+                case RequestActionType::RAA_LOADURI: return nullptr;
             }
             
 

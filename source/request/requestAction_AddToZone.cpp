@@ -1,44 +1,44 @@
 
-#include <raumserver/request/requestAction_Play.h>
+#include <raumserver/request/requestAction_AddToZone.h>
 
 namespace Raumserver
 {
     namespace Request
     {
-        RequestAction_Play::RequestAction_Play(std::string _url) : RequestAction(_url)
+        RequestAction_AddToZone::RequestAction_AddToZone(std::string _url) : RequestAction(_url)
         {
-            action = RequestActionType::RAA_PLAY;
+            action = RequestActionType::RAA_ADDTOZONE;
         }
 
 
-        RequestAction_Play::RequestAction_Play(std::string _path, std::string _query) : RequestAction(_path, _query)
+        RequestAction_AddToZone::RequestAction_AddToZone(std::string _path, std::string _query) : RequestAction(_path, _query)
         {
-            action = RequestActionType::RAA_PLAY;
+            action = RequestActionType::RAA_ADDTOZONE;
         }
 
 
-        RequestAction_Play::~RequestAction_Play()
+        RequestAction_AddToZone::~RequestAction_AddToZone()
         {
         }
 
 
-        bool RequestAction_Play::isValid()
+        bool RequestAction_AddToZone::isValid()
         {
             bool isValid = RequestAction::isValid();
 
             // examples for valid requests:
-            // raumserver/controller/play
-            // raumserver/controller/play?id=Schlafzimmer
-            // raumserver/controller/play?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88
+            // raumserver/controller/stop
+            // raumserver/controller/stop?id=Schlafzimmer
+            // raumserver/controller/stop?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88
 
             return isValid;
         }
 
-
-        bool RequestAction_Play::executeAction()
+       
+        bool RequestAction_AddToZone::executeAction()
         {
             auto id = getOptionValue("id");
-
+            
             // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
             if (!id.empty())
             {
@@ -48,7 +48,7 @@ namespace Raumserver
                     logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
                     return false;
                 }
-                mediaRenderer->play(sync);
+                mediaRenderer->stop(sync);
             }
             // if we have no id provided, then we stop all zones
             else
@@ -56,14 +56,14 @@ namespace Raumserver
                 auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
                 for (auto it : zoneInfoMap)
                 {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);                    
                     auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
                     if (mediaRenderer)
-                        mediaRenderer->play(sync);
-                }
-            }
+                        mediaRenderer->stop(sync);                        
+                }   
+            }            
 
             return true;
-        }
+        }      
     }
 }

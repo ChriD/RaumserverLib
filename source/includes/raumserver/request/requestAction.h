@@ -34,7 +34,8 @@ namespace Raumserver
 {
     namespace Request
     {
-        enum class RequestActionType { RAA_UNDEFINED, RAA_PLAY, RAA_PAUSE, RAA_STOP, RAA_NEXT, RAA_PREV, RAA_VOLUMEUP, RAA_VOLUMEDOWN, RAA_SETVOLUME };
+        enum class RequestActionType { RAA_UNDEFINED, RAA_PLAY, RAA_PAUSE, RAA_STOP, RAA_NEXT, RAA_PREV, RAA_VOLUMECHANGE, RAA_VOLUMEUP, RAA_VOLUMEDOWN, RAA_SETVOLUME, 
+                                       RAA_CREATEZONE, RAA_ADDTOZONE, RAA_DROPFROMZONE, RAA_MUTE, RAA_UNMUTE , RAA_SETPLAYMODE, RAA_LOADPLAYLIST, RAA_LOADCONTAINER, RAA_LOADURI};
         enum class RequestReceiver { RR_ROOM, RR_ZONE, RR_JSON };
      
         class RequestAction : public RaumserverBaseMgr
@@ -74,15 +75,27 @@ namespace Raumserver
                 /**
                 * returns true if the request may be executed (if all options / query values are there for processing the request)
                 */
-                virtual bool isValid();
+                EXPORT virtual bool isValid();
                 /**
-                *  craeted an requestAction object from an url
+                * returns the errors if there are one
+                */
+                EXPORT std::string getErrors();
+                /**
+                *  craete an requestAction object from an url
                 */
                 EXPORT static std::shared_ptr<RequestAction> createFromUrl(std::string _url);
                 /**
                 *  craeted an requestAction object from an path
                 */
                 EXPORT static std::shared_ptr<RequestAction> createFromPath(std::string _path, std::string _queryString);
+                /**
+                * returns a room UDN for a room UDN or a room name
+                */
+                EXPORT std::string getRoomUDNFromId(std::string _id);
+                /**
+                * returns a zone UDN for a room UDN or a room name or a zoneUDN
+                */
+                EXPORT std::string getZoneUDNFromId(std::string _id);
      
             protected:                
                 /**
@@ -134,6 +147,19 @@ namespace Raumserver
                 * contains some error if the request may not be executed. This error may be written back to the user
                 */
                 std::string error;
+                /**
+                * wait time after the execution of a request (is used to be sure the kernel as got the new changed values via the update sbscription)
+                * this is only necessary on some special requests
+                */
+                std::uint16_t waitTimeAfterExecution;
+                /**
+                * timout for processing the whole request
+                */
+                std::uint16_t timeout;
+                /**
+                * wait time to check the kernel for updates
+                */
+                std::uint16_t waitTimeForRequestActionKernelResponse;
         };
 
 

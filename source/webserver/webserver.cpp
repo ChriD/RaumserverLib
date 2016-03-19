@@ -144,7 +144,7 @@ namespace Raumserver
             const struct mg_request_info *request_info = mg_get_request_info(_conn);   
 
             // create request action object from url given from the connection
-            std::shared_ptr<Request::RequestAction> requestAction = Request::RequestAction::createFromPath(request_info->request_uri, request_info->query_string);
+            std::shared_ptr<Request::RequestAction> requestAction = Request::RequestAction::createFromPath(request_info->request_uri, request_info->query_string == nullptr ? "" : request_info->query_string);
 
             // if there is no reuquest action the path is wrong or not existent!
             if (!requestAction)
@@ -167,8 +167,8 @@ namespace Raumserver
                     sendResponse(_conn, "Request '" + std::string(request_info->request_uri) + "' was added to queue!", false);                    
                 }
                 else
-                {
-                    // TODO: return error from request object
+                {                    
+                    sendResponse(_conn, "Error while executing request: '" + requestAction->getErrors(), true);
                 }
             }
             // the request is not stackable, that means we have to execute it right now
