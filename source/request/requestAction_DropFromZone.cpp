@@ -45,8 +45,8 @@ namespace Raumserver
         {
             std::uint16_t processTime = 0;
             auto id = getOptionValue("id");
-            
-            // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
+
+            // TODO: multiple drops!
             if (!id.empty())
             {
                 auto roomUDN = getRoomUDNFromId(id);
