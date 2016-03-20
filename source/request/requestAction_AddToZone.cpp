@@ -32,18 +32,66 @@ namespace Raumserver
             // raumserver/controller/addToZone?id=Schlafzimmer,Wohnzimmer&zoneid=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88
             // raumserver/controller/addToZone?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88&zoneid=Badezimmer
 
+            auto id = getOptionValue("id");
+            auto zoneId = getOptionValue("zoneid");
+            if (id.empty() || zoneId.empty())
+            {
+                logError("'id' and 'zoneId' option is needed to execute 'addToZone' command!", CURRENT_FUNCTION);
+                isValid = false;
+            }
             return isValid;
         }
 
        
         bool RequestAction_AddToZone::executeAction()
         {
-            auto id = getOptionValue("id");
-                        
+            std::uint16_t processTime = 0;
+            std::vector<std::string> roomUDNs;
+            auto id = getOptionValueMultiple("id");
+            auto zoneId = getOptionValue("zoneid");
+            bool allRoomsAdded = false;
+
             if (!id.empty())
-            {               
-                // TODO: @@@
-            }            
+            {
+                for (auto it : id)
+                {
+                    auto roomUDN = getRoomUDNFromId(it);
+                    if (getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
+                        roomUDNs.push_back(roomUDN);
+                }
+
+                auto zoneUDN = getZoneUDNFromId(zoneId);
+
+                if (!roomUDNs.empty())
+                {
+                    // get a copy of the current roomInformation map (so we have the current ZoneUDN's where the rooms are in!)                  
+                    //auto roomInfoMapOld = getManagerEngineer()->getZoneManager()->getRoomInformationMap();
+                    // connect the rooms to the new zone
+                    getManagerEngineer()->getZoneManager()->connectRoomsToZone(roomUDNs, zoneUDN);
+
+                    // wait until all zones get the new UDN
+                    if (sync)
+                    {
+                        // wait until room is added to a new zoneUDN or a timout happens                              
+                        while (!allRoomsAdded && processTime <= timeout)
+                        {                    
+                            allRoomsAdded = true;
+                            for (auto it : roomUDNs)
+                            {                            
+                                if (!getManagerEngineer()->getZoneManager()->isRoomInZone(it, zoneUDN))                               
+                                    allRoomsAdded = false;                               
+                            }
+
+                            std::this_thread::sleep_for(std::chrono::milliseconds(waitTimeForRequestActionKernelResponse));
+                            processTime += waitTimeForRequestActionKernelResponse;
+                        }
+                        
+                        if (processTime > timeout)
+                            logWarning("Timout on request (" + std::to_string(timeout) + "): " + getRequestInfo(), CURRENT_FUNCTION);
+                    }
+
+                }
+            }
 
             return true;
         }      

@@ -25,6 +25,7 @@
 #ifndef RAUMSERVER_REQUESTACTION_H
 #define RAUMSERVER_REQUESTACTION_H
 
+#include <chrono>
 #include <raumserver/raumserverBaseMgr.h>
 #include <raumkernel/manager/managerEngineer.h>
 #include <raumkernel/manager/zoneManager.h>
@@ -108,9 +109,13 @@ namespace Raumserver
                 */
                 virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> getVirtualMediaRenderer(std::string _id);
                 /**
-                * returns true if the request may be executed (if all options / query values are there for processing the request)
+                * 
                 */
                 virtual std::string getOptionValue(std::string _key, std::string _default = "");
+                /**
+                * 
+                */
+                virtual std::vector<std::string> getOptionValueMultiple(std::string _key, std::string _delimiter = ",");
                 /**
                 * the execute action itself
                 */

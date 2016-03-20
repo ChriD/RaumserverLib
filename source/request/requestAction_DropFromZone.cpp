@@ -45,8 +45,7 @@ namespace Raumserver
         {
             std::uint16_t processTime = 0;
             auto id = getOptionValue("id");
-
-            // TODO: multiple drops!
+            
             if (!id.empty())
             {
                 auto roomUDN = getRoomUDNFromId(id);
@@ -57,12 +56,19 @@ namespace Raumserver
                     {
                         // wait until room is dropped from zone or a timout happens      
                         // INFO: We may register a signal of the zoneManager like "zoneOfRoomChanged" and poll a var which will change on this signal
-                        while (!getManagerEngineer()->getZoneManager()->isRoomInZone(roomUDN, "") && processTime < timeout)
+                        while (!getManagerEngineer()->getZoneManager()->isRoomInZone(roomUDN, "") && processTime <= timeout)
                         {
                             std::this_thread::sleep_for(std::chrono::milliseconds(waitTimeForRequestActionKernelResponse));
                             processTime += waitTimeForRequestActionKernelResponse;
                         }
+
+                        if (processTime > timeout)
+                            logWarning("Timout on request (" + std::to_string(timeout) + "): " + getRequestInfo(), CURRENT_FUNCTION);
                     }
+                }
+                else
+                {
+                    logError("Room with UDN '" + roomUDN  +"' not found!", CURRENT_FUNCTION);
                 }
             }                
 

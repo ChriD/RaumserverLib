@@ -67,10 +67,21 @@ namespace Raumserver
 
         std::string RequestAction::getOptionValue(std::string _key, std::string _default)
         {
+            _key = Raumkernel::Tools::StringUtil::tolower(_key);
             auto it = requestOptions.find(_key);
             if (it == requestOptions.end())
                 return _default;            
             return it->second;
+        }
+
+
+        std::vector<std::string> RequestAction::getOptionValueMultiple(std::string _key, std::string _delimiter)
+        {
+            std::vector<std::string> values;
+            auto optionValue = getOptionValue(_key, "");
+            if (!optionValue.empty())
+                values = Raumkernel::Tools::StringUtil::explodeString(optionValue, _delimiter);
+            return values;
         }
 
 
@@ -81,9 +92,12 @@ namespace Raumserver
                 roomUDN = _id;
             // check if room UDN is valid, otherwise return empty string
             if (!getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
+            {
+                logError("Room for ID '" + _id  + "' not found", CURRENT_FUNCTION);
                 return "";
+            }
             return roomUDN;
-        }
+        }       
 
 
         std::string RequestAction::getZoneUDNFromId(std::string _id)
@@ -95,8 +109,11 @@ namespace Raumserver
             if (zoneUDN.empty())
                 zoneUDN = _id;
             // check if zone UDN is valid, otherwise return an empty string
-            if (!getManagerEngineer()->getZoneManager()->existsZoneUDN(roomUDN))
-                return "";          
+            if (!getManagerEngineer()->getZoneManager()->existsZoneUDN(zoneUDN))
+            {
+                logError("Zone for ID '" + _id + "' not found", CURRENT_FUNCTION);
+                return "";
+            }
             return zoneUDN;
         }
           
@@ -136,11 +153,19 @@ namespace Raumserver
             bool ret = false;
             std::uint32_t waitTime = waitTimeAfterExecution;
 
-            // check if the request is valid (mostly used for chekcing mandatory request options)
+            // check if the request is valid (mostly used for checking mandatory request options)
             if (isValid())
             {
+                auto measurePoint1 = std::chrono::system_clock::now().time_since_epoch();
+                   
                 ret = executeAction();
 
+                auto measurePoint2 = std::chrono::system_clock::now().time_since_epoch();
+
+                // put out request process time information
+                auto durationMS = std::chrono::duration_cast<std::chrono::milliseconds>(measurePoint2).count() - std::chrono::duration_cast<std::chrono::milliseconds>(measurePoint1).count();
+                logDebug("Request duration: " + std::to_string(durationMS) + "ms: " + getRequestInfo(), CURRENT_FUNCTION);
+                                 
                 // after execution of the request there may be a wait time we have to wait. The wait time may be provided
                 // by the query of the uri or its defined directly on the request object
                 auto waitStr = getOptionValue("wait", "0");
@@ -264,9 +289,9 @@ namespace Raumserver
                 case RequestActionType::RAA_STOP: return std::shared_ptr<RequestAction_Stop>(new RequestAction_Stop(_path, _queryString));
                 case RequestActionType::RAA_VOLUMEDOWN: return nullptr;
                 case RequestActionType::RAA_VOLUMEUP: return nullptr;                    
-                case RequestActionType::RAA_CREATEZONE: return nullptr;
-                case RequestActionType::RAA_ADDTOZONE: return nullptr;
-                case RequestActionType::RAA_DROPFROMZONE: return nullptr;
+                case RequestActionType::RAA_CREATEZONE: return std::shared_ptr<RequestAction_CreateZone>(new RequestAction_CreateZone(_path, _queryString));
+                case RequestActionType::RAA_ADDTOZONE: return std::shared_ptr<RequestAction_AddToZone>(new RequestAction_AddToZone(_path, _queryString));
+                case RequestActionType::RAA_DROPFROMZONE: return std::shared_ptr<RequestAction_DropFromZone>(new RequestAction_DropFromZone(_path, _queryString));
                 case RequestActionType::RAA_MUTE: return nullptr;
                 case RequestActionType::RAA_UNMUTE: return nullptr;
                 case RequestActionType::RAA_SETPLAYMODE: return nullptr;
