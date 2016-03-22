@@ -132,7 +132,7 @@ namespace Raumserver
         }
 
 
-        void RequestAction::logError(std::string _log, std::string _location)
+        void RequestAction::logError(const std::string &_log, const std::string &_location)
         {
             RaumserverBaseMgr::logError(_log, _location);
             if (!error.empty()) error += "\n";
@@ -140,7 +140,7 @@ namespace Raumserver
         }
 
 
-        void RequestAction::logCritical(std::string _log, std::string _location)
+        void RequestAction::logCritical(const std::string &_log, const std::string &_location)
         {
             RaumserverBaseMgr::logCritical(_log, _location);
             if (!error.empty()) error += "\n";
@@ -209,6 +209,7 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_LOADPLAYLIST) return "LOADPLAYLIST";
             if (_requestActionType == RequestActionType::RAA_LOADCONTAINER) return "LOADCONTAINER";
             if (_requestActionType == RequestActionType::RAA_LOADURI) return "LOADURI";
+            if (_requestActionType == RequestActionType::RAA_SEEK) return "SEEK";
             return "";
         }
 
@@ -233,7 +234,8 @@ namespace Raumserver
             if (_requestActionTypeString == "SETPLAYMODE") return RequestActionType::RAA_SETPLAYMODE;
             if (_requestActionTypeString == "LOADPLAYLIST") return RequestActionType::RAA_LOADPLAYLIST;
             if (_requestActionTypeString == "LOADCONTAINER") return RequestActionType::RAA_LOADCONTAINER;
-            if (_requestActionTypeString == "LOADURI") return RequestActionType::RAA_LOADURI;
+            if (_requestActionTypeString == "LOADURI") return RequestActionType::RAA_LOADURI; 
+            if (_requestActionTypeString == "SEEK") return RequestActionType::RAA_SEEK;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -265,6 +267,14 @@ namespace Raumserver
         }
 
 
+        bool RequestAction::isZoneScope(const std::string &_scope)
+        {
+            if (Raumkernel::Tools::StringUtil::tolower(_scope) == "zone")
+                return true;
+            return false;
+        }
+
+
         std::shared_ptr<RequestAction> RequestAction::createFromPath(std::string _path, std::string _queryString)
         {          
             auto pathParts = Raumkernel::Tools::StringUtil::explodeString(_path, "/");
@@ -292,17 +302,19 @@ namespace Raumserver
                 case RequestActionType::RAA_CREATEZONE: return std::shared_ptr<RequestAction_CreateZone>(new RequestAction_CreateZone(_path, _queryString));
                 case RequestActionType::RAA_ADDTOZONE: return std::shared_ptr<RequestAction_AddToZone>(new RequestAction_AddToZone(_path, _queryString));
                 case RequestActionType::RAA_DROPFROMZONE: return std::shared_ptr<RequestAction_DropFromZone>(new RequestAction_DropFromZone(_path, _queryString));
-                case RequestActionType::RAA_MUTE: return nullptr;
-                case RequestActionType::RAA_UNMUTE: return nullptr;
-                case RequestActionType::RAA_SETPLAYMODE: return nullptr;
+                case RequestActionType::RAA_MUTE: return std::shared_ptr<RequestAction_Mute>(new RequestAction_Mute(_path, _queryString));
+                case RequestActionType::RAA_UNMUTE: return std::shared_ptr<RequestAction_Unmute>(new RequestAction_Unmute(_path, _queryString));
+                case RequestActionType::RAA_SETPLAYMODE: return std::shared_ptr<RequestAction_SetPlayMode>(new RequestAction_SetPlayMode(_path, _queryString));
                 case RequestActionType::RAA_LOADPLAYLIST: return nullptr;
                 case RequestActionType::RAA_LOADCONTAINER: return nullptr;
                 case RequestActionType::RAA_LOADURI: return nullptr;
+                case RequestActionType::RAA_SEEK: return nullptr;
             }
             
 
             return nullptr;
         }
+
 
 
 

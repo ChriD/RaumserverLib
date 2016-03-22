@@ -141,6 +141,15 @@
     <ClInclude Include="includes\raumserver\request\requestAction_DropFromZone.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_Mute.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_SetPlayMode.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_Unmute.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -198,6 +207,15 @@
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestAction_DropFromZone.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_Mute.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_SetPlayMode.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_Unmute.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

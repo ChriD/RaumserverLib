@@ -36,7 +36,7 @@ namespace Raumserver
     namespace Request
     {
         enum class RequestActionType { RAA_UNDEFINED, RAA_PLAY, RAA_PAUSE, RAA_STOP, RAA_NEXT, RAA_PREV, RAA_VOLUMECHANGE, RAA_VOLUMEUP, RAA_VOLUMEDOWN, RAA_SETVOLUME, 
-                                       RAA_CREATEZONE, RAA_ADDTOZONE, RAA_DROPFROMZONE, RAA_MUTE, RAA_UNMUTE , RAA_SETPLAYMODE, RAA_LOADPLAYLIST, RAA_LOADCONTAINER, RAA_LOADURI};
+                                       RAA_CREATEZONE, RAA_ADDTOZONE, RAA_DROPFROMZONE, RAA_MUTE, RAA_UNMUTE , RAA_SETPLAYMODE, RAA_LOADPLAYLIST, RAA_LOADCONTAINER, RAA_LOADURI, RAA_SEEK};
         enum class RequestReceiver { RR_ROOM, RR_ZONE, RR_JSON };
      
         class RequestAction : public RaumserverBaseMgr
@@ -120,9 +120,13 @@ namespace Raumserver
                 * the execute action itself
                 */
                 EXPORT virtual bool executeAction();
+                /**
+                * returns if the scope is a zone scope
+                */
+                EXPORT virtual bool isZoneScope(const std::string &_scope);
            
-                virtual void logError(std::string _log, std::string _location) override;
-                virtual void logCritical(std::string _log, std::string _location) override;
+                virtual void logError(const std::string &_log, const std::string &_location) override;
+                virtual void logCritical(const std::string &_log, const std::string &_location) override;
 
                 /**
                 * the whole url of the request
