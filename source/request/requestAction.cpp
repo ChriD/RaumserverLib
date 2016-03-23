@@ -156,23 +156,49 @@ namespace Raumserver
             // check if the request is valid (mostly used for checking mandatory request options)
             if (isValid())
             {
-                auto measurePoint1 = std::chrono::system_clock::now().time_since_epoch();
-                   
-                ret = executeAction();
+                try
+                {
 
-                auto measurePoint2 = std::chrono::system_clock::now().time_since_epoch();
+                    auto measurePoint1 = std::chrono::system_clock::now().time_since_epoch();
 
-                // put out request process time information
-                auto durationMS = std::chrono::duration_cast<std::chrono::milliseconds>(measurePoint2).count() - std::chrono::duration_cast<std::chrono::milliseconds>(measurePoint1).count();
-                logDebug("Request duration: " + std::to_string(durationMS) + "ms: " + getRequestInfo(), CURRENT_FUNCTION);
-                                 
-                // after execution of the request there may be a wait time we have to wait. The wait time may be provided
-                // by the query of the uri or its defined directly on the request object
-                auto waitStr = getOptionValue("wait", "0");
-                if (!waitStr.empty())                
-                    waitTime = std::stoi(waitStr);
-                if (waitTime)
-                    std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
+                    ret = executeAction();
+
+                    auto measurePoint2 = std::chrono::system_clock::now().time_since_epoch();
+
+                    // put out request process time information
+                    auto durationMS = std::chrono::duration_cast<std::chrono::milliseconds>(measurePoint2).count() - std::chrono::duration_cast<std::chrono::milliseconds>(measurePoint1).count();
+                    logDebug("Request duration: " + std::to_string(durationMS) + "ms: " + getRequestInfo(), CURRENT_FUNCTION);
+
+                    // after execution of the request there may be a wait time we have to wait. The wait time may be provided
+                    // by the query of the uri or its defined directly on the request object
+                    auto waitStr = getOptionValue("wait", "0");
+                    if (!waitStr.empty())
+                        waitTime = std::stoi(waitStr);
+                    if (waitTime)
+                        std::this_thread::sleep_for(std::chrono::milliseconds(waitTime));
+
+                }
+                catch (Raumkernel::Exception::RaumkernelException &e)
+                {
+                    if (e.type() == Raumkernel::Exception::ExceptionType::EXCEPTIONTYPE_APPCRASH)
+                        throw e;
+                }
+                catch (std::exception &e)
+                {
+                    logError(e.what(), CURRENT_POSITION);
+                }
+                catch (std::string &e)
+                {
+                    logError(e, CURRENT_POSITION);
+                }
+                catch (OpenHome::Exception &e)
+                {
+                    logError(e.Message(), CURRENT_POSITION);;
+                }
+                catch (...)
+                {
+                    logError("Unknown exception!", CURRENT_POSITION);
+                }
             }
             else
             {                
@@ -294,11 +320,11 @@ namespace Raumserver
                 case RequestActionType::RAA_NEXT: return std::shared_ptr<RequestAction_Next>(new RequestAction_Next(_path, _queryString));;
                 case RequestActionType::RAA_PAUSE: return std::shared_ptr<RequestAction_Pause>(new RequestAction_Pause(_path, _queryString));
                 case RequestActionType::RAA_PLAY: return std::shared_ptr<RequestAction_Play>(new RequestAction_Play(_path, _queryString));
-                case RequestActionType::RAA_PREV: return std::shared_ptr<RequestAction_Prev>(new RequestAction_Prev(_path, _queryString));;
-                case RequestActionType::RAA_SETVOLUME: return nullptr;
+                case RequestActionType::RAA_PREV: return std::shared_ptr<RequestAction_Prev>(new RequestAction_Prev(_path, _queryString));;                
                 case RequestActionType::RAA_STOP: return std::shared_ptr<RequestAction_Stop>(new RequestAction_Stop(_path, _queryString));
-                case RequestActionType::RAA_VOLUMEDOWN: return nullptr;
-                case RequestActionType::RAA_VOLUMEUP: return nullptr;                    
+                case RequestActionType::RAA_SETVOLUME: return std::shared_ptr<RequestAction_SetVolume>(new RequestAction_SetVolume(_path, _queryString));
+                case RequestActionType::RAA_VOLUMEDOWN: return std::shared_ptr<RequestAction_VolumeDown>(new RequestAction_VolumeDown(_path, _queryString));
+                case RequestActionType::RAA_VOLUMEUP: return std::shared_ptr<RequestAction_VolumeUp>(new RequestAction_VolumeUp(_path, _queryString));
                 case RequestActionType::RAA_CREATEZONE: return std::shared_ptr<RequestAction_CreateZone>(new RequestAction_CreateZone(_path, _queryString));
                 case RequestActionType::RAA_ADDTOZONE: return std::shared_ptr<RequestAction_AddToZone>(new RequestAction_AddToZone(_path, _queryString));
                 case RequestActionType::RAA_DROPFROMZONE: return std::shared_ptr<RequestAction_DropFromZone>(new RequestAction_DropFromZone(_path, _queryString));

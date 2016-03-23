@@ -1,7 +1,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 by ChriD
+// Copyright (c) 2016 by ChriD
 //
 // Permission is hereby granted, free of charge,  to any person obtaining a copy of
 // this software and  associated documentation  files  (the "Software"), to deal in
@@ -22,22 +22,28 @@
 //
 
 #pragma once
-#ifndef RAUMSERVER_REQUESTACTIONS_H
-#define RAUMSERVER_REQUESTACTIONS_H
+#ifndef RAUMSERVER_REQUESTACTION_VOLUMEDOWN_H
+#define RAUMSERVER_REQUESTACTION_VOLUMEDOWN_H
 
-#include <raumserver/request/requestAction_Pause.h>
-#include <raumserver/request/requestAction_Play.h>
-#include <raumserver/request/requestAction_Stop.h>
-#include <raumserver/request/requestAction_Next.h>
-#include <raumserver/request/requestAction_Prev.h>
-#include <raumserver/request/requestAction_CreateZone.h>
-#include <raumserver/request/requestAction_DropFromZone.h>
-#include <raumserver/request/requestAction_AddToZone.h>
-#include <raumserver/request/requestAction_Mute.h>
-#include <raumserver/request/requestAction_Unmute.h>
-#include <raumserver/request/requestAction_SetPlayMode.h>
-#include <raumserver/request/requestAction_VolumeUp.h>
-#include <raumserver/request/requestAction_VolumeDown.h>
-#include <raumserver/request/requestAction_SetVolume.h>
+#include <raumserver/request/requestAction.h>
+
+namespace Raumserver
+{
+    namespace Request
+    {
+        class RequestAction_VolumeDown : public RequestAction
+        {
+            public:                
+                EXPORT RequestAction_VolumeDown(std::string _url);
+                EXPORT RequestAction_VolumeDown(std::string _path, std::string _query);
+                EXPORT virtual ~RequestAction_VolumeDown();
+                EXPORT virtual bool executeAction() override;
+                EXPORT virtual bool isValid() override;
+
+            protected:
+        };
+    }
+}
+
 
 #endif

@@ -43,7 +43,7 @@ namespace Raumserver
             auto scope = getOptionValue("scope");
             auto value = Raumkernel::Tools::StringUtil::tolower(getOptionValue("value"));
             auto zoneScope = isZoneScope(scope);
-            bool mute = (value == "true" || value.empty()) ? true : false;
+            bool mute = (value == "true" || value == "1" || value.empty()) ? true : false;
 
             // we have got an id that might be a room or a zone. we have to get the scope to know what we should mute
             if (!id.empty())
