@@ -236,6 +236,9 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_LOADCONTAINER) return "LOADCONTAINER";
             if (_requestActionType == RequestActionType::RAA_LOADURI) return "LOADURI";
             if (_requestActionType == RequestActionType::RAA_SEEK) return "SEEK";
+            if (_requestActionType == RequestActionType::RAA_FADETOVOLUME) return "FADETOVOLUME";
+            if (_requestActionType == RequestActionType::RAA_TOGGLEMUTE) return "TOGGLEMUTE";
+            if (_requestActionType == RequestActionType::RAA_SLEEPTIMER) return "SLEEPTIMER";
             return "";
         }
 
@@ -262,6 +265,9 @@ namespace Raumserver
             if (_requestActionTypeString == "LOADCONTAINER") return RequestActionType::RAA_LOADCONTAINER;
             if (_requestActionTypeString == "LOADURI") return RequestActionType::RAA_LOADURI; 
             if (_requestActionTypeString == "SEEK") return RequestActionType::RAA_SEEK;
+            if (_requestActionTypeString == "FADETOVOLUME") return RequestActionType::RAA_FADETOVOLUME;
+            if (_requestActionTypeString == "TOGGLEMUTE") return RequestActionType::RAA_TOGGLEMUTE;
+            if (_requestActionTypeString == "SLEEPTIMER") return RequestActionType::RAA_SLEEPTIMER;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -331,10 +337,13 @@ namespace Raumserver
                 case RequestActionType::RAA_MUTE: return std::shared_ptr<RequestAction_Mute>(new RequestAction_Mute(_path, _queryString));
                 case RequestActionType::RAA_UNMUTE: return std::shared_ptr<RequestAction_Unmute>(new RequestAction_Unmute(_path, _queryString));
                 case RequestActionType::RAA_SETPLAYMODE: return std::shared_ptr<RequestAction_SetPlayMode>(new RequestAction_SetPlayMode(_path, _queryString));
-                case RequestActionType::RAA_LOADPLAYLIST: return nullptr;
-                case RequestActionType::RAA_LOADCONTAINER: return nullptr;
-                case RequestActionType::RAA_LOADURI: return nullptr;
-                case RequestActionType::RAA_SEEK: return nullptr;
+                case RequestActionType::RAA_LOADPLAYLIST: return std::shared_ptr<RequestAction_LoadPlaylist>(new RequestAction_LoadPlaylist(_path, _queryString));;
+                case RequestActionType::RAA_LOADCONTAINER: return std::shared_ptr<RequestAction_LoadContainer>(new RequestAction_LoadContainer(_path, _queryString));;
+                case RequestActionType::RAA_LOADURI: return std::shared_ptr<RequestAction_LoadUri>(new RequestAction_LoadUri(_path, _queryString));;
+                case RequestActionType::RAA_SEEK: return std::shared_ptr<RequestAction_Seek>(new RequestAction_Seek(_path, _queryString));;
+                case RequestActionType::RAA_FADETOVOLUME: return nullptr;
+                case RequestActionType::RAA_TOGGLEMUTE: return nullptr;
+                case RequestActionType::RAA_SLEEPTIMER: return nullptr;
             }
             
 

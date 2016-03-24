@@ -159,6 +159,18 @@
     <ClInclude Include="includes\raumserver\request\requestAction_VolumeUp.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_LoadContainer.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_LoadPlaylist.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_LoadUri.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_Seek.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -234,6 +246,18 @@
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestAction_VolumeUp.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_LoadContainer.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_LoadPlaylist.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_LoadUri.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_Seek.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

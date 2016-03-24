@@ -62,6 +62,10 @@ namespace Raumserver
 
                 auto zoneUDN = getZoneUDNFromId(zoneId);
 
+                // no valid request if zone is not found and its defined!
+                if (zoneUDN.empty() && !zoneId.empty())
+                    return true;
+
                 if (!roomUDNs.empty())
                 {
                     // get a copy of the current roomInformation map (so we have the current ZoneUDN's where the rooms are in!)                  
