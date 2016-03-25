@@ -69,8 +69,8 @@ namespace Raumserver
                 {
                     logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
                     return false;
-                }
-                mediaRenderer->loadContainer(value, trackIndex, sync);
+                }                
+                mediaRenderer->loadContainer(Raumkernel::Tools::UriUtil::encodeValue(value), trackIndex, sync);
             }          
 
             return true;

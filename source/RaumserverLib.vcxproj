@@ -102,6 +102,7 @@
     <ClInclude Include="includes\raumserver\request\requestAction_AddToZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_CreateZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_DropFromZone.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_FadeToVolume.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadContainer.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadPlaylist.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadUri.h" />
@@ -111,9 +112,12 @@
     <ClInclude Include="includes\raumserver\request\requestAction_Play.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Prev.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Seek.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_SeekToTrack.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_SetPlayMode.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_SetVolume.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_SleepTimer.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Stop.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_ToggleMute.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Unmute.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_VolumeDown.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_VolumeUp.h" />
@@ -136,6 +140,7 @@
     <ClCompile Include="request\requestAction_AddToZone.cpp" />
     <ClCompile Include="request\requestAction_CreateZone.cpp" />
     <ClCompile Include="request\requestAction_DropFromZone.cpp" />
+    <ClCompile Include="request\requestAction_FadeToVolume.cpp" />
     <ClCompile Include="request\requestAction_LoadContainer.cpp" />
     <ClCompile Include="request\requestAction_LoadPlaylist.cpp" />
     <ClCompile Include="request\requestAction_LoadUri.cpp" />
@@ -145,9 +150,12 @@
     <ClCompile Include="request\requestAction_Play.cpp" />
     <ClCompile Include="request\requestAction_Prev.cpp" />
     <ClCompile Include="request\requestAction_Seek.cpp" />
+    <ClCompile Include="request\requestAction_SeekToTrack.cpp" />
     <ClCompile Include="request\requestAction_SetPlayMode.cpp" />
     <ClCompile Include="request\requestAction_SetVolume.cpp" />
+    <ClCompile Include="request\requestAction_SleepTimer.cpp" />
     <ClCompile Include="request\requestAction_Stop.cpp" />
+    <ClCompile Include="request\requestAction_ToggleMute.cpp" />
     <ClCompile Include="request\requestAction_Unmute.cpp" />
     <ClCompile Include="request\requestAction_VolumeDown.cpp" />
     <ClCompile Include="request\requestAction_VolumeUp.cpp" />

@@ -40,7 +40,7 @@ namespace Raumserver
                 {                    
                     if (requestActionQueue.size())
                     {
-                        // get the firts request in the queue and process it!
+                        // get the first request in the queue and process it!
                         auto requestAction = requestActionQueue.front();
                         logDebug("Processing Request: " + requestAction->getRequestInfo(), CURRENT_POSITION);
                         requestAction->execute();                        

@@ -159,6 +159,8 @@ namespace Raumserver
                 try
                 {
 
+                    // TODO: Check if system is online, otherwise don't execute!                    
+
                     auto measurePoint1 = std::chrono::system_clock::now().time_since_epoch();
 
                     ret = executeAction();
@@ -239,6 +241,7 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_FADETOVOLUME) return "FADETOVOLUME";
             if (_requestActionType == RequestActionType::RAA_TOGGLEMUTE) return "TOGGLEMUTE";
             if (_requestActionType == RequestActionType::RAA_SLEEPTIMER) return "SLEEPTIMER";
+            if (_requestActionType == RequestActionType::RAA_SEEKTOTRACK) return "SEEKTOTRACK";
             return "";
         }
 
@@ -268,6 +271,7 @@ namespace Raumserver
             if (_requestActionTypeString == "FADETOVOLUME") return RequestActionType::RAA_FADETOVOLUME;
             if (_requestActionTypeString == "TOGGLEMUTE") return RequestActionType::RAA_TOGGLEMUTE;
             if (_requestActionTypeString == "SLEEPTIMER") return RequestActionType::RAA_SLEEPTIMER;
+            if (_requestActionTypeString == "SEEKTOTRACK") return RequestActionType::RAA_SEEKTOTRACK;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -341,9 +345,10 @@ namespace Raumserver
                 case RequestActionType::RAA_LOADCONTAINER: return std::shared_ptr<RequestAction_LoadContainer>(new RequestAction_LoadContainer(_path, _queryString));;
                 case RequestActionType::RAA_LOADURI: return std::shared_ptr<RequestAction_LoadUri>(new RequestAction_LoadUri(_path, _queryString));;
                 case RequestActionType::RAA_SEEK: return std::shared_ptr<RequestAction_Seek>(new RequestAction_Seek(_path, _queryString));;
-                case RequestActionType::RAA_FADETOVOLUME: return nullptr;
-                case RequestActionType::RAA_TOGGLEMUTE: return nullptr;
-                case RequestActionType::RAA_SLEEPTIMER: return nullptr;
+                case RequestActionType::RAA_SEEKTOTRACK:return std::shared_ptr<RequestAction_SeekToTrack>(new RequestAction_SeekToTrack(_path, _queryString));;
+                case RequestActionType::RAA_FADETOVOLUME: return std::shared_ptr<RequestAction_FadeToVolume>(new RequestAction_FadeToVolume(_path, _queryString));;
+                case RequestActionType::RAA_TOGGLEMUTE: return std::shared_ptr<RequestAction_ToggleMute>(new RequestAction_ToggleMute(_path, _queryString));;
+                case RequestActionType::RAA_SLEEPTIMER: return std::shared_ptr<RequestAction_SleepTimer>(new RequestAction_SleepTimer(_path, _queryString));;
             }
             
 

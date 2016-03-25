@@ -171,6 +171,18 @@
     <ClInclude Include="includes\raumserver\request\requestAction_Seek.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_SeekToTrack.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_FadeToVolume.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_SleepTimer.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_ToggleMute.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -258,6 +270,18 @@
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestAction_Seek.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_SeekToTrack.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_FadeToVolume.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_SleepTimer.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_ToggleMute.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

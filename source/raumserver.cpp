@@ -9,8 +9,10 @@ namespace Raumserver
     {
         // set the current version info of the library
         versionInfo.appName = "Raumserver Library";
-        versionInfo.appVersion = "0.0.1";
+        versionInfo.appVersion = "1.0.0";
         versionInfo.isBeta = false;
+
+        isOnline = false;
     }
 
 
@@ -30,6 +32,11 @@ namespace Raumserver
         // create the raumkernel object and init the kernel from the settings given in the raumserver.xml
         raumkernel = std::shared_ptr<Raumkernel::Raumkernel>(new Raumkernel::Raumkernel());      
         raumkernel->setLogObject(getLogObject());
+
+        // lets do some subscriptions
+        connections.connect(raumkernel->sigRaumfeldSystemOnline, this, &Raumserver::onRaumfeldSystemOnline);
+        connections.connect(raumkernel->sigRaumfeldSystemOffline, this, &Raumserver::onRaumfeldSystemOffline);
+
         raumkernel->init(_defaultLogLevel, "raumserver.xml");
 
         // after init of the kernel we do have the kernel manager engineer
@@ -78,4 +85,23 @@ namespace Raumserver
     {
         return versionInfo;
     }
+
+
+    void Raumserver::onRaumfeldSystemOnline()
+    {
+        isOnline = true;
+    }
+
+
+    void Raumserver::onRaumfeldSystemOffline()
+    {
+        isOnline = false;
+    }
+
+
+    bool Raumserver::isRaumserverOnline()
+    {
+        return isOnline;
+    }
+
 }

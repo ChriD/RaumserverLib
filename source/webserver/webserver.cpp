@@ -141,6 +141,8 @@ namespace Raumserver
             if (!getManagerEngineerServer())
                 return false;
 
+            // TODO: Check if system is online, otherwise don't execute!
+
             const struct mg_request_info *request_info = mg_get_request_info(_conn);   
 
             // create request action object from url given from the connection

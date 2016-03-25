@@ -42,16 +42,44 @@ namespace Raumserver
             EXPORT Raumserver();
             EXPORT virtual ~Raumserver();
             EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
+            /**
+            * returns a shared pointer to the raumkernel object
+            */
             EXPORT std::shared_ptr<Raumkernel::Raumkernel> getRaumkernelObject();
+            /**
+            * returns if the raumfeldSystem is online
+            */
+            virtual bool isRaumserverOnline();
+            /**
+            * returns the version info object/structure for the raumkernel
+            */
             EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
+            /**
+            * this signal will be fired if a the raumkernel is ready (
+            * (in fact that means that the media server is online!)
+            */
+            sigs::signal<void(bool _server, bool _kernel)> sigRaumserverOnline;
+            /**
+            * this signal will be fired if a the raumkernel is ready (
+            * (in fact that will be if the media server goes offline!)
+            */
+            sigs::signal<void(bool _server, bool _kernel)> sigRaumserverOffline;
 
-    protected:
-        std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
-        std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
-        std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
-        std::shared_ptr<Server::Webserver> webserver;
+        protected:
 
-        Raumkernel::Tools::VersionInfo versionInfo;
+            void onRaumfeldSystemOnline();
+            void onRaumfeldSystemOffline();
+
+            std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
+            std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
+            std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
+            std::shared_ptr<Server::Webserver> webserver;
+
+            Raumkernel::Tools::VersionInfo versionInfo;
+
+            bool isOnline;
+
+            sigs::connections connections;
     };
 
 }

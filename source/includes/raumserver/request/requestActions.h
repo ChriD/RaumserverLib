@@ -43,5 +43,9 @@
 #include <raumserver/request/requestAction_LoadPlaylist.h>
 #include <raumserver/request/requestAction_LoadContainer.h>
 #include <raumserver/request/requestAction_Seek.h>
+#include <raumserver/request/requestAction_SeekToTrack.h>
+#include <raumserver/request/requestAction_ToggleMute.h>
+#include <raumserver/request/requestAction_FadeToVolume.h>
+#include <raumserver/request/requestAction_SleepTimer.h>
 
 #endif

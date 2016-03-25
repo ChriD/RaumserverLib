@@ -102,7 +102,7 @@ namespace Raumserver
                     mediaRenderer->setRoomVolume(getRoomUDNFromId(id), newVolumeValue, sync);
                 }
             }
-            // if we have no id provided, we mute all renderers
+            // if we have no id provided, we do action on all renderers
             else
             {
                 auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
