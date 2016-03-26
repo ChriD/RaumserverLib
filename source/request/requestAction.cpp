@@ -141,8 +141,8 @@ namespace Raumserver
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getZoneManager()->unlockLists();
                 getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+                getManagerEngineer()->getZoneManager()->unlockLists();                
             }
             return virtualRenderer;
         }
@@ -166,8 +166,8 @@ namespace Raumserver
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getZoneManager()->unlockLists();
                 getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+                getManagerEngineer()->getZoneManager()->unlockLists();                
             }
             return virtualRenderer;
         }
