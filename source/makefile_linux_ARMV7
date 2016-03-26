@@ -19,6 +19,7 @@ SRCS += $(wildcard manager/*.cpp)
 SRCS += $(wildcard request/*.cpp)
 SRCS += $(wildcard webserver/*.cpp)
 SRCS += $(wildcard webserver/civetweb/*.cpp)
+SRCS += $(wildcard webserver/civetweb/*.c)
 
 OBJS = $(SRCS:.cpp=.o)
 
