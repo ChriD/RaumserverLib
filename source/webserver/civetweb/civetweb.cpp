@@ -11314,11 +11314,11 @@ get_uri_type(const char *uri)
 		                   abs_uri_protocols[i].proto,
 		                   abs_uri_protocols[i].proto_len) == 0) {
 
-			hostend = strchr(uri + abs_uri_protocols[i].proto_len, '/');
+            hostend = (char*)strchr(uri + abs_uri_protocols[i].proto_len, '/');
 			if (!hostend) {
 				return 0;
 			}
-			portbegin = strchr(uri + abs_uri_protocols[i].proto_len, ':');
+            portbegin = (char*)strchr(uri + abs_uri_protocols[i].proto_len, ':');
 			if (!portbegin) {
 				return 3;
 			}

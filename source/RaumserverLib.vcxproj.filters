@@ -195,9 +195,6 @@
     <ClCompile Include="webserver\civetweb\CivetServer.cpp">
       <Filter>webserver\civetweb</Filter>
     </ClCompile>
-    <ClCompile Include="webserver\civetweb\civetweb.c">
-      <Filter>webserver\civetweb</Filter>
-    </ClCompile>
     <ClCompile Include="manager\requestActionManager.cpp">
       <Filter>manager</Filter>
     </ClCompile>
@@ -277,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="request\requestAction_ToggleMute.cpp">
       <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="webserver\civetweb\civetweb.cpp">
+      <Filter>webserver\civetweb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

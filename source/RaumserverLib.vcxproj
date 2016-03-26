@@ -160,7 +160,7 @@
     <ClCompile Include="request\requestAction_VolumeDown.cpp" />
     <ClCompile Include="request\requestAction_VolumeUp.cpp" />
     <ClCompile Include="webserver\civetweb\CivetServer.cpp" />
-    <ClCompile Include="webserver\civetweb\civetweb.c" />
+    <ClCompile Include="webserver\civetweb\civetweb.cpp" />
     <ClCompile Include="webserver\webserver.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -90,7 +90,7 @@ url_encoded_field_get(const struct mg_connection *conn,
 {
 	char key_dec[1024];
 
-	char *value_dec = mg_malloc(value_len + 1);
+	char *value_dec = (char*)mg_malloc(value_len + 1);
 	int value_dec_len;
 
 	if (!value_dec) {
@@ -565,7 +565,7 @@ mg_handle_form_request(struct mg_connection *conn,
 
 			/* Get the mandatory name="..." part of the Content-Disposition
 			 * header. */
-			nbeg = strstr(content_disp, "name=\"");
+			nbeg = (char*)strstr(content_disp, "name=\"");
 			if (!nbeg) {
 				/* Malformed request */
 				return -1;
@@ -579,7 +579,7 @@ mg_handle_form_request(struct mg_connection *conn,
 
 			/* Get the optional filename="..." part of the Content-Disposition
 			 * header. */
-			fbeg = strstr(content_disp, "filename=\"");
+            fbeg = (char*)strstr(content_disp, "filename=\"");
 			if (fbeg) {
 				fbeg += 10;
 				fend = strchr(fbeg, '\"');
