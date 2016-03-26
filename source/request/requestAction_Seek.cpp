@@ -89,7 +89,7 @@ namespace Raumserver
 
                 if (seekType == Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR)
                 {
-                    if (msOrTrack > mediaInfo.nrTracks)
+                    if ((std::uint32_t)msOrTrack > mediaInfo.nrTracks)
                         msOrTrack = mediaInfo.nrTracks - 1;
                 }
 
