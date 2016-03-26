@@ -13,14 +13,8 @@
     <Filter Include="includes\raumserver\webserver">
       <UniqueIdentifier>{24a3bf15-c9ec-44cf-8e3f-77d05eba9bf5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="includes\raumserver\webserver\mongoose">
-      <UniqueIdentifier>{b461b0e2-acd8-47d2-b78b-7e48000dd901}</UniqueIdentifier>
-    </Filter>
     <Filter Include="webserver\mongoose">
       <UniqueIdentifier>{4a6a7aab-4c1e-4457-acaa-2cef2be91202}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="includes\raumserver\webserver\mongoose\cpp">
-      <UniqueIdentifier>{f104f5fc-51ba-4f2b-a571-5ba6594a3361}</UniqueIdentifier>
     </Filter>
     <Filter Include="webserver\mongoose\cpp">
       <UniqueIdentifier>{913e24e1-05f6-4512-9ba2-aab469c64df3}</UniqueIdentifier>
@@ -34,9 +28,6 @@
     <Filter Include="webserver\civetweb">
       <UniqueIdentifier>{51bc700e-e1f2-4ed9-8db7-60dd2f948e03}</UniqueIdentifier>
     </Filter>
-    <Filter Include="includes\raumserver\civetweb">
-      <UniqueIdentifier>{34d4a456-10ca-4146-a853-1418d1954477}</UniqueIdentifier>
-    </Filter>
     <Filter Include="includes\raumserver\manager">
       <UniqueIdentifier>{973c0ac5-f986-4c5c-96ca-d5c9c583a558}</UniqueIdentifier>
     </Filter>
@@ -48,6 +39,9 @@
     </Filter>
     <Filter Include="request">
       <UniqueIdentifier>{f173531a-f35d-400f-91f2-2262e7ac7c4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="includes\raumserver\webserver\civetweb">
+      <UniqueIdentifier>{34d4a456-10ca-4146-a853-1418d1954477}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -90,11 +84,8 @@
     <ClInclude Include="json\json_tool.h">
       <Filter>json</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumserver\webserver\civetweb\CivetServer.h">
-      <Filter>includes\raumserver\civetweb</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h">
-      <Filter>includes\raumserver\civetweb</Filter>
+      <Filter>includes\raumserver\webserver\civetweb</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumserver\manager\requestActionManager.h">
       <Filter>includes\raumserver\manager</Filter>
@@ -182,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="includes\raumserver\request\requestAction_ToggleMute.h">
       <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\webserver\civetweb\civetServer.h">
+      <Filter>includes\raumserver\webserver\civetweb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
