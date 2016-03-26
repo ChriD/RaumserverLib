@@ -31,15 +31,15 @@ OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all
 all: ${TARGET_LIB}
- 
+
 $(TARGET_LIB): $(OBJS)
 	$(CC) ${LDFLAGS} -o $@ $^ $(LIBSDEF)
- 
+
 $(SRCS:.cpp=.d):%.d:%.cpp
 	$(CC) $(CFLAGS) -MM $< >$@
- 
+
 include $(SRCS:.cpp=.d)
- 
+
 
 .PHONY: clean
 clean:

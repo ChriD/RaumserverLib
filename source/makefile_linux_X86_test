@@ -1,5 +1,5 @@
 # Makefile template for shared library
- 
+
 INCPATH = -I includes/ -I ../../RaumkernelLib/source/includes/
 
 CC = g++-4.9
@@ -12,7 +12,7 @@ LIBSDEF = libs/linux_x86/raumserver.so ../../RaumkernelLib/source/libs/linux_x86
 
 RM = rm -f 
 TARGET_EXEC = test
- 
+
 SRCS = test.cpp
 
 OBJS = $(SRCS:.cpp=.o)
@@ -20,15 +20,15 @@ OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all
 all: ${TARGET_EXEC}
- 
+
 $(TARGET_EXEC): $(OBJS)
 	$(CC) ${LDFLAGS} -o $@ $^ $(LIBSDEF)
- 
+
 $(SRCS:.cpp=.d):%.d:%.cpp
 	$(CC) $(CFLAGS) -MM $< >$@
- 
+
 include $(SRCS:.cpp=.d)
- 
+
 
 .PHONY: clean
 clean:

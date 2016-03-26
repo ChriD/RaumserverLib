@@ -1,5 +1,5 @@
 # Makefile template for shared library
- 
+
 INCPATH = -I includes/
 
 CC = arm-linux-gnueabihf-g++-4.8
@@ -30,15 +30,15 @@ OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all
 all: ${TARGET_LIB}
- 
+
 $(TARGET_LIB): $(OBJS)
 	$(CC) ${LDFLAGS} -o $@ $^ $(LIBSDEF)
- 
+
 $(SRCS:.cpp=.d):%.d:%.cpp
 	$(CC) $(CFLAGS) -MM $< >$@
- 
+
 include $(SRCS:.cpp=.d)
- 
+
 
 .PHONY: clean
 clean:
