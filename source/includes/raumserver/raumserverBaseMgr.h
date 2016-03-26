@@ -26,7 +26,7 @@
 #define RAUMSERVER_RAUMSERVERBASEMGR_H
 
 #include <raumserver/raumserverBase.h>
-#include <raumkernel/raumKernelBaseMgr.h>
+#include <raumkernel/raumkernelBaseMgr.h>
 
 namespace Raumserver
 {
