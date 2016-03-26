@@ -120,15 +120,56 @@ namespace Raumserver
 
         std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> RequestAction::getVirtualMediaRenderer(std::string _id)
         {
+            std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
+
             if (!_id.empty())
             {                
-                std::string zoneUDN = "", rendererUDN = "";
-                zoneUDN = getZoneUDNFromId(_id);                               
-                rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(zoneUDN);                
-                if (!rendererUDN.empty())
-                    return std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+                getManagerEngineer()->getZoneManager()->lockLists();
+                getManagerEngineer()->getDeviceManager()->lockDeviceList();
+
+                try
+                {
+
+                    std::string zoneUDN = "", rendererUDN = "";
+                    zoneUDN = getZoneUDNFromId(_id);
+                    rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(zoneUDN);
+                    if (!rendererUDN.empty())
+                        virtualRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+                }
+                catch (...)
+                {
+                    logError("Unresolved Error!", CURRENT_FUNCTION);
+                }
+
+                getManagerEngineer()->getZoneManager()->unlockLists();
+                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
             }
-            return nullptr;
+            return virtualRenderer;
+        }
+
+
+        std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> RequestAction::getVirtualMediaRendererFromUDN(std::string _udn)
+        {
+            std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
+
+            if (!_udn.empty())
+            {
+                getManagerEngineer()->getZoneManager()->lockLists();
+                getManagerEngineer()->getDeviceManager()->lockDeviceList();
+
+                try
+                {                   
+                    virtualRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(_udn));
+                }
+                catch (...)
+                {
+                    logError("Unresolved Error!", CURRENT_FUNCTION);
+                }
+
+                getManagerEngineer()->getZoneManager()->unlockLists();
+                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            }
+            return virtualRenderer;
         }
 
 

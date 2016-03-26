@@ -91,7 +91,7 @@ namespace Raumserver
                 for (auto it : zoneInfoMap)
                 {
                     auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
-                    auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
                     if (mediaRenderer)
                     {
                         newVolumeValue = mediaRenderer->getVolume(true) + valueChange;

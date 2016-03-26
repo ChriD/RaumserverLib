@@ -110,6 +110,11 @@ namespace Raumserver
                 */
                 virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> getVirtualMediaRenderer(std::string _id);
                 /**
+                * returns a shared pointer to a vertiual media renderer (zone)
+                * all actions will be performed on that rendeerer (even volume for each rooms)
+                */
+                virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> getVirtualMediaRendererFromUDN(std::string _udn);
+                /**
                 * 
                 */
                 virtual std::string getOptionValue(std::string _key, std::string _default = "");
