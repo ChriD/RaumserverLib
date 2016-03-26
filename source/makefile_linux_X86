@@ -4,8 +4,8 @@ INCPATH = -I includes/ -I ../../RaumkernelLib/source/includes/
 
 CC = g++-4.9
 CXX = g++-4.9
-CFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
-CXXFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
+CFLAGS = -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -Wextra -O2 -c -pthread $(INCPATH)
+CXXFLAGS = -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -Wextra -O2 -c -pthread $(INCPATH)
 LDFLAGS = -shared -pthread -static-libgcc -static-libstdc++
 
 #LIBSDEF =  libs/linux_x86/raumkernel.so
