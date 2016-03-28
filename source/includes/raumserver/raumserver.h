@@ -49,11 +49,19 @@ namespace Raumserver
             /**
             * returns if the raumfeldSystem is online
             */
-            virtual bool isRaumserverOnline();
+            EXPORT virtual bool isRaumserverOnline();
             /**
             * returns the version info object/structure for the raumkernel
             */
             EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
+            /**
+            * sets the path and filename where the settings file is stored
+            */
+            EXPORT virtual void setSettingsFile(const std::string &_settingsFile);
+            /**
+            * set the path for log file files 
+            */
+            EXPORT virtual void setLogFilePath(const std::string &_logFilePath);
             /**
             * this signal will be fired if a the raumkernel is ready (
             * (in fact that means that the media server is online!)
@@ -63,12 +71,17 @@ namespace Raumserver
             * this signal will be fired if a the raumkernel is ready (
             * (in fact that will be if the media server goes offline!)
             */
-            sigs::signal<void(bool _server, bool _kernel)> sigRaumserverOffline;
+            sigs::signal<void(bool _server, bool _kernel)> sigRaumserverOffline;          
+            /**
+            * this signal will be fired if a log occurs
+            */
+            sigs::signal<void(Raumkernel::Log::LogData)> sigLog;
 
         protected:
 
             void onRaumfeldSystemOnline();
             void onRaumfeldSystemOffline();
+            void onLog(Raumkernel::Log::LogData _logData);
 
             std::shared_ptr<Raumkernel::Raumkernel> raumkernel;
             std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
@@ -78,6 +91,9 @@ namespace Raumserver
             Raumkernel::Tools::VersionInfo versionInfo;
 
             bool isOnline;
+
+            std::string settingsFile;
+            std::string logFilePath;
 
             sigs::connections connections;
     };
