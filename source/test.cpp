@@ -7,6 +7,7 @@ int main()
 {
     Raumserver::Raumserver          raumServer;
 
+    raumServer.initLogObject();
     raumServer.init(); 
 
     rlutil::getkey();

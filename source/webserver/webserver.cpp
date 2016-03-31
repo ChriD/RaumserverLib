@@ -58,6 +58,11 @@ namespace Raumserver
                 logError(e.what(), CURRENT_FUNCTION);
                 throw e;
             }
+            catch (CivetException &e)
+            {
+                logError(e.what(), CURRENT_FUNCTION);
+                throw e;
+            }
             catch (std::exception &e)
             {
                 logError(e.what(), CURRENT_POSITION);
