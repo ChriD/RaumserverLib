@@ -41,7 +41,16 @@ namespace Raumserver
         public:
             EXPORT Raumserver();
             EXPORT virtual ~Raumserver();
-            EXPORT virtual void init(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR);
+            /**
+            * initializes the kernel object
+            * 'initLogObject' has to be called before if a logger is not set from external source
+            */
+            EXPORT virtual void init();
+            /**
+            * initializes the log object
+            * has to be called before init!
+            */
+            EXPORT virtual void initLogObject(Raumkernel::Log::LogType _defaultLogLevel = Raumkernel::Log::LogType::LOGTYPE_ERROR, const std::string &_logFilePath = "logs/");
             /**
             * returns a shared pointer to the raumkernel object
             */
@@ -57,11 +66,7 @@ namespace Raumserver
             /**
             * sets the path and filename where the settings file is stored
             */
-            EXPORT virtual void setSettingsFile(const std::string &_settingsFile);
-            /**
-            * set the path for log file files 
-            */
-            EXPORT virtual void setLogFilePath(const std::string &_logFilePath);
+            EXPORT virtual void setSettingsFile(const std::string &_settingsFile);           
             /**
             * this signal will be fired if a the raumkernel is ready (
             * (in fact that means that the media server is online!)
@@ -92,8 +97,7 @@ namespace Raumserver
 
             bool isOnline;
 
-            std::string settingsFile;
-            std::string logFilePath;
+            std::string settingsFile;            
 
             sigs::connections connections;
     };

@@ -13,14 +13,10 @@ namespace Raumserver
         versionInfo.isBeta = false;
 
         isOnline = false;
-        settingsFile = "raumserver.xml";
-        logFilePath = "logs/";
+        settingsFile = "raumserver.xml";             
 
         // create a new log object for this library which we will provide to the kernel library too so both libraries use the same logger object
         logObject = std::shared_ptr<Raumkernel::Log::Log>(new Raumkernel::Log::Log());
-        logObject->registerAdapter(std::shared_ptr<Raumkernel::Log::LogAdapter>(new Raumkernel::Log::LogAdapter_Console()));
-        logObject->registerAdapter(std::shared_ptr<Raumkernel::Log::LogAdapter>(new Raumkernel::Log::LogAdapter_File()));
-        logObject->setLogLevel(Raumkernel::Log::LogType::LOGTYPE_ERROR);
     }
 
 
@@ -29,13 +25,27 @@ namespace Raumserver
     }
 
 
-    void Raumserver::init(Raumkernel::Log::LogType _defaultLogLevel)
-    {
-                    
-        getLogObject()->setLogLevel(_defaultLogLevel);
+    void Raumserver::initLogObject(Raumkernel::Log::LogType _defaultLogLevel, const std::string &_logFilePath)
+    {                
+        logObject = std::shared_ptr<Raumkernel::Log::Log>(new Raumkernel::Log::Log());
+        
+        auto logAdapterConsole = std::shared_ptr<Raumkernel::Log::LogAdapter_Console>(new Raumkernel::Log::LogAdapter_Console());
+        logObject->registerAdapter(logAdapterConsole);
 
+        auto logAdapterFile = std::shared_ptr<Raumkernel::Log::LogAdapter_File>(new Raumkernel::Log::LogAdapter_File());
+        if (!_logFilePath.empty())
+            logAdapterFile->setLogFilePath(_logFilePath);
+        logObject->registerAdapter(logAdapterFile);
+
+        logObject->setLogLevel(_defaultLogLevel);
+    }
+
+
+    void Raumserver::init()
+    {                                      
         // create the raumkernel object and init the kernel from the settings given in the raumserver.xml
-        raumkernel = std::shared_ptr<Raumkernel::Raumkernel>(new Raumkernel::Raumkernel());      
+        raumkernel = std::shared_ptr<Raumkernel::Raumkernel>(new Raumkernel::Raumkernel());     
+        // we do not init the log object we use the log object created in our class
         raumkernel->setLogObject(getLogObject());
 
         // lets do some subscriptions
@@ -43,7 +53,7 @@ namespace Raumserver
         connections.connect(raumkernel->sigRaumfeldSystemOffline, this, &Raumserver::onRaumfeldSystemOffline);
         connections.connect(raumkernel->getLogObject()->sigLog, this, &Raumserver::onLog);
 
-        raumkernel->init(_defaultLogLevel, settingsFile, logFilePath);
+        raumkernel->init(settingsFile);
 
         // after init of the kernel we do have the kernel manager engineer
         managerEngineerKernel = raumkernel->getManagerEngineer();
@@ -95,12 +105,14 @@ namespace Raumserver
 
     void Raumserver::onRaumfeldSystemOnline()
     {
+        logInfo("Raumfeld System is now online!", CURRENT_POSITION);
         isOnline = true;
     }
 
 
     void Raumserver::onRaumfeldSystemOffline()
     {
+        logInfo("Raumfeld System is now offline!", CURRENT_POSITION);
         isOnline = false;
     }
 
@@ -120,12 +132,6 @@ namespace Raumserver
     void Raumserver::setSettingsFile(const std::string &_settingsFile)
     {
         settingsFile = _settingsFile;
-    }
-
-
-    void Raumserver::setLogFilePath(const std::string &_logFilePath)
-    {
-        logFilePath = _logFilePath;
     }
 
 }
