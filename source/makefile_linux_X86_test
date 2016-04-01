@@ -8,7 +8,7 @@ CFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
 CXXFLAGS = -std=c++11 -fPIC -Wall -Wextra -O2 -c -pthread $(INCPATH)
 LDFLAGS = -pthread -static-libgcc -static-libstdc++
 
-LIBSDEF = libs/linux_x86/raumserver.so ../../RaumkernelLib/source/libs/linux_x86/raumkernel.so
+LIBSDEF = libs/linux_x86/raumserver.so libs/linux_x86/raumkernel.so
 
 RM = rm -f 
 TARGET_EXEC = test
