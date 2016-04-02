@@ -25,17 +25,27 @@ namespace Raumserver
     }
 
 
-    void Raumserver::initLogObject(Raumkernel::Log::LogType _defaultLogLevel, const std::string &_logFilePath)
+    void Raumserver::initLogObject(Raumkernel::Log::LogType _defaultLogLevel, const std::string &_logFilePath, const std::vector<std::shared_ptr<Raumkernel::Log::LogAdapter>> &_adapterList)
     {                
         logObject = std::shared_ptr<Raumkernel::Log::Log>(new Raumkernel::Log::Log());
         
-        auto logAdapterConsole = std::shared_ptr<Raumkernel::Log::LogAdapter_Console>(new Raumkernel::Log::LogAdapter_Console());
-        logObject->registerAdapter(logAdapterConsole);
+        if (_adapterList.empty())
+        {
+            auto logAdapterConsole = std::shared_ptr<Raumkernel::Log::LogAdapter_Console>(new Raumkernel::Log::LogAdapter_Console());
+            logObject->registerAdapter(logAdapterConsole);
 
-        auto logAdapterFile = std::shared_ptr<Raumkernel::Log::LogAdapter_File>(new Raumkernel::Log::LogAdapter_File());
-        if (!_logFilePath.empty())
-            logAdapterFile->setLogFilePath(_logFilePath);
-        logObject->registerAdapter(logAdapterFile);
+            auto logAdapterFile = std::shared_ptr<Raumkernel::Log::LogAdapter_File>(new Raumkernel::Log::LogAdapter_File());
+            if (!_logFilePath.empty())
+                logAdapterFile->setLogFilePath(_logFilePath);
+            logObject->registerAdapter(logAdapterFile);
+        }
+        else
+        {
+            for (auto i : _adapterList)
+            {
+                logObject->registerAdapter(i);
+            }
+        }
 
         logObject->setLogLevel(_defaultLogLevel);
     }
