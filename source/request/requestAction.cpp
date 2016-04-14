@@ -321,7 +321,7 @@ namespace Raumserver
             if (_requestActionTypeString == "SEEKTOTRACK") return RequestActionType::RAA_SEEKTOTRACK;
 
             // Returnable requests
-            if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_SEEKTOTRACK;            
+            if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_GETVERSION;            
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -376,10 +376,10 @@ namespace Raumserver
             switch (actionType)
             {
                 case RequestActionType::RAA_UNDEFINED: return nullptr;
-                case RequestActionType::RAA_NEXT: return std::shared_ptr<RequestAction_Next>(new RequestAction_Next(_path, _queryString));;
+                case RequestActionType::RAA_NEXT: return std::shared_ptr<RequestAction_Next>(new RequestAction_Next(_path, _queryString));
                 case RequestActionType::RAA_PAUSE: return std::shared_ptr<RequestAction_Pause>(new RequestAction_Pause(_path, _queryString));
                 case RequestActionType::RAA_PLAY: return std::shared_ptr<RequestAction_Play>(new RequestAction_Play(_path, _queryString));
-                case RequestActionType::RAA_PREV: return std::shared_ptr<RequestAction_Prev>(new RequestAction_Prev(_path, _queryString));;                
+                case RequestActionType::RAA_PREV: return std::shared_ptr<RequestAction_Prev>(new RequestAction_Prev(_path, _queryString));               
                 case RequestActionType::RAA_STOP: return std::shared_ptr<RequestAction_Stop>(new RequestAction_Stop(_path, _queryString));
                 case RequestActionType::RAA_SETVOLUME: return std::shared_ptr<RequestAction_SetVolume>(new RequestAction_SetVolume(_path, _queryString));
                 case RequestActionType::RAA_VOLUMEDOWN: return std::shared_ptr<RequestAction_VolumeDown>(new RequestAction_VolumeDown(_path, _queryString));
@@ -390,17 +390,17 @@ namespace Raumserver
                 case RequestActionType::RAA_MUTE: return std::shared_ptr<RequestAction_Mute>(new RequestAction_Mute(_path, _queryString));
                 case RequestActionType::RAA_UNMUTE: return std::shared_ptr<RequestAction_Unmute>(new RequestAction_Unmute(_path, _queryString));
                 case RequestActionType::RAA_SETPLAYMODE: return std::shared_ptr<RequestAction_SetPlayMode>(new RequestAction_SetPlayMode(_path, _queryString));
-                case RequestActionType::RAA_LOADPLAYLIST: return std::shared_ptr<RequestAction_LoadPlaylist>(new RequestAction_LoadPlaylist(_path, _queryString));;
-                case RequestActionType::RAA_LOADCONTAINER: return std::shared_ptr<RequestAction_LoadContainer>(new RequestAction_LoadContainer(_path, _queryString));;
-                case RequestActionType::RAA_LOADURI: return std::shared_ptr<RequestAction_LoadUri>(new RequestAction_LoadUri(_path, _queryString));;
-                case RequestActionType::RAA_SEEK: return std::shared_ptr<RequestAction_Seek>(new RequestAction_Seek(_path, _queryString));;
+                case RequestActionType::RAA_LOADPLAYLIST: return std::shared_ptr<RequestAction_LoadPlaylist>(new RequestAction_LoadPlaylist(_path, _queryString));
+                case RequestActionType::RAA_LOADCONTAINER: return std::shared_ptr<RequestAction_LoadContainer>(new RequestAction_LoadContainer(_path, _queryString));
+                case RequestActionType::RAA_LOADURI: return std::shared_ptr<RequestAction_LoadUri>(new RequestAction_LoadUri(_path, _queryString));
+                case RequestActionType::RAA_SEEK: return std::shared_ptr<RequestAction_Seek>(new RequestAction_Seek(_path, _queryString));
                 case RequestActionType::RAA_SEEKTOTRACK:return std::shared_ptr<RequestAction_SeekToTrack>(new RequestAction_SeekToTrack(_path, _queryString));;
-                case RequestActionType::RAA_FADETOVOLUME: return std::shared_ptr<RequestAction_FadeToVolume>(new RequestAction_FadeToVolume(_path, _queryString));;
-                case RequestActionType::RAA_TOGGLEMUTE: return std::shared_ptr<RequestAction_ToggleMute>(new RequestAction_ToggleMute(_path, _queryString));;
-                case RequestActionType::RAA_SLEEPTIMER: return std::shared_ptr<RequestAction_SleepTimer>(new RequestAction_SleepTimer(_path, _queryString));;
+                case RequestActionType::RAA_FADETOVOLUME: return std::shared_ptr<RequestAction_FadeToVolume>(new RequestAction_FadeToVolume(_path, _queryString));
+                case RequestActionType::RAA_TOGGLEMUTE: return std::shared_ptr<RequestAction_ToggleMute>(new RequestAction_ToggleMute(_path, _queryString));
+                case RequestActionType::RAA_SLEEPTIMER: return std::shared_ptr<RequestAction_SleepTimer>(new RequestAction_SleepTimer(_path, _queryString));
 
                  // Returnable requests 
-                case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));;
+                case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));
             }
             
 
