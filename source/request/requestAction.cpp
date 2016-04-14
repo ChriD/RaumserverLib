@@ -249,7 +249,7 @@ namespace Raumserver
             {                
                 logError("Invalid request options! Please validate path and query keys and values!", CURRENT_FUNCTION);
             }
-            return false;
+            return ret;
         }
 
 
