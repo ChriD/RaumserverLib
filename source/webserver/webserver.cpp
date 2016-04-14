@@ -136,6 +136,13 @@ namespace Raumserver
         }
 
 
+        void RequestHandlerBase::sendDataResponse(struct mg_connection *_conn, std::string _string, bool _error)
+        {       
+            mg_printf(_conn, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+            mg_printf(_conn, _string.c_str());         
+        }
+
+
 
         bool RequestHandlerVoid::handleGet(CivetServer *_server, struct mg_connection *_conn)
         {
@@ -195,11 +202,12 @@ namespace Raumserver
                     if (requestAction->execute())
                     {
                         auto requestActionReturnable = std::dynamic_pointer_cast<Request::RequestActionReturnable>(requestAction);
-                        sendResponse(_conn, requestActionReturnable->getResponseData(), false);                        
+                        sendDataResponse(_conn, requestActionReturnable->getResponseData(), false);                        
                     }
                     else
                     {
-                        sendResponse(_conn, "Error while executing request: '" + requestAction->getErrors(), true);
+                        // TODO: set better response!
+                        sendDataResponse(_conn, "ERROR'" + requestAction->getErrors(), true);
                     }
                     
                 }

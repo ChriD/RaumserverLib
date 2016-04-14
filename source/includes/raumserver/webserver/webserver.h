@@ -50,6 +50,7 @@ namespace Raumserver
                 EXPORT std::shared_ptr<Raumkernel::Log::Log> getLogObject();
             protected:
                 virtual void sendResponse(struct mg_connection *_conn, std::string _string, bool _error = false);
+                virtual void sendDataResponse(struct mg_connection *_conn, std::string _string, bool _error);
                 std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
                 std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
                 std::shared_ptr<Raumkernel::Log::Log> logObject;
