@@ -51,38 +51,8 @@
     <ClInclude Include="includes\raumserver\webserver\webserver.h">
       <Filter>includes\raumserver\webserver</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumserver\json\assertions.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\autolink.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\config.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\features.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\forwards.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumserver\json\json.h">
       <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\reader.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\value.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\version.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\writer.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
-    <ClInclude Include="json\json_tool.h">
-      <Filter>json</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h">
       <Filter>includes\raumserver\webserver\civetweb</Filter>
@@ -177,20 +147,20 @@
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetServer.h">
       <Filter>includes\raumserver\webserver\civetweb</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnable.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnable_GetVersion.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\json\json-forwards.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
     <ClCompile Include="webserver\webserver.cpp">
       <Filter>webserver</Filter>
-    </ClCompile>
-    <ClCompile Include="json\json_reader.cpp">
-      <Filter>json</Filter>
-    </ClCompile>
-    <ClCompile Include="json\json_value.cpp">
-      <Filter>json</Filter>
-    </ClCompile>
-    <ClCompile Include="json\json_writer.cpp">
-      <Filter>json</Filter>
     </ClCompile>
     <ClCompile Include="webserver\civetweb\CivetServer.cpp">
       <Filter>webserver\civetweb</Filter>
@@ -278,11 +248,17 @@
     <ClCompile Include="webserver\civetweb\civetweb.cpp">
       <Filter>webserver\civetweb</Filter>
     </ClCompile>
+    <ClCompile Include="request\requestActionReturnable.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnable_GetVersion.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="json\jsoncpp.cpp">
+      <Filter>json</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="json\json_valueiterator.inl">
-      <Filter>json</Filter>
-    </None>
     <None Include="..\README.md" />
   </ItemGroup>
 </Project>

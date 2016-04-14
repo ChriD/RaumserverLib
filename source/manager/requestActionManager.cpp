@@ -84,6 +84,30 @@ namespace Raumserver
             std::unique_lock<std::mutex> lock(mutexRequestActionQueue);
             requestActionQueue.push(_requestAction);
         }
+
+
+        void RequestActionManager::setServerVersion(const Raumkernel::Tools::VersionInfo &_versionInfo)
+        {
+            versionInfoServer = _versionInfo;
+        }
+
+        
+        void RequestActionManager::setKernelVersion(const Raumkernel::Tools::VersionInfo &_versionInfo)
+        {
+            versionInfoKernel = _versionInfo;
+        }
+
+
+        Raumkernel::Tools::VersionInfo RequestActionManager::getServerVersion()
+        {
+            return versionInfoServer;
+        }
+
+
+        Raumkernel::Tools::VersionInfo RequestActionManager::getKernelVersion()
+        {
+            return versionInfoKernel;
+        }
        
     }
 }

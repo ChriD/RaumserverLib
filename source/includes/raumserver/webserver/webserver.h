@@ -60,14 +60,21 @@ namespace Raumserver
         class RequestHandlerController : public RequestHandlerBase
         {
             public:
-                bool handleGet(CivetServer *_server, struct mg_connection *_conn);
+                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
+        };
+
+
+        class RequestHandlerData : public RequestHandlerController
+        {
+            public:
+                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
         };
 
 
         class RequestHandlerVoid : public RequestHandlerBase
         {
-        public:
-            bool handleGet(CivetServer *_server, struct mg_connection *_conn);
+            public:
+                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
         };
 
 
@@ -83,7 +90,8 @@ namespace Raumserver
             protected:                  
                 std::shared_ptr<CivetServer> serverObject;             
                 std::shared_ptr<RequestHandlerController> serverRequestHandlerController;
-                std::shared_ptr<RequestHandlerVoid> serverRequestHandlerVoid;
+                std::shared_ptr<RequestHandlerData> serverRequestHandlerData;
+                std::shared_ptr<RequestHandlerVoid> serverRequestHandlerVoid;                
 
                 bool isStarted;
         };

@@ -48,4 +48,6 @@
 #include <raumserver/request/requestAction_FadeToVolume.h>
 #include <raumserver/request/requestAction_SleepTimer.h>
 
+#include <raumserver/request/requestActionReturnable_GetVersion.h>
+
 #endif

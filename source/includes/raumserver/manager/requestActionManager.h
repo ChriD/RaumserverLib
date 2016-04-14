@@ -27,9 +27,9 @@
 
 #include <queue>
 #include <thread>
+#include <raumkernel/tools/versionInfo.h>
 #include <raumserver/manager/managerBaseServer.h>
 #include <raumserver/request/requestActions.h>
-//#include <raumserver/webserver/webserver.h>
 
 
 namespace Raumserver
@@ -53,6 +53,22 @@ namespace Raumserver
                 * The thread method which will process the queue
                 */
                 EXPORT virtual void requestProcessingWorkerThread();
+                /**
+                * Set Server Version Info for request responses
+                */
+                EXPORT virtual void setServerVersion(const Raumkernel::Tools::VersionInfo &_versionInfo);
+                /**
+                * Set Kernel Version Info for request responses
+                */
+                EXPORT virtual void setKernelVersion(const Raumkernel::Tools::VersionInfo &_versionInfo);
+                /**
+                * Get Server Version Info for request responses
+                */
+                EXPORT virtual Raumkernel::Tools::VersionInfo getServerVersion();
+                /**
+                * Get Kernel Version Info for request responses
+                */
+                EXPORT virtual Raumkernel::Tools::VersionInfo getKernelVersion();
 
             protected:          
 
@@ -69,6 +85,11 @@ namespace Raumserver
 
                 // a list which contains all request Actions whch are not already processed                    
                 std::queue<std::shared_ptr<Request::RequestAction>> requestActionQueue;
+
+                // Version info 8only for returning om request responses)
+                Raumkernel::Tools::VersionInfo versionInfoKernel;
+                Raumkernel::Tools::VersionInfo versionInfoServer;
+                
                 
         };
     }

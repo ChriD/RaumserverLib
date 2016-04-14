@@ -81,16 +81,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="includes\raumserver\json\assertions.h" />
-    <ClInclude Include="includes\raumserver\json\autolink.h" />
-    <ClInclude Include="includes\raumserver\json\config.h" />
-    <ClInclude Include="includes\raumserver\json\features.h" />
-    <ClInclude Include="includes\raumserver\json\forwards.h" />
+    <ClInclude Include="includes\raumserver\json\json-forwards.h" />
     <ClInclude Include="includes\raumserver\json\json.h" />
-    <ClInclude Include="includes\raumserver\json\reader.h" />
-    <ClInclude Include="includes\raumserver\json\value.h" />
-    <ClInclude Include="includes\raumserver\json\version.h" />
-    <ClInclude Include="includes\raumserver\json\writer.h" />
     <ClInclude Include="includes\raumserver\manager\managerBaseServer.h" />
     <ClInclude Include="includes\raumserver\manager\managerEngineerServer.h" />
     <ClInclude Include="includes\raumserver\manager\requestActionManager.h" />
@@ -98,6 +90,8 @@
     <ClInclude Include="includes\raumserver\raumserverBase.h" />
     <ClInclude Include="includes\raumserver\raumserverBaseMgr.h" />
     <ClInclude Include="includes\raumserver\request\requestAction.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionReturnable.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionReturnable_GetVersion.h" />
     <ClInclude Include="includes\raumserver\request\requestActions.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_AddToZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_CreateZone.h" />
@@ -124,12 +118,9 @@
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetServer.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h" />
     <ClInclude Include="includes\raumserver\webserver\webserver.h" />
-    <ClInclude Include="json\json_tool.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="json\json_reader.cpp" />
-    <ClCompile Include="json\json_value.cpp" />
-    <ClCompile Include="json\json_writer.cpp" />
+    <ClCompile Include="json\jsoncpp.cpp" />
     <ClCompile Include="manager\managerBaseServer.cpp" />
     <ClCompile Include="manager\managerEngineerServer.cpp" />
     <ClCompile Include="manager\requestActionManager.cpp" />
@@ -137,6 +128,8 @@
     <ClCompile Include="raumserverBase.cpp" />
     <ClCompile Include="raumserverBaseMgr.cpp" />
     <ClCompile Include="request\requestAction.cpp" />
+    <ClCompile Include="request\requestActionReturnable.cpp" />
+    <ClCompile Include="request\requestActionReturnable_GetVersion.cpp" />
     <ClCompile Include="request\requestAction_AddToZone.cpp" />
     <ClCompile Include="request\requestAction_CreateZone.cpp" />
     <ClCompile Include="request\requestAction_DropFromZone.cpp" />
@@ -165,7 +158,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
-    <None Include="json\json_valueiterator.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -42,6 +42,13 @@ namespace Raumserver
                 serverRequestHandlerController->setLogObject(getLogObject());
                 serverObject->addHandler("/raumserver/controller", serverRequestHandlerController.get());
 
+                // add a general handler for fetching data 
+                serverRequestHandlerData = std::shared_ptr<RequestHandlerData>(new RequestHandlerData());
+                serverRequestHandlerData->setManagerEngineerServer(getManagerEngineerServer());
+                serverRequestHandlerData->setManagerEngineerKernel(getManagerEngineer());
+                serverRequestHandlerData->setLogObject(getLogObject());
+                serverObject->addHandler("/raumserver/data", serverRequestHandlerData.get());
+
                 // add a general handler for wrong path requests
                 serverRequestHandlerVoid = std::shared_ptr<RequestHandlerVoid>(new RequestHandlerVoid());
                 serverRequestHandlerVoid->setManagerEngineerServer(getManagerEngineerServer());
@@ -185,8 +192,16 @@ namespace Raumserver
                 // a returnable request ist always a sync and non stackable request
                 if (std::dynamic_pointer_cast<Request::RequestActionReturnable>(requestAction))
                 {
-                    requestAction->execute();
-                    // TODO: return dataString from request object
+                    if (requestAction->execute())
+                    {
+                        auto requestActionReturnable = std::dynamic_pointer_cast<Request::RequestActionReturnable>(requestAction);
+                        sendResponse(_conn, requestActionReturnable->getResponseData(), false);                        
+                    }
+                    else
+                    {
+                        sendResponse(_conn, "Error while executing request: '" + requestAction->getErrors(), true);
+                    }
+                    
                 }
                 else
                 {
@@ -196,6 +211,12 @@ namespace Raumserver
             }
              
             return true;
+        }
+
+
+        bool RequestHandlerData::handleGet(CivetServer *_server, struct mg_connection *_conn)
+        {
+            return RequestHandlerController::handleGet(_server, _conn);
         }
    
     }

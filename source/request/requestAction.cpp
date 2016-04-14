@@ -15,6 +15,7 @@ namespace Raumserver
             waitTimeAfterExecution = 0;
             timeout = 5000;
             waitTimeForRequestActionKernelResponse = 25;
+            action = RequestActionType::RAA_UNDEFINED;
         }
 
         RequestAction::RequestAction(std::string _path, std::string _query) : RaumserverBaseMgr()
@@ -26,6 +27,7 @@ namespace Raumserver
             waitTimeAfterExecution = 0;
             timeout = 5000;
             waitTimeForRequestActionKernelResponse = 25;
+            action = RequestActionType::RAA_UNDEFINED;
         }
 
 
@@ -283,6 +285,10 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_TOGGLEMUTE) return "TOGGLEMUTE";
             if (_requestActionType == RequestActionType::RAA_SLEEPTIMER) return "SLEEPTIMER";
             if (_requestActionType == RequestActionType::RAA_SEEKTOTRACK) return "SEEKTOTRACK";
+
+            // Returnable requests
+            if (_requestActionType == RequestActionType::RAA_GETVERSION) return "GETVERSION";
+
             return "";
         }
 
@@ -313,6 +319,9 @@ namespace Raumserver
             if (_requestActionTypeString == "TOGGLEMUTE") return RequestActionType::RAA_TOGGLEMUTE;
             if (_requestActionTypeString == "SLEEPTIMER") return RequestActionType::RAA_SLEEPTIMER;
             if (_requestActionTypeString == "SEEKTOTRACK") return RequestActionType::RAA_SEEKTOTRACK;
+
+            // Returnable requests
+            if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_SEEKTOTRACK;            
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -366,7 +375,6 @@ namespace Raumserver
 
             switch (actionType)
             {
-                // TODO: @@@
                 case RequestActionType::RAA_UNDEFINED: return nullptr;
                 case RequestActionType::RAA_NEXT: return std::shared_ptr<RequestAction_Next>(new RequestAction_Next(_path, _queryString));;
                 case RequestActionType::RAA_PAUSE: return std::shared_ptr<RequestAction_Pause>(new RequestAction_Pause(_path, _queryString));
@@ -390,45 +398,15 @@ namespace Raumserver
                 case RequestActionType::RAA_FADETOVOLUME: return std::shared_ptr<RequestAction_FadeToVolume>(new RequestAction_FadeToVolume(_path, _queryString));;
                 case RequestActionType::RAA_TOGGLEMUTE: return std::shared_ptr<RequestAction_ToggleMute>(new RequestAction_ToggleMute(_path, _queryString));;
                 case RequestActionType::RAA_SLEEPTIMER: return std::shared_ptr<RequestAction_SleepTimer>(new RequestAction_SleepTimer(_path, _queryString));;
+
+                 // Returnable requests 
+                case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));;
             }
             
 
             return nullptr;
         }
-
-
-
-
-
-
-        // ####################################
-
-        // used for direct return such as a JSON Request aso...
-
-        RequestActionReturnable::RequestActionReturnable(std::string _url) : RequestAction(_url)
-        {
-        }
-
-
-        RequestActionReturnable::RequestActionReturnable(std::string _path, std::string _query) : RequestAction(_path, _query)
-        {
-        }
-       
-
-        RequestActionReturnable::~RequestActionReturnable()
-        {
-        }
-
-        bool RequestActionReturnable::isStackable()
-        {
-            return false;
-        }
-
-
-        bool RequestActionReturnable::isAsyncExecutionAllowed()
-        {
-            return false;
-        }
+        
 
     }
 }
