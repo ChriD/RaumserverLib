@@ -5,7 +5,7 @@ ifeq ($(arch),X64)
   CC = g++-4.9
   CXX = g++-4.9
   LIBSDEF =  libs/linux_x64/raumkernel.so
-  TARGET = libs/linux_x64/raumserver.so
+  TARGET = libs/_tmpBuild/raumserver.so
 endif
 	
 ifeq ($(arch),X86) 
