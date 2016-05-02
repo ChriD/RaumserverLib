@@ -93,9 +93,7 @@ namespace Raumserver
             std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
             std::shared_ptr<Server::Webserver> webserver;
 
-            Raumkernel::Tools::VersionInfo versionInfo;
-
-            bool isOnline;
+            Raumkernel::Tools::VersionInfo versionInfo;            
 
             std::string settingsFile;            
 

@@ -7,12 +7,25 @@ namespace Raumserver
     {
         ManagerEngineerServer::ManagerEngineerServer() : RaumserverBase()
         {
-            requestActionManager = nullptr;          
+            requestActionManager = nullptr;    
+            systemReady = false;
         }
 
 
         ManagerEngineerServer::~ManagerEngineerServer()
         {
+        }
+
+
+        void ManagerEngineerServer::setSystemReady(bool _isReady)
+        {
+            systemReady = _isReady;
+        }
+
+
+        bool ManagerEngineerServer::isSystemReady()
+        {
+            return systemReady;
         }
 
 

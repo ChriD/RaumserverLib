@@ -42,10 +42,14 @@ namespace Raumserver
                 EXPORT virtual ~ManagerEngineerServer();
                 void createManagers();
 
+                EXPORT void setSystemReady(bool _isReady = true);
+                EXPORT bool isSystemReady();
+
                 EXPORT std::shared_ptr<Manager::RequestActionManager> getRequestActionManager();              
 
             protected:
                 std::shared_ptr<Manager::RequestActionManager> requestActionManager;
+                bool systemReady;
                
         };
     }

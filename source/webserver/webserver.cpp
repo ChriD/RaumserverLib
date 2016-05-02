@@ -146,8 +146,13 @@ namespace Raumserver
 
         bool RequestHandlerVoid::handleGet(CivetServer *_server, struct mg_connection *_conn)
         {
-            if (!getManagerEngineerServer())
-                return false;           
+            // Check if system is online, otherwise don't execute!
+            if (!getManagerEngineerServer() || !getManagerEngineerServer()->isSystemReady())
+            {
+                sendResponse(_conn, "Raumfeld System is not ready to receive requests!", true);
+                return false;
+            }
+
             const struct mg_request_info *request_info = mg_get_request_info(_conn);
             sendResponse(_conn, "Wrong request path! Please check to the documentation for the valid path!", true);
             return true;         
@@ -157,10 +162,12 @@ namespace Raumserver
 
         bool RequestHandlerController::handleGet(CivetServer *_server, struct mg_connection *_conn)
         {
-            if (!getManagerEngineerServer())
-                return false;
-
-            // TODO: Check if system is online, otherwise don't execute!
+            // Check if system is online, otherwise don't execute!
+            if (!getManagerEngineerServer() || !getManagerEngineerServer()->isSystemReady())
+            {
+                sendResponse(_conn, "Raumfeld System is not ready to receive requests!", true);
+                return true;
+            }
 
             const struct mg_request_info *request_info = mg_get_request_info(_conn);   
 

@@ -11,8 +11,7 @@ namespace Raumserver
         versionInfo.appName = "Raumserver Library";
         versionInfo.appVersion = "1.0.0";
         versionInfo.isBeta = false;
-
-        isOnline = false;
+        
         settingsFile = "raumserver.xml";             
 
         // create a new log object for this library which we will provide to the kernel library too so both libraries use the same logger object
@@ -117,21 +116,23 @@ namespace Raumserver
 
     void Raumserver::onRaumfeldSystemOnline()
     {
-        logInfo("Raumfeld System is now online!", CURRENT_POSITION);
-        isOnline = true;
+        logInfo("Raumfeld System is now online!", CURRENT_POSITION);        
+        managerEngineerServer->setSystemReady(true);
     }
 
 
     void Raumserver::onRaumfeldSystemOffline()
     {
-        logInfo("Raumfeld System is now offline!", CURRENT_POSITION);
-        isOnline = false;
+        logInfo("Raumfeld System is now offline!", CURRENT_POSITION);        
+        managerEngineerServer->setSystemReady(false);
     }
 
 
     bool Raumserver::isRaumserverOnline()
     {
-        return isOnline;
+        if (managerEngineerServer == nullptr)
+            return false;
+        return managerEngineerServer->isSystemReady();
     }
 
 
