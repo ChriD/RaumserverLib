@@ -67,7 +67,7 @@ namespace Raumserver
             auto zoneScope = isZoneScope(scope);
             std::int32_t newVolumeValue = 0;
 
-            // we have got an id that might be a room or a zone. we have to get the scope to know what we should mute
+            // we have got an id that might be a room or a zone. we have to get the scope to know what we should set the volume
             if (!id.empty())
             {
                 auto mediaRenderer = getVirtualMediaRenderer(id);
