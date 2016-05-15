@@ -86,25 +86,25 @@ namespace Raumserver
         }
 
 
-        void RequestActionManager::setServerVersion(const Raumkernel::Tools::VersionInfo &_versionInfo)
+        void RequestActionManager::setServerVersion(const VersionInfo::VersionInfo &_versionInfo)
         {
             versionInfoServer = _versionInfo;
         }
 
         
-        void RequestActionManager::setKernelVersion(const Raumkernel::Tools::VersionInfo &_versionInfo)
+        void RequestActionManager::setKernelVersion(const VersionInfo::VersionInfo &_versionInfo)
         {
             versionInfoKernel = _versionInfo;
         }
 
 
-        Raumkernel::Tools::VersionInfo RequestActionManager::getServerVersion()
+        VersionInfo::VersionInfo RequestActionManager::getServerVersion()
         {
             return versionInfoServer;
         }
 
 
-        Raumkernel::Tools::VersionInfo RequestActionManager::getKernelVersion()
+        VersionInfo::VersionInfo RequestActionManager::getKernelVersion()
         {
             return versionInfoKernel;
         }

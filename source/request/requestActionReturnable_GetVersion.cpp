@@ -38,8 +38,8 @@ namespace Raumserver
             auto kernelVersion = getManagerEngineerServer()->getRequestActionManager()->getKernelVersion();
             auto serverVersion = getManagerEngineerServer()->getRequestActionManager()->getServerVersion();
             
-            versionInfo["versionInfo"]["raumkernelLib"] = kernelVersion.appVersion + (kernelVersion.isBeta ? "b" : "");
-            versionInfo["versionInfo"]["raumserverLib"] = serverVersion.appVersion + (serverVersion.isBeta ? "b" : "");
+            versionInfo["versionInfo"]["raumkernelLib"] = kernelVersion.appVersion;
+            versionInfo["versionInfo"]["raumserverLib"] = serverVersion.appVersion;
 
             setResponseData(versionInfo.toStyledString());
            

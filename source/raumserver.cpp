@@ -6,12 +6,7 @@ namespace Raumserver
 {
 
     Raumserver::Raumserver() : RaumkernelBase()
-    {
-        // set the current version info of the library
-        versionInfo.appName = "Raumserver Library";
-        versionInfo.appVersion = "1.0.0";
-        versionInfo.isBeta = false;
-        
+    {        
         settingsFile = "raumserver.xml";             
 
         // create a new log object for this library which we will provide to the kernel library too so both libraries use the same logger object
@@ -108,7 +103,7 @@ namespace Raumserver
     }
 
 
-    Raumkernel::Tools::VersionInfo Raumserver::getVersionInfo()
+    VersionInfo::VersionInfo Raumserver::getVersionInfo()
     {
         return versionInfo;
     }

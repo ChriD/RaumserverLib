@@ -28,7 +28,8 @@
 #include <raumkernel/raumkernel.h>
 #include <raumserver/webserver/webserver.h>
 #include <raumserver/manager/managerEngineerServer.h>
-
+// override kernel version infos
+#include <raumserver/versionNumber.h>
 
 namespace Raumserver
 {
@@ -62,7 +63,7 @@ namespace Raumserver
             /**
             * returns the version info object/structure for the raumkernel
             */
-            EXPORT virtual Raumkernel::Tools::VersionInfo getVersionInfo();
+            EXPORT virtual VersionInfo::VersionInfo getVersionInfo();
             /**
             * sets the path and filename where the settings file is stored
             */
@@ -93,7 +94,7 @@ namespace Raumserver
             std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
             std::shared_ptr<Server::Webserver> webserver;
 
-            Raumkernel::Tools::VersionInfo versionInfo;            
+            VersionInfo::VersionInfo versionInfo;            
 
             std::string settingsFile;            
 

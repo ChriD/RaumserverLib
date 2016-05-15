@@ -156,6 +156,9 @@
     <ClInclude Include="includes\raumserver\json\json-forwards.h">
       <Filter>includes\raumserver\json</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\versionNumber.h">
+      <Filter>includes\raumserver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />

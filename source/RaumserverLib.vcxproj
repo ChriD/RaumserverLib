@@ -115,6 +115,7 @@
     <ClInclude Include="includes\raumserver\request\requestAction_Unmute.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_VolumeDown.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_VolumeUp.h" />
+    <ClInclude Include="includes\raumserver\versionNumber.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetServer.h" />
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h" />
     <ClInclude Include="includes\raumserver\webserver\webserver.h" />
