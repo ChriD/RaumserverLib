@@ -7,7 +7,11 @@ namespace Raumserver
 
     Raumserver::Raumserver() : RaumkernelBase()
     {        
-        settingsFile = "raumserver.xml";             
+        settingsFile = "raumserver.xml";  
+
+        versionInfo.appName = Server_AppName;
+        versionInfo.appVersion = Server_VersionNumber;
+        versionInfo.appVersionName = Server_VersionName;
 
         // create a new log object for this library which we will provide to the kernel library too so both libraries use the same logger object
         logObject = std::shared_ptr<Raumkernel::Log::Log>(new Raumkernel::Log::Log());

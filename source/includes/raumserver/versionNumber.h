@@ -25,12 +25,10 @@
 #ifndef VERSIONNUMBER_SERVER_H
 #define VERSIONNUMBER_SERVER_H
 
-#undef AppName
-#undef VersionNumber
-#undef VersionName
+#include <string>
 
-#define AppName         "Raumserver Library"
-#define VersionNumber   "1.0.0"
-#define VersionName     ""
+const std::string Server_AppName = "Raumserver Library";
+const std::string Server_VersionNumber = "1.0.0";
+const std::string Server_VersionName = "";
 
 #endif
