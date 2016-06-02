@@ -7,7 +7,7 @@ namespace Raumserver
 
     Raumserver::Raumserver() : RaumkernelBase()
     {        
-        settingsFile = "raumserver.xml";  
+        settingsFile = "settings.xml";  
 
         versionInfo.appName = Server_AppName;
         versionInfo.appVersion = Server_VersionNumber;
