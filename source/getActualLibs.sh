@@ -3,9 +3,14 @@ cp ../../RaumkernelLib/source/libs/linux_x86/raumkernel.so libs/linux_x86/raumke
 
 cp ../../RaumkernelLib/source/libs/linux_x64/raumkernel.so libs/linux_x64/raumkernel.so
 
+cp ../../RaumkernelLib/source/libs/linux_ARMV5/raumkernel.so libs/linux_ARMV5/raumkernel.so
+
 cp ../../RaumkernelLib/source/libs/linux_ARMV6/raumkernel.so libs/linux_ARMV6/raumkernel.so
 
 cp ../../RaumkernelLib/source/libs/linux_ARMV7/raumkernel.so libs/linux_ARMV7/raumkernel.so
 
 cp ../../RaumkernelLib/source/libs/linux_ARMA53/raumkernel.so libs/linux_ARMA53/raumkernel.so
+
+cp ../../RaumkernelLib/source/libs/linux_AMDGEODE/raumkernel.so libs/linux_AMDGEODE/raumkernel.so
+
 

@@ -40,6 +40,14 @@ ifeq ($(arch),ARMV6)
   TARGET = libs/_tmpBuild/raumserver.so
 endif
 
+ifeq ($(arch),ARMV5TE)
+  ARCHITECTURE = -march=armv5te -mtune=xscale
+  CC = arm-linux-gnueabi-g++-4.9 
+  CXX = arm-linux-gnueabi-g++-4.9
+  LIBSPATH = libs/linux_ARMV5/
+  TARGET = libs/_tmpBuild/raumserver.so
+endif
+
 
 LIBSDEF =  $(LIBSPATH)raumkernel.so
 
