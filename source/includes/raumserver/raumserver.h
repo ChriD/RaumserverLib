@@ -35,7 +35,7 @@ namespace Raumserver
 {
 
     const std::string SETTINGS_RAUMSERVER_PORT_DEFAULT = "8080";
-    const std::string SETTINGS_RAUMSERVER_PORT = "/Raumserver/Port";
+    const std::string SETTINGS_RAUMSERVER_PORT = ".//Raumserver//Port";
 
     class Raumserver : public Raumkernel::RaumkernelBase
     {
