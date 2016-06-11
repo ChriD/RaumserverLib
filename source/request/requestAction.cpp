@@ -289,6 +289,9 @@ namespace Raumserver
             // Returnable requests
             if (_requestActionType == RequestActionType::RAA_GETVERSION) return "GETVERSION";
 
+            // Returnable requests with long polling ability
+            if (_requestActionType == RequestActionType::RAA_GETZONECONFIG) return "GETZONECONFIG";
+
             return "";
         }
 
@@ -321,7 +324,10 @@ namespace Raumserver
             if (_requestActionTypeString == "SEEKTOTRACK") return RequestActionType::RAA_SEEKTOTRACK;
 
             // Returnable requests
-            if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_GETVERSION;            
+            if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_GETVERSION;       
+
+            // Returnable requests with long polling ability
+            if (_requestActionTypeString == "GETZONECONFIG") return RequestActionType::RAA_GETZONECONFIG;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -401,6 +407,9 @@ namespace Raumserver
 
                  // Returnable requests 
                 case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));
+
+                // Returnable requests with long polling ability
+                case RequestActionType::RAA_GETZONECONFIG: return std::shared_ptr<RequestActionReturnableLongPolling_GetZoneConfig>(new RequestActionReturnableLongPolling_GetZoneConfig(_path, _queryString));
             }
             
 

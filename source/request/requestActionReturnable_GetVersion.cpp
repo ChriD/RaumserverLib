@@ -33,7 +33,7 @@ namespace Raumserver
 
         bool RequestActionReturnable_GetVersion::executeAction()
         {          
-            Json::Value root, versionInfo;
+            Json::Value versionInfo;
 
             auto kernelVersion = getManagerEngineerServer()->getRequestActionManager()->getKernelVersion();
             auto serverVersion = getManagerEngineerServer()->getRequestActionManager()->getServerVersion();

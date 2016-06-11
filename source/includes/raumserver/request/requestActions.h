@@ -50,4 +50,6 @@
 
 #include <raumserver/request/requestActionReturnable_GetVersion.h>
 
+#include <raumserver/request/requestActionReturnableLP_GetZoneConfig.h>
+
 #endif

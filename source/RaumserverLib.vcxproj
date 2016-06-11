@@ -91,6 +91,8 @@
     <ClInclude Include="includes\raumserver\raumserverBaseMgr.h" />
     <ClInclude Include="includes\raumserver\request\requestAction.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnable.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneConfig.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnable_GetVersion.h" />
     <ClInclude Include="includes\raumserver\request\requestActions.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_AddToZone.h" />
@@ -130,6 +132,8 @@
     <ClCompile Include="raumserverBaseMgr.cpp" />
     <ClCompile Include="request\requestAction.cpp" />
     <ClCompile Include="request\requestActionReturnable.cpp" />
+    <ClCompile Include="request\requestActionReturnableLP.cpp" />
+    <ClCompile Include="request\requestActionReturnableLP_GetZoneConfig.cpp" />
     <ClCompile Include="request\requestActionReturnable_GetVersion.cpp" />
     <ClCompile Include="request\requestAction_AddToZone.cpp" />
     <ClCompile Include="request\requestAction_CreateZone.cpp" />

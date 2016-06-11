@@ -38,8 +38,8 @@ namespace Raumserver
         enum class RequestActionType { RAA_UNDEFINED, RAA_PLAY, RAA_PAUSE, RAA_STOP, RAA_NEXT, RAA_PREV, RAA_VOLUMECHANGE, RAA_VOLUMEUP, RAA_VOLUMEDOWN, RAA_SETVOLUME, 
                                        RAA_CREATEZONE, RAA_ADDTOZONE, RAA_DROPFROMZONE, RAA_MUTE, RAA_UNMUTE, RAA_SETPLAYMODE, RAA_LOADPLAYLIST, RAA_LOADCONTAINER, RAA_LOADURI, RAA_SEEK, RAA_SEEKTOTRACK,
                                        RAA_FADETOVOLUME, RAA_SLEEPTIMER, RAA_TOGGLEMUTE ,
-                                       // returnable requests (requests qhich return data)
-                                       RAA_GETVERSION
+                                       // returnable requests (requests which return data)
+                                       RAA_GETVERSION, RAA_GETZONECONFIG
                                       };
         enum class RequestReceiver { RR_ROOM, RR_ZONE, RR_JSON };
      

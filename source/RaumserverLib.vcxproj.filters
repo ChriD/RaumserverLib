@@ -159,6 +159,12 @@
     <ClInclude Include="includes\raumserver\versionNumber.h">
       <Filter>includes\raumserver</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneConfig.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -259,6 +265,12 @@
     </ClCompile>
     <ClCompile Include="json\jsoncpp.cpp">
       <Filter>json</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnableLP.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnableLP_GetZoneConfig.cpp">
+      <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
