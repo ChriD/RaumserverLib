@@ -47,11 +47,14 @@ namespace Raumserver
                 EXPORT virtual bool isStackable();       
                 EXPORT virtual bool isAsyncExecutionAllowed(); 
                 EXPORT std::string getResponseData();
+                EXPORT std::map<std::string, std::string> getResponseHeader();
 
             protected:
                 void setResponseData(const std::string &_data);
+                void addResponseHeader(const std::string &_key, const std::string &_value);
 
                 std::string responseData;
+                std::map<std::string, std::string> responseHeader;
         };
     }
 }

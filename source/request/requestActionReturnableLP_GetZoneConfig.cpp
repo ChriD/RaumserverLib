@@ -117,7 +117,7 @@ namespace Raumserver
             jsonWriter.EndObject();
 
             jsonWriter.EndArray();
-         
+                     
             setResponseData(jsonStringBuffer.GetString());
 
             return true;

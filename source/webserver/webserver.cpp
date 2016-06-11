@@ -136,9 +136,16 @@ namespace Raumserver
         }
 
 
-        void RequestHandlerBase::sendDataResponse(struct mg_connection *_conn, std::string _string, bool _error)
+        void RequestHandlerBase::sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string, std::string> _headerVars, bool _error)
         {       
-            mg_printf(_conn, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+            // create header string
+            std::string headers = "";
+            for (auto pair : _headerVars)
+            {
+                headers += "\r\n" + pair.first + ":" + pair.second;
+            }
+
+            mg_printf(_conn, std::string( "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n" + headers + "Connection: close\r\n\r\n").c_str());
             mg_printf(_conn, _string.c_str());         
         }
 
@@ -209,12 +216,12 @@ namespace Raumserver
                     if (requestAction->execute())
                     {
                         auto requestActionReturnable = std::dynamic_pointer_cast<Request::RequestActionReturnable>(requestAction);
-                        sendDataResponse(_conn, requestActionReturnable->getResponseData(), false);                        
+                        sendDataResponse(_conn, requestActionReturnable->getResponseData(), requestActionReturnable->getResponseHeader(), false);
                     }
                     else
                     {
                         // TODO: set better response!
-                        sendDataResponse(_conn, "ERROR'" + requestAction->getErrors(), true);
+                        sendDataResponse(_conn, "ERROR'" + requestAction->getErrors(), std::map<std::string, std::string>(), true);
                     }
                     
                 }

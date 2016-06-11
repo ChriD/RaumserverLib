@@ -40,6 +40,18 @@ namespace Raumserver
         }
 
 
+        std::map<std::string, std::string> RequestActionReturnable::getResponseHeader()
+        {
+            return responseHeader;
+        }
+
+
+        void RequestActionReturnable::addResponseHeader(const std::string &_key, const std::string &_value)
+        {
+            responseHeader.insert(std::make_pair(_key, _value));
+        }
+
+
         void RequestActionReturnable::setResponseData(const std::string &_data)
         {
             responseData = _data;

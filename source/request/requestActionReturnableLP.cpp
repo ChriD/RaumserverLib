@@ -47,6 +47,7 @@ namespace Raumserver
         bool RequestActionReturnableLongPolling::executeAction()
         {          
             bool ret = false;
+            std::string lastUpdateId = "";
 
             // get long polling id 
             std::string lpid = getOptionValue("updateId");
@@ -54,18 +55,22 @@ namespace Raumserver
             // when there is no longpolling then only execute request
             if (lpid.empty())
             {
+                lastUpdateId = getLastUpdateId();
                 ret = executeActionLongPolling();
             }
             // if there is a long polling id we have to wait until the id changes before we execute the request
             else
             {
-                if (lpid != getLastUpdateId())
+                lastUpdateId = getLastUpdateId();
+                if (lpid != lastUpdateId)
                 {
                     ret = executeActionLongPolling();
                 }
                 // wait a little bit to keep cpu load and lockings low
                 std::this_thread::sleep_for(std::chrono::milliseconds(250));
             }
+
+            addResponseHeader("updateId", lastUpdateId);            
            
             return ret;
         }
