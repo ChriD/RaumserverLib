@@ -60,7 +60,7 @@ namespace Raumserver
             auto zoneScope = isZoneScope(scope);
             std::int32_t newVolumeValue = 0;
 
-            // we have got an id that might be a room or a zone. we have to get the scope to know what we should mute
+            // we have got an id that might be a room or a zone. we have to get the scope to know what we should lower
             if (!id.empty())
             {
                 auto mediaRenderer = getVirtualMediaRenderer(id);
@@ -84,7 +84,7 @@ namespace Raumserver
                     mediaRenderer->setRoomVolume(getRoomUDNFromId(id), newVolumeValue, sync);
                 }
             }
-            // if we have no id provided, we mute all renderers
+            // if we have no id provided, we lower all renderers volume
             else
             {
                 auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
@@ -94,7 +94,7 @@ namespace Raumserver
                     auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
                     if (mediaRenderer)
                     {
-                        newVolumeValue = mediaRenderer->getVolume(true) + valueChange;
+                        newVolumeValue = mediaRenderer->getVolume(true) - valueChange;
                         if (newVolumeValue > 100) newVolumeValue = 100;
                         if (newVolumeValue < 0) newVolumeValue = 0;
                         mediaRenderer->setVolume(newVolumeValue, sync);

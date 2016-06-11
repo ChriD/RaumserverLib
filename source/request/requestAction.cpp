@@ -125,9 +125,9 @@ namespace Raumserver
             std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
 
             if (!_id.empty())
-            {                
-                getManagerEngineer()->getZoneManager()->lockLists();
+            {                                
                 getManagerEngineer()->getDeviceManager()->lockDeviceList();
+                getManagerEngineer()->getZoneManager()->lockLists();
 
                 try
                 {
@@ -143,8 +143,8 @@ namespace Raumserver
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
-                getManagerEngineer()->getZoneManager()->unlockLists();                
+                getManagerEngineer()->getZoneManager()->unlockLists(); 
+                getManagerEngineer()->getDeviceManager()->unlockDeviceList();                               
             }
             return virtualRenderer;
         }
@@ -155,9 +155,9 @@ namespace Raumserver
             std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
 
             if (!_udn.empty())
-            {
-                getManagerEngineer()->getZoneManager()->lockLists();
+            {                
                 getManagerEngineer()->getDeviceManager()->lockDeviceList();
+                getManagerEngineer()->getZoneManager()->lockLists();
 
                 try
                 {                   
@@ -168,8 +168,8 @@ namespace Raumserver
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
-                getManagerEngineer()->getZoneManager()->unlockLists();                
+                getManagerEngineer()->getZoneManager()->unlockLists();
+                getManagerEngineer()->getDeviceManager()->unlockDeviceList();                
             }
             return virtualRenderer;
         }

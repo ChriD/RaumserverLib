@@ -71,9 +71,9 @@ namespace Raumserver
                 
                 std::int32_t trackIndex = 0;
                 if (!trackNumberString.empty())
-                    trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackNumberString);
+                    trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackNumberString) - 1;
                 else
-                    trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackIndexString) - 1;              
+                    trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackIndexString);              
 
                 // load the current media info from the renderer (we may get it from the subscripted info but to be save we get it directly)
                 auto mediaInfo = mediaRenderer->getMediaInfo(true);

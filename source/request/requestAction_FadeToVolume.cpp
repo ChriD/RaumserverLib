@@ -85,7 +85,7 @@ namespace Raumserver
                 if (newVolumeValue > 100) newVolumeValue = 100;
                 if (newVolumeValue < 0) newVolumeValue = 0;
                                    
-                mediaRenderer->fadeToVolume(valueVolume, duration, sync);
+                mediaRenderer->fadeToVolume(newVolumeValue, duration, sync);
             }
             // if we have no id provided, then we do the request an all zones
             else
@@ -104,7 +104,7 @@ namespace Raumserver
                         if (newVolumeValue > 100) newVolumeValue = 100;
                         if (newVolumeValue < 0) newVolumeValue = 0;
                                          
-                        mediaRenderer->fadeToVolume(valueVolume, duration, sync);
+                        mediaRenderer->fadeToVolume(newVolumeValue, duration, sync);
                     }
                 }
             }

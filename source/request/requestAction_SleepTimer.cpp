@@ -27,9 +27,9 @@ namespace Raumserver
             bool isValid = RequestAction::isValid();
 
             // examples for valid requests:
-            // raumserver/controller/sleepTimer&secundsUntilSleep=120&secondsForVolumeRamp=120
-            // raumserver/controller/sleepTimer?id=Schlafzimmer&secundsUntilSleep=120&secondsForVolumeRamp=120
-            // raumserver/controller/sleepTimer?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88&secundsUntilSleep=120&secondsForVolumeRamp=120
+            // raumserver/controller/sleepTimer&secondsUntilSleep=120&secondsForVolumeRamp=120
+            // raumserver/controller/sleepTimer?id=Schlafzimmer&secondsUntilSleep=120&secondsForVolumeRamp=120
+            // raumserver/controller/sleepTimer?id=uuid:3f68f253-df2a-4474-8640-fd45dd9ebf88&secondsUntilSleep=120&secondsForVolumeRamp=120
 
             auto secondsUntilSleepString = getOptionValue("secondsUntilSleep");
             auto secondsForVolumeRampString = getOptionValue("secondsForVolumeRamp", secondsUntilSleepString);
@@ -51,7 +51,7 @@ namespace Raumserver
 
             if (secondsForVolumeRamp < 50 && secondsUntilSleep != 0)
             {
-                logError("'secondsUntilSleep' has to be greater than 50", CURRENT_FUNCTION);
+                logError("'secondsForVolumeRamp' has to be greater than 50", CURRENT_FUNCTION);
                 isValid = false;
             }
 
