@@ -32,16 +32,19 @@ namespace Raumserver
 
 
         bool RequestActionReturnable_GetVersion::executeAction()
-        {          
-            Json::Value versionInfo;
-
+        {             
             auto kernelVersion = getManagerEngineerServer()->getRequestActionManager()->getKernelVersion();
             auto serverVersion = getManagerEngineerServer()->getRequestActionManager()->getServerVersion();
-            
-            versionInfo["versionInfo"]["raumkernelLib"] = kernelVersion.appVersion;
-            versionInfo["versionInfo"]["raumserverLib"] = serverVersion.appVersion;
 
-            setResponseData(versionInfo.toStyledString());
+            rapidjson::StringBuffer jsonStringBuffer;
+            rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
+
+            jsonWriter.StartObject();
+            jsonWriter.Key("raumkernelLib"); jsonWriter.String(kernelVersion.appVersion.c_str());
+            jsonWriter.Key("raumserverLib"); jsonWriter.String(serverVersion.appVersion.c_str());            
+            jsonWriter.EndObject();           
+
+            setResponseData(jsonStringBuffer.GetString());
            
             return true;
         }

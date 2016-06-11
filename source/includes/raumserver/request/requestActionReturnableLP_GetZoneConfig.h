@@ -41,7 +41,7 @@ namespace Raumserver
                 EXPORT virtual ~RequestActionReturnableLongPolling_GetZoneConfig();
 
             protected:
-                virtual std::string getActualLongPollingId() override;
+                virtual std::string getLastUpdateId() override;
         };
     }
 }

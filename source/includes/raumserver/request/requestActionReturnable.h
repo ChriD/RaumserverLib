@@ -26,7 +26,9 @@
 #define RAUMSERVER_REQUESTACTIONRETURNABLE_H
 
 #include <raumserver/request/requestAction.h>
-#include <raumserver/json/json.h>
+#include <raumserver/json/rapidjson/rapidjson.h>
+#include <raumserver/json/rapidjson/writer.h>
+#include <raumserver/json/rapidjson/stringbuffer.h>
 
 namespace Raumserver
 {

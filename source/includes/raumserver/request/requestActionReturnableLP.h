@@ -42,7 +42,7 @@ namespace Raumserver
                 EXPORT virtual ~RequestActionReturnableLongPolling();
 
             protected:
-                virtual std::string getActualLongPollingId();
+                virtual std::string getLastUpdateId();
         };
     }
 }
