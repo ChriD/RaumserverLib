@@ -51,5 +51,7 @@
 #include <raumserver/request/requestActionReturnable_GetVersion.h>
 
 #include <raumserver/request/requestActionReturnableLP_GetZoneConfig.h>
+#include <raumserver/request/requestActionReturnableLP_GetMediaList.h>
+#include <raumserver/request/requestActionReturnableLP_GetZoneMediaList.h>
 
 #endif

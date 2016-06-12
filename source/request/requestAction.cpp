@@ -291,6 +291,9 @@ namespace Raumserver
 
             // Returnable requests with long polling ability
             if (_requestActionType == RequestActionType::RAA_GETZONECONFIG) return "GETZONECONFIG";
+            if (_requestActionType == RequestActionType::RAA_GETMEDIALIST) return "GETMEDIALIST";
+            if (_requestActionType == RequestActionType::RAA_GETZONEMEDIALIST) return "GETZONEMEDIALIST";
+            
 
             return "";
         }
@@ -328,6 +331,8 @@ namespace Raumserver
 
             // Returnable requests with long polling ability
             if (_requestActionTypeString == "GETZONECONFIG") return RequestActionType::RAA_GETZONECONFIG;
+            if (_requestActionTypeString == "GETMEDIALIST") return RequestActionType::RAA_GETMEDIALIST;
+            if (_requestActionTypeString == "GETZONEMEDIALIST") return RequestActionType::RAA_GETZONEMEDIALIST;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -410,6 +415,8 @@ namespace Raumserver
 
                 // Returnable requests with long polling ability
                 case RequestActionType::RAA_GETZONECONFIG: return std::shared_ptr<RequestActionReturnableLongPolling_GetZoneConfig>(new RequestActionReturnableLongPolling_GetZoneConfig(_path, _queryString));
+                case RequestActionType::RAA_GETMEDIALIST: return std::shared_ptr<RequestActionReturnableLongPolling_GetMediaList>(new RequestActionReturnableLongPolling_GetMediaList(_path, _queryString));
+                case RequestActionType::RAA_GETZONEMEDIALIST: return std::shared_ptr<RequestActionReturnableLongPolling_GetZoneMediaList>(new RequestActionReturnableLongPolling_GetZoneMediaList(_path, _queryString));
             }
             
 

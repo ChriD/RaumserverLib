@@ -142,7 +142,7 @@ namespace Raumserver
             std::string headers = "";
             for (auto pair : _headerVars)
             {
-                headers += "\r\n" + pair.first + ":" + pair.second;
+                headers += pair.first + ":" + pair.second + "\r\n";
             }
 
             mg_printf(_conn, std::string( "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n" + headers + "Connection: close\r\n\r\n").c_str());

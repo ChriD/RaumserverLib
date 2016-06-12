@@ -22,9 +22,6 @@
     <Filter Include="includes\raumserver\json">
       <UniqueIdentifier>{8fc6299a-6c75-47ff-9378-83b88a47b247}</UniqueIdentifier>
     </Filter>
-    <Filter Include="json">
-      <UniqueIdentifier>{bf9f0fa6-7e2f-442d-b562-5c9527cf656a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="webserver\civetweb">
       <UniqueIdentifier>{51bc700e-e1f2-4ed9-8db7-60dd2f948e03}</UniqueIdentifier>
     </Filter>
@@ -43,6 +40,9 @@
     <Filter Include="includes\raumserver\webserver\civetweb">
       <UniqueIdentifier>{34d4a456-10ca-4146-a853-1418d1954477}</UniqueIdentifier>
     </Filter>
+    <Filter Include="includes\raumserver\json\rapidjson">
+      <UniqueIdentifier>{43eea932-1d8e-4505-8287-1e655b95259f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes\raumserver\raumserver.h">
@@ -50,9 +50,6 @@
     </ClInclude>
     <ClInclude Include="includes\raumserver\webserver\webserver.h">
       <Filter>includes\raumserver\webserver</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\raumserver\json\json.h">
-      <Filter>includes\raumserver\json</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumserver\webserver\civetweb\civetweb.h">
       <Filter>includes\raumserver\webserver\civetweb</Filter>
@@ -153,9 +150,6 @@
     <ClInclude Include="includes\raumserver\request\requestActionReturnable_GetVersion.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
-    <ClInclude Include="includes\raumserver\json\json-forwards.h">
-      <Filter>includes\raumserver\json</Filter>
-    </ClInclude>
     <ClInclude Include="includes\raumserver\versionNumber.h">
       <Filter>includes\raumserver</Filter>
     </ClInclude>
@@ -163,6 +157,12 @@
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneConfig.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetMediaList.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneMediaList.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
   </ItemGroup>
@@ -263,13 +263,16 @@
     <ClCompile Include="request\requestActionReturnable_GetVersion.cpp">
       <Filter>request</Filter>
     </ClCompile>
-    <ClCompile Include="json\jsoncpp.cpp">
-      <Filter>json</Filter>
-    </ClCompile>
     <ClCompile Include="request\requestActionReturnableLP.cpp">
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestActionReturnableLP_GetZoneConfig.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnableLP_GetMediaList.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnableLP_GetZoneMediaList.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

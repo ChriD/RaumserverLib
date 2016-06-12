@@ -65,7 +65,6 @@ LDFLAGS = $(ARCHITECTURE) -Wl,--no-as-needed -shared -pthread -static-libgcc -st
 RM = rm -f 
 
 SRCS = $(wildcard *.cpp)
-SRCS += $(wildcard json/*.cpp)
 SRCS += $(wildcard manager/*.cpp)
 SRCS += $(wildcard request/*.cpp)
 SRCS += $(wildcard webserver/*.cpp)

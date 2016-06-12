@@ -61,13 +61,17 @@ namespace Raumserver
             // if there is a long polling id we have to wait until the id changes before we execute the request
             else
             {
-                lastUpdateId = getLastUpdateId();
-                if (lpid != lastUpdateId)
+                while (true)
                 {
-                    ret = executeActionLongPolling();
+                    lastUpdateId = getLastUpdateId();
+                    if (lpid != lastUpdateId)
+                    {
+                        ret = executeActionLongPolling();
+                        break;
+                    }
+                    // wait a little bit to keep cpu load and lockings low
+                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
                 }
-                // wait a little bit to keep cpu load and lockings low
-                std::this_thread::sleep_for(std::chrono::milliseconds(250));
             }
 
             addResponseHeader("updateId", lastUpdateId);            
