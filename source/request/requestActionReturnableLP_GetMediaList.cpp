@@ -61,23 +61,47 @@ namespace Raumserver
         bool RequestActionReturnableLongPolling_GetMediaList::executeActionLongPolling()
         {      
             auto id = getOptionValue("id");                     
+            auto useCacheOption = getOptionValue("useCache");
             std::string lpid = getOptionValue("updateId");
+            bool useCache = (useCacheOption == "1" || useCacheOption == "true") ? true : false;
+            bool listGotFromCache = false;
+
+            std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> mediaList;
             
-            // if we do no long polling on a list id we havent loaded it yet, so for this we have to tell the manager
+            // if we do no long polling on a list id we haven't loaded it yet, so for this we have to tell the manager
             // that he has to load the stuff
             if (lpid.empty())
             {
-                connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);
-                managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
+                connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);                
 
-                while (!listRetrieved)
+                // we do have a simple cache option whcih will look if there is already a list with items loaded into the
+                // media list manager. The drawback of the simple caching is, that if the size of the list is 0 there is no caching
+                if (useCache)
+                {
+                    mediaList = managerEngineer->getMediaListManager()->getList(id);
+                    if (!mediaList.size())
+                        managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
+                    else
+                        listGotFromCache = true;
+                }
+                // Caching is disabled, we inform the media list manager that he has to load/reload the list
+                else
+                {
+                    managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
+                }
+
+                // wait till the list is loaded by the media lits manager. if the list was loaded from cache
+                // we do not have to wait for it (would lead to an endless loop)
+                while (!listRetrieved && !listGotFromCache)
                 {
                     std::this_thread::sleep_for(std::chrono::milliseconds(50));
                 }
             }
 
-            // after list is ready we get it and we create the json return
-            auto mediaList = managerEngineer->getMediaListManager()->getList(id);
+            // now the list is ready, no matter if t was retrieved by the media list manager or if it was loaded
+            // from the cache. If it was loaded from the cache (listGotFromCache) we do not need to get it again from the media manager
+            if (!listGotFromCache)
+                mediaList = managerEngineer->getMediaListManager()->getList(id);
 
             rapidjson::StringBuffer jsonStringBuffer;
             rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
