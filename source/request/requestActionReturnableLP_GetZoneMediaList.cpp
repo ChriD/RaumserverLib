@@ -34,7 +34,15 @@ namespace Raumserver
 
         std::string RequestActionReturnableLongPolling_GetZoneMediaList::getLastUpdateId()
         {
-            return "";
+            auto id = getOptionValue("id");
+            auto mediaRenderer = getVirtualMediaRenderer(id);
+            if (!mediaRenderer)            
+                return "";      
+
+            std::string zonePlaylistId = Raumkernel::Manager::LISTID_ZONEIDENTIFIER + mediaRenderer->getUDN();
+            auto lastUpdateId = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(zonePlaylistId);
+
+            return lastUpdateId;
         }
 
 

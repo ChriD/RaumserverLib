@@ -43,8 +43,10 @@ namespace Raumserver
 
 
         std::string RequestActionReturnableLongPolling_GetMediaList::getLastUpdateId()
-        {
-            return managerEngineer->getZoneManager()->getLastUpdateId();                        
+        {              
+            auto id = getOptionValue("id");
+            auto lastUpdateId = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(id);
+            return lastUpdateId;
         }
 
 
@@ -58,131 +60,53 @@ namespace Raumserver
 
         bool RequestActionReturnableLongPolling_GetMediaList::executeActionLongPolling()
         {      
-            auto id = getOptionValue("id");
-            //auto containerId = getOptionValue("containerId");            
-
-            connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);
+            auto id = getOptionValue("id");                     
+            std::string lpid = getOptionValue("updateId");
             
-            managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
-
-            while (!listRetrieved)
+            // if we do no long polling on a list id we havent loaded it yet, so for this we have to tell the manager
+            // that he has to load the stuff
+            if (lpid.empty())
             {
-                // TODO: @@@
-                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);
+                managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
+
+                while (!listRetrieved)
+                {
+                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                }
             }
 
+            // after list is ready we get it and we create the json return
             auto mediaList = managerEngineer->getMediaListManager()->getList(id);
 
             rapidjson::StringBuffer jsonStringBuffer;
             rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
+            
+            addMediaListToJson(id, mediaList, jsonWriter);
 
-            jsonWriter.StartArray();
-            for (auto mediaItem : mediaList)
+            setResponseData(jsonStringBuffer.GetString());
+
+            return true;
+         
+        }
+
+        void RequestActionReturnableLongPolling_GetMediaList::addMediaListToJson(const std::string &_id, std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> &_mediaList, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
+        {
+            _jsonWriter.StartObject();
+            _jsonWriter.Key("id"); _jsonWriter.String(_id.c_str());
+            _jsonWriter.Key("items");
+            _jsonWriter.StartArray();
+            for (auto mediaItem : _mediaList)
             {
                 // todo: get from Media object itself?!?!
-                jsonWriter.StartObject();
-                jsonWriter.Key("id"); jsonWriter.String(mediaItem->id.c_str());
-                jsonWriter.Key("parentId"); jsonWriter.String(mediaItem->parentId.c_str());
-                jsonWriter.Key("id"); jsonWriter.String(mediaItem->raumfeldName.c_str());
-                jsonWriter.EndObject();
+                _jsonWriter.StartObject();
+                _jsonWriter.Key("id"); _jsonWriter.String(mediaItem->id.c_str());
+                _jsonWriter.Key("parentId"); _jsonWriter.String(mediaItem->parentId.c_str());
+                _jsonWriter.Key("id"); _jsonWriter.String(mediaItem->raumfeldName.c_str());
+                _jsonWriter.EndObject();
             }
-            jsonWriter.EndArray();
-
-            setResponseData(jsonStringBuffer.GetString());
-
-
-            // TODO: @@@
-            // get list either from cache or retrieve new list (use the mediaListManager)
-            // subscript to list changed/retreived event on mediaListManager. if there is the list with the given id then go on
-            // check the updateIds of each list on the  mediaListManager manager
-
-
-            return true;
-            /*
-            std::unordered_map<std::string, Raumkernel::Manager::ZoneInformation> zoneInfoMap;
-            std::unordered_map<std::string, Raumkernel::Manager::RoomInformation> roomInfoMap;
-
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            getManagerEngineer()->getZoneManager()->lockLists();
-
-            try
-            {
-                zoneInfoMap = managerEngineer->getZoneManager()->getZoneInformationMap();
-                roomInfoMap = managerEngineer->getZoneManager()->getRoomInformationMap();              
-            }
-            catch (...)
-            {
-                logError("Unknown error", CURRENT_POSITION);
-            }                    
-
-            getManagerEngineer()->getZoneManager()->unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList(); 
-
-            rapidjson::StringBuffer jsonStringBuffer;
-            rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
-                      
-            jsonWriter.StartArray();
-            
-
-            for (auto pair : zoneInfoMap)
-            {
-                jsonWriter.StartObject();
-                jsonWriter.Key("UDN"); jsonWriter.String(pair.first.c_str());
-                jsonWriter.Key("name"); jsonWriter.String(pair.second.name.c_str());    
-                jsonWriter.Key("rooms");
-                jsonWriter.StartArray();
-
-                for (auto roomUDN : pair.second.roomsUDN)
-                {                    
-                    jsonWriter.StartObject();
-
-                    jsonWriter.Key("UDN"); jsonWriter.String(roomUDN.c_str());
-                    
-                    for (auto roomPair : roomInfoMap)
-                    {
-                        if (roomPair.first == roomUDN)
-                        {                          
-                            jsonWriter.Key("name"); jsonWriter.String(roomPair.second.name.c_str());
-                            jsonWriter.Key("color"); jsonWriter.String(roomPair.second.color.c_str());
-                            jsonWriter.Key("online"); jsonWriter.Bool(roomPair.second.isOnline);
-                        }
-                    }
-                    jsonWriter.EndObject();                    
-                }
-
-                jsonWriter.EndArray();
-                jsonWriter.EndObject();
-            }                       
-            
-            // add unasigned rooms to emoty zone array object
-
-            jsonWriter.StartObject();
-            jsonWriter.Key("UDN"); jsonWriter.String("");
-            jsonWriter.Key("name"); jsonWriter.String("");
-            jsonWriter.Key("rooms");
-            jsonWriter.StartArray();
-
-            for (auto pair : roomInfoMap)
-            {
-                if (pair.second.zoneUDN.empty())
-                {
-                    jsonWriter.StartObject();
-                    jsonWriter.Key("UDN"); jsonWriter.String(pair.second.UDN.c_str());
-                    jsonWriter.Key("name"); jsonWriter.String(pair.second.name.c_str());
-                    jsonWriter.Key("color"); jsonWriter.String(pair.second.color.c_str());
-                    jsonWriter.Key("online"); jsonWriter.Bool(pair.second.isOnline);                                                   
-                    jsonWriter.EndObject();                
-                }
-            }
-            jsonWriter.EndArray();
-            jsonWriter.EndObject();
-
-            jsonWriter.EndArray();
-                     
-            setResponseData(jsonStringBuffer.GetString());
-
-            return true;
-            */
+            _jsonWriter.EndArray();
+            _jsonWriter.EndObject();
         }
     }
 }

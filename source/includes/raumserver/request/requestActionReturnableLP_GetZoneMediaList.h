@@ -42,7 +42,7 @@ namespace Raumserver
 
             protected:
                 virtual std::string getLastUpdateId() override;
-                void RequestActionReturnableLongPolling_GetZoneMediaList::addMediaListToJson(const std::string &_zoneUDN, std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> &_mediaList, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);                
+                void addMediaListToJson(const std::string &_zoneUDN, std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> &_mediaList, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);                
 
                 std::atomic_bool listRetrieved;
                 sigs::connections connections;
