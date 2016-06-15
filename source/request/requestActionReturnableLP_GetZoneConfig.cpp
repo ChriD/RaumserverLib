@@ -93,7 +93,7 @@ namespace Raumserver
                 jsonWriter.EndObject();
             }                       
             
-            // add unasigned rooms to emoty zone array object
+            // add unasigned rooms to empty zone array object
 
             jsonWriter.StartObject();
             jsonWriter.Key("UDN"); jsonWriter.String("");

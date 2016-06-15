@@ -293,7 +293,8 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_GETZONECONFIG) return "GETZONECONFIG";
             if (_requestActionType == RequestActionType::RAA_GETMEDIALIST) return "GETMEDIALIST";
             if (_requestActionType == RequestActionType::RAA_GETZONEMEDIALIST) return "GETZONEMEDIALIST";
-            
+            if (_requestActionType == RequestActionType::RAA_GETRENDERERSTATE) return "GETRENDERERSTATE";
+            if (_requestActionType == RequestActionType::RAA_GETRENDERERTRANSPORTSTATE) return "GETRENDERERTRANSPORTSTATE";            
 
             return "";
         }
@@ -333,6 +334,8 @@ namespace Raumserver
             if (_requestActionTypeString == "GETZONECONFIG") return RequestActionType::RAA_GETZONECONFIG;
             if (_requestActionTypeString == "GETMEDIALIST") return RequestActionType::RAA_GETMEDIALIST;
             if (_requestActionTypeString == "GETZONEMEDIALIST") return RequestActionType::RAA_GETZONEMEDIALIST;
+            if (_requestActionTypeString == "GETRENDERERSTATE") return RequestActionType::RAA_GETRENDERERSTATE;
+            if (_requestActionTypeString == "GETRENDERERTRANSPORTSTATE") return RequestActionType::RAA_GETRENDERERTRANSPORTSTATE;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -417,6 +420,8 @@ namespace Raumserver
                 case RequestActionType::RAA_GETZONECONFIG: return std::shared_ptr<RequestActionReturnableLongPolling_GetZoneConfig>(new RequestActionReturnableLongPolling_GetZoneConfig(_path, _queryString));
                 case RequestActionType::RAA_GETMEDIALIST: return std::shared_ptr<RequestActionReturnableLongPolling_GetMediaList>(new RequestActionReturnableLongPolling_GetMediaList(_path, _queryString));
                 case RequestActionType::RAA_GETZONEMEDIALIST: return std::shared_ptr<RequestActionReturnableLongPolling_GetZoneMediaList>(new RequestActionReturnableLongPolling_GetZoneMediaList(_path, _queryString));
+                case RequestActionType::RAA_GETRENDERERSTATE: return std::shared_ptr<RequestActionReturnableLongPolling_GetRendererState>(new RequestActionReturnableLongPolling_GetRendererState(_path, _queryString));
+                case RequestActionType::RAA_GETRENDERERTRANSPORTSTATE: return std::shared_ptr<RequestActionReturnableLongPolling_GetRendererTransportState>(new RequestActionReturnableLongPolling_GetRendererTransportState(_path, _queryString));
             }
             
 

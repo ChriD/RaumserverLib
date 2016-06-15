@@ -165,6 +165,12 @@
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneMediaList.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetRendererState.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetRendererTransportState.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -273,6 +279,12 @@
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestActionReturnableLP_GetZoneMediaList.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnableLP_GetRendererState.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestActionReturnableLP_GetRendererTransportState.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

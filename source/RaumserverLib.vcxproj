@@ -91,6 +91,8 @@
     <ClInclude Include="includes\raumserver\request\requestActionReturnable.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetMediaList.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetRendererState.h" />
+    <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetRendererTransportState.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneConfig.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetZoneMediaList.h" />
     <ClInclude Include="includes\raumserver\request\requestActionReturnable_GetVersion.h" />
@@ -133,6 +135,8 @@
     <ClCompile Include="request\requestActionReturnable.cpp" />
     <ClCompile Include="request\requestActionReturnableLP.cpp" />
     <ClCompile Include="request\requestActionReturnableLP_GetMediaList.cpp" />
+    <ClCompile Include="request\requestActionReturnableLP_GetRendererState.cpp" />
+    <ClCompile Include="request\requestActionReturnableLP_GetRendererTransportState.cpp" />
     <ClCompile Include="request\requestActionReturnableLP_GetZoneConfig.cpp" />
     <ClCompile Include="request\requestActionReturnableLP_GetZoneMediaList.cpp" />
     <ClCompile Include="request\requestActionReturnable_GetVersion.cpp" />
