@@ -118,6 +118,34 @@ namespace Raumserver
             }
             return zoneUDN;
         }
+
+
+        std::shared_ptr<Raumkernel::Devices::MediaRenderer> RequestAction::getMediaRenderer(std::string _id)
+        {
+            std::shared_ptr<Raumkernel::Devices::MediaRenderer> renderer = nullptr;
+
+            if (!_id.empty())
+            {
+                getManagerEngineer()->getDeviceManager()->lockDeviceList();
+                getManagerEngineer()->getZoneManager()->lockLists();
+
+                try
+                {
+                    auto roomUDN = getRoomUDNFromId(_id);
+                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
+                    if (!rendererUDN.empty())
+                        renderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+                }
+                catch (...)
+                {
+                    logError("Unresolved Error!", CURRENT_FUNCTION);
+                }
+
+                getManagerEngineer()->getZoneManager()->unlockLists();
+                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+            }
+            return renderer;
+        }
           
 
         std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> RequestAction::getVirtualMediaRenderer(std::string _id)
@@ -125,7 +153,7 @@ namespace Raumserver
             std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
 
             if (!_id.empty())
-            {                                
+            {
                 getManagerEngineer()->getDeviceManager()->lockDeviceList();
                 getManagerEngineer()->getZoneManager()->lockLists();
 
@@ -143,8 +171,8 @@ namespace Raumserver
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getZoneManager()->unlockLists(); 
-                getManagerEngineer()->getDeviceManager()->unlockDeviceList();                               
+                getManagerEngineer()->getZoneManager()->unlockLists();
+                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
             }
             return virtualRenderer;
         }
