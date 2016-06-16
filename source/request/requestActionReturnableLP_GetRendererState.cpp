@@ -32,16 +32,25 @@ namespace Raumserver
 
         std::string RequestActionReturnableLongPolling_GetRendererState::getLastUpdateId()
         {
+            // check if any renderer has a new update id, or if a new renderer is appeard or disappeared
+            // run through the renderers and get current update id
+
+            //mapLastUpdateId
+
+            // store new renderer ids if something has changed
+
+            // TODO: @@@
             return "";
         }
 
 
-        void RequestActionReturnableLongPolling_GetRendererState::addRendererStateToJson(const std::string &_UDN, Raumkernel::Devices::MediaRendererState &_rendererState, bool _isZoneRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
+        void RequestActionReturnableLongPolling_GetRendererState::addRendererStateToJson(const std::string &_UDN, Raumkernel::Devices::MediaRendererState &_rendererState, std::shared_ptr<Raumkernel::Devices::MediaRenderer> _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
         {
             // TODO: @@@
             _jsonWriter.StartObject();
-            _jsonWriter.Key("udn"); _jsonWriter.String(_UDN.c_str());
-            _jsonWriter.Key("isZoneRenderer"); _jsonWriter.Bool(_isZoneRenderer);            
+            _jsonWriter.Key("udn"); _jsonWriter.String(_UDN.c_str());            
+            _jsonWriter.Key("friendlyName"); _jsonWriter.String(_mediaRenderer->getFriendlyName().c_str());
+            _jsonWriter.Key("isZoneRenderer"); _jsonWriter.Bool(_mediaRenderer->isZoneRenderer());
             _jsonWriter.Key("avTransportUri"); _jsonWriter.String(Raumkernel::Tools::UriUtil::unescape(_rendererState.aVTransportURI).c_str());
             _jsonWriter.Key("bitrate"); _jsonWriter.Uint(_rendererState.bitrate);
             _jsonWriter.Key("volume"); _jsonWriter.Uint(_rendererState.volume);
@@ -106,7 +115,7 @@ namespace Raumserver
                 }
 
                 rendererState = mediaRenderer->state();
-                addRendererStateToJson(mediaRenderer->getUDN(), rendererState, jsonWriter);
+                addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
             }
             // if we have no id provided, then we get the renderer state for all virtual renderers
             // and for all other non virtual renderers
@@ -114,6 +123,7 @@ namespace Raumserver
             {
                 // run through all virtual (zone) renderers
                 auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+
                 for (auto it : zoneInfoMap)
                 {
                     auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
@@ -121,7 +131,7 @@ namespace Raumserver
                     if (mediaRenderer)
                     {
                         rendererState = mediaRenderer->state();
-                        addRendererStateToJson(mediaRenderer->getUDN(), rendererState, jsonWriter);
+                        addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
                     }
                 }
 
@@ -129,18 +139,19 @@ namespace Raumserver
                 // the 'empty' udn of the zone map tells us that this is the 'rooms without zone' gathering zone
                 if (listAll)
                 {
-                    for (auto it : zoneInfoMap)
+                    auto roomInfoMap = getManagerEngineer()->getZoneManager()->getRoomInformationMap();
+
+                    for (auto pair : roomInfoMap)
                     {
-                        if (it.first.empty())
+                        if (pair.second.zoneUDN.empty())
                         {
-                            for (auto roomUDN : it.second.roomsUDN)
-                            {
-                                auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
+                            for (auto rendererUDN : pair.second.rendererUDN)
+                            {                                
                                 auto mediaRenderer = getMediaRenderer(rendererUDN);
                                 if (mediaRenderer)
                                 {
-                                    rendererState = mediaRenderer->state();
-                                    addRendererStateToJson(mediaRenderer->getUDN(), rendererState, jsonWriter);
+                                    rendererState = mediaRenderer->state();                                    
+                                    addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
                                 }
                             }
                         }

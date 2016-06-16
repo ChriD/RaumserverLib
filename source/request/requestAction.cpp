@@ -123,6 +123,7 @@ namespace Raumserver
         std::shared_ptr<Raumkernel::Devices::MediaRenderer> RequestAction::getMediaRenderer(std::string _id)
         {
             std::shared_ptr<Raumkernel::Devices::MediaRenderer> renderer = nullptr;
+            std::string rendererUDN;
 
             if (!_id.empty())
             {
@@ -132,7 +133,10 @@ namespace Raumserver
                 try
                 {
                     auto roomUDN = getRoomUDNFromId(_id);
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);
+                    if (roomUDN.empty())
+                        rendererUDN = _id;
+                    else
+                        rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);                
                     if (!rendererUDN.empty())
                         renderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
                 }

@@ -42,6 +42,8 @@ namespace Raumserver
 
             protected:
                 virtual std::string getLastUpdateId() override;
+
+                std::map<std::string, std::string> mapLastUpdateId;
         };
     }
 }

@@ -37,6 +37,18 @@ namespace Raumserver
         }
 
 
+        bool RequestActionReturnableLongPolling::hasLastUpdateIdChanged()
+        {            
+            auto lastUpdateId = getLastUpdateId();
+            std::string lpid = getOptionValue("updateId");
+
+            if (lpid != lastUpdateId)
+                return true;
+
+            return false;
+        }
+
+
         bool RequestActionReturnableLongPolling::executeActionLongPolling()
         {
             // this method has to be overwritten
@@ -62,15 +74,14 @@ namespace Raumserver
             else
             {
                 while (true)
-                {
-                    lastUpdateId = getLastUpdateId();
-                    if (lpid != lastUpdateId)
+                {                    
+                    if (hasLastUpdateIdChanged())
                     {
                         ret = executeActionLongPolling();
                         break;
                     }
                     // wait a little bit to keep cpu load and lockings low
-                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 }
             }
 
