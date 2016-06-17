@@ -1,5 +1,6 @@
 
 #include <raumserver/request/requestActionReturnableLP_GetZoneMediaList.h>
+#include <raumserver/json/mediaItemJsonCreator.h>
 
 namespace Raumserver
 {
@@ -53,12 +54,9 @@ namespace Raumserver
             _jsonWriter.Key("items");
             _jsonWriter.StartArray();
             for (auto mediaItem : _mediaList)
-            {
-                // todo: get from Media object itself?!?!
+            {                
                 _jsonWriter.StartObject();
-                _jsonWriter.Key("id"); _jsonWriter.String(mediaItem->id.c_str());
-                _jsonWriter.Key("parentId"); _jsonWriter.String(mediaItem->parentId.c_str());
-                _jsonWriter.Key("id"); _jsonWriter.String(mediaItem->raumfeldName.c_str());
+                MediaItemJsonCreator::addJson(mediaItem, _jsonWriter);           
                 _jsonWriter.EndObject();
             }
             _jsonWriter.EndArray();

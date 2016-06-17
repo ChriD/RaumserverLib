@@ -171,6 +171,9 @@
     <ClInclude Include="includes\raumserver\request\requestActionReturnableLP_GetRendererTransportState.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\json\mediaItemJsonCreator.h">
+      <Filter>includes\raumserver\json</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />

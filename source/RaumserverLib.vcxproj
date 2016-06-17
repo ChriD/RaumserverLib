@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="includes\raumserver\json\mediaItemJsonCreator.h" />
     <ClInclude Include="includes\raumserver\manager\managerBaseServer.h" />
     <ClInclude Include="includes\raumserver\manager\managerEngineerServer.h" />
     <ClInclude Include="includes\raumserver\manager\requestActionManager.h" />
