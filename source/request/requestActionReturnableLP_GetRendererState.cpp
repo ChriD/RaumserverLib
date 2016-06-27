@@ -1,5 +1,6 @@
 
 #include <raumserver/request/requestActionReturnableLP_GetRendererState.h>
+#include <raumserver/json/mediaItemJsonCreator.h>
 
 namespace Raumserver
 {
@@ -8,13 +9,13 @@ namespace Raumserver
 
         RequestActionReturnableLongPolling_GetRendererState::RequestActionReturnableLongPolling_GetRendererState(std::string _url) : RequestActionReturnableLongPolling(_url)
         {
-            action = RequestActionType::RAA_GETRENDERERSTATE;
+            action = RequestActionType::RAA_GETRENDERERSTATE;            
         }
 
 
         RequestActionReturnableLongPolling_GetRendererState::RequestActionReturnableLongPolling_GetRendererState(std::string _path, std::string _query) : RequestActionReturnableLongPolling(_path, _query)
         {
-            action = RequestActionType::RAA_GETRENDERERSTATE;
+            action = RequestActionType::RAA_GETRENDERERSTATE;            
         }
 
 
@@ -28,19 +29,48 @@ namespace Raumserver
             bool isValid = RequestActionReturnableLongPolling::isValid();
             return isValid;
         }
-
+      
 
         std::string RequestActionReturnableLongPolling_GetRendererState::getLastUpdateId()
-        {
-            // check if any renderer has a new update id, or if a new renderer is appeard or disappeared
-            // run through the renderers and get current update id
+        {                                 
+            std::string lastUpdateIdCur, rendererUDN, lastUpdateIdSum;
+            std::uint32_t lastUpdateSum = 0;
 
-            //mapLastUpdateId
+            // if we are called by a specific zone renderer id we only check this for a new update id
+            auto id = getOptionValue("id");
+            auto lpid = getOptionValue("updateId");
 
-            // store new renderer ids if something has changed
+            if (!id.empty())
+            {
+                auto mediaRenderer = getVirtualMediaRenderer(id);
+                if (!mediaRenderer)
+                {
+                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                    return "";
+                }
 
-            // TODO: @@@
-            return "";
+                lastUpdateIdSum = mediaRenderer->getLastRendererStateUpdateId();
+            }
+            // run through the renderers and get current update id by summing up the values
+            // if the value is other than given in header something has changed. 
+            // It could be that the sum of the update ids may be the same (imaging bchanges on 2 renderers and the invidious case that the values would be the same sum) 
+            else
+            {
+                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                for (auto it : zoneInfoMap)
+                {
+                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                    if (mediaRenderer)
+                    {
+                        lastUpdateIdCur = mediaRenderer->getLastRendererStateUpdateId();                        
+                        lastUpdateSum += std::stoi(lastUpdateIdCur);
+                    }
+                }
+                lastUpdateIdSum = std::to_string(lastUpdateSum);
+            }
+
+            return lastUpdateIdSum;
         }
 
 
@@ -62,15 +92,10 @@ namespace Raumserver
             _jsonWriter.Key("transportState"); _jsonWriter.String(Raumkernel::Devices::ConversionTool::transportStateToString(_rendererState.transportState).c_str());
 
             _jsonWriter.Key("mediaItem");
-            _jsonWriter.StartObject();
-            // TODO: add media item infos (get direct from media item?!)
+            _jsonWriter.StartObject();            
             if (_rendererState.currentMediaItem)
-            {
-                _jsonWriter.Key("id"); _jsonWriter.String(_rendererState.currentMediaItem->id.c_str());
-                _jsonWriter.Key("parentId"); _jsonWriter.String(_rendererState.currentMediaItem->parentId.c_str());
-                _jsonWriter.Key("upnpClass"); _jsonWriter.String(_rendererState.currentMediaItem->upnpClass.c_str());
-                _jsonWriter.Key("type"); _jsonWriter.String(Raumkernel::Media::Item::MediaItem::mediaItemTypeToString(_rendererState.currentMediaItem->type).c_str());
-                _jsonWriter.Key("id"); _jsonWriter.String(_rendererState.currentMediaItem->raumfeldName.c_str());
+            {                
+                MediaItemJsonCreator::addJson(_rendererState.currentMediaItem, _jsonWriter);
             }
             _jsonWriter.EndObject();
                           

@@ -9,12 +9,14 @@ namespace Raumserver
         RequestActionReturnableLongPolling::RequestActionReturnableLongPolling(std::string _url) : RequestActionReturnable(_url)
         {  
             action = RequestActionType::RAA_UNDEFINED;
+            lastUpdateId = "";
         }
 
 
         RequestActionReturnableLongPolling::RequestActionReturnableLongPolling(std::string _path, std::string _query) : RequestActionReturnable(_path, _query)
         {    
             action = RequestActionType::RAA_UNDEFINED;
+            lastUpdateId = "";
         }
 
 
@@ -38,13 +40,10 @@ namespace Raumserver
 
 
         bool RequestActionReturnableLongPolling::hasLastUpdateIdChanged()
-        {            
-            auto lastUpdateId = getLastUpdateId();
+        {                        
             std::string lpid = getOptionValue("updateId");
-
             if (lpid != lastUpdateId)
                 return true;
-
             return false;
         }
 
@@ -58,15 +57,14 @@ namespace Raumserver
 
         bool RequestActionReturnableLongPolling::executeAction()
         {          
-            bool ret = false;
-            std::string lastUpdateId = "";
+            bool ret = false;            
 
             // get long polling id 
             std::string lpid = getOptionValue("updateId");
-
+            
             // when there is no longpolling then only execute request
             if (lpid.empty())
-            {
+            {             
                 lastUpdateId = getLastUpdateId();
                 ret = executeActionLongPolling();
             }
@@ -74,7 +72,8 @@ namespace Raumserver
             else
             {
                 while (true)
-                {                    
+                {      
+                    lastUpdateId = getLastUpdateId();
                     if (hasLastUpdateIdChanged())
                     {
                         ret = executeActionLongPolling();

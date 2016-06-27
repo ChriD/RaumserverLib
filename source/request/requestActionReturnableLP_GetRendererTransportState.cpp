@@ -55,8 +55,7 @@ namespace Raumserver
                 }                
                
                 // TODO: @@@
-            }
-            // if we have no id provided, then we get the playlist for all virtual renderers
+            }           
             else
             {
                 auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();

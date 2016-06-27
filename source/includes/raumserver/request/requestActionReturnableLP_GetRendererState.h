@@ -38,11 +38,11 @@ namespace Raumserver
                 EXPORT RequestActionReturnableLongPolling_GetRendererState(std::string _path, std::string _query);
                 EXPORT virtual ~RequestActionReturnableLongPolling_GetRendererState();
                 EXPORT virtual bool isValid() override;
-                EXPORT virtual bool executeActionLongPolling() override;                 
+                EXPORT virtual bool executeActionLongPolling() override;                  
 
             protected:
-                virtual std::string getLastUpdateId() override;               
-                void addRendererStateToJson(const std::string &_zoneUDN, Raumkernel::Devices::MediaRendererState &_rendererState, std::shared_ptr<Raumkernel::Devices::MediaRenderer> _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);
+                virtual std::string getLastUpdateId() override;                       
+                void addRendererStateToJson(const std::string &_zoneUDN, Raumkernel::Devices::MediaRendererState &_rendererState, std::shared_ptr<Raumkernel::Devices::MediaRenderer> _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);                                
         };
     }
 }
