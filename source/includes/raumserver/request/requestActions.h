@@ -47,6 +47,7 @@
 #include <raumserver/request/requestAction_ToggleMute.h>
 #include <raumserver/request/requestAction_FadeToVolume.h>
 #include <raumserver/request/requestAction_SleepTimer.h>
+#include <raumserver/request/requestAction_LoadShuffle.h>
 
 #include <raumserver/request/requestActionReturnable_GetVersion.h>
 

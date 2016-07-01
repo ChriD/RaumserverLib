@@ -104,6 +104,7 @@
     <ClInclude Include="includes\raumserver\request\requestAction_FadeToVolume.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadContainer.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadPlaylist.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_LoadShuffle.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadUri.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Mute.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_Next.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="request\requestAction_FadeToVolume.cpp" />
     <ClCompile Include="request\requestAction_LoadContainer.cpp" />
     <ClCompile Include="request\requestAction_LoadPlaylist.cpp" />
+    <ClCompile Include="request\requestAction_LoadShuffle.cpp" />
     <ClCompile Include="request\requestAction_LoadUri.cpp" />
     <ClCompile Include="request\requestAction_Mute.cpp" />
     <ClCompile Include="request\requestAction_Next.cpp" />

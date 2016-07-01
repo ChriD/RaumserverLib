@@ -317,6 +317,7 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_TOGGLEMUTE) return "TOGGLEMUTE";
             if (_requestActionType == RequestActionType::RAA_SLEEPTIMER) return "SLEEPTIMER";
             if (_requestActionType == RequestActionType::RAA_SEEKTOTRACK) return "SEEKTOTRACK";
+            if (_requestActionType == RequestActionType::RAA_LOADSHUFFLE) return "LOADSHUFFLE";
 
             // Returnable requests
             if (_requestActionType == RequestActionType::RAA_GETVERSION) return "GETVERSION";
@@ -358,6 +359,7 @@ namespace Raumserver
             if (_requestActionTypeString == "TOGGLEMUTE") return RequestActionType::RAA_TOGGLEMUTE;
             if (_requestActionTypeString == "SLEEPTIMER") return RequestActionType::RAA_SLEEPTIMER;
             if (_requestActionTypeString == "SEEKTOTRACK") return RequestActionType::RAA_SEEKTOTRACK;
+            if (_requestActionTypeString == "LOADSHUFFLE") return RequestActionType::RAA_LOADSHUFFLE;
 
             // Returnable requests
             if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_GETVERSION;       
@@ -444,6 +446,7 @@ namespace Raumserver
                 case RequestActionType::RAA_FADETOVOLUME: return std::shared_ptr<RequestAction_FadeToVolume>(new RequestAction_FadeToVolume(_path, _queryString));
                 case RequestActionType::RAA_TOGGLEMUTE: return std::shared_ptr<RequestAction_ToggleMute>(new RequestAction_ToggleMute(_path, _queryString));
                 case RequestActionType::RAA_SLEEPTIMER: return std::shared_ptr<RequestAction_SleepTimer>(new RequestAction_SleepTimer(_path, _queryString));
+                case RequestActionType::RAA_LOADSHUFFLE: return std::shared_ptr<RequestAction_LoadShuffle>(new RequestAction_LoadShuffle(_path, _queryString));
 
                  // Returnable requests 
                 case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));
