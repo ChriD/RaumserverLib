@@ -85,7 +85,38 @@ namespace Raumserver
                 object.container.playlistContainer.shuffle.search 0/Playlists/Shuffles/Artists
                 */
 
+                auto lastUpdateId = mediaRenderer->getLastRendererStateUpdateId();
+
                 mediaRenderer->loadShuffle(source, selection);
+
+                //auto state = mediaRenderer->getTransportInfo().currentTransportState;
+                //auto status = mediaRenderer->getTransportInfo().currentTransportStatus;
+
+                /*
+                // I dont know when the fucking shuffle is loaded and ready.....Damn!
+                // TODO: Wait till transport state of renderer is != TRANSITIONING
+                std::this_thread::sleep_for(std::chrono::milliseconds(150));
+                while (true)
+                {
+                    //auto state = mediaRenderer->getTransportInfo().currentTransportState;
+                    //auto status = mediaRenderer->getTransportInfo().currentTransportStatus;
+
+                    auto curLastUpdateId = mediaRenderer->getLastRendererStateUpdateId();
+                    if (lastUpdateId != curLastUpdateId)
+                    {
+                        if (mediaRenderer->state().transportState != Raumkernel::Devices::MediaRenderer_TransportState::MRTS_TRANSITIONING);
+                            break;
+                        lastUpdateId = curLastUpdateId;                        
+                    }
+                    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+                }
+                */
+
+                // TODO: wait till list is loaded in the list manager?!
+                
+                
+                
+
             }
 
             return true;

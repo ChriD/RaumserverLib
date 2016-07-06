@@ -11,6 +11,7 @@ namespace Raumserver
         {
             action = RequestActionType::RAA_GETMEDIALIST;
             listRetrieved = false;
+            formatedContainerId = "";
         }
 
 
@@ -18,6 +19,7 @@ namespace Raumserver
         {
             action = RequestActionType::RAA_GETMEDIALIST;
             listRetrieved = false;
+            formatedContainerId = "";
         }
 
 
@@ -52,9 +54,8 @@ namespace Raumserver
 
 
         void RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged(std::string _listId)
-        {
-            auto id = getOptionValue("id");
-            if (id == _listId)
+        {            
+            if (!_listId.empty() && formatedContainerId == _listId)
                 listRetrieved = true;            
         }
         
@@ -65,7 +66,7 @@ namespace Raumserver
             auto useCacheOption = getOptionValue("useCache");
             std::string lpid = getOptionValue("updateId");
             bool useCache = (useCacheOption == "1" || useCacheOption == "true") ? true : false;
-            bool listGotFromCache = false;
+            bool listGotFromCache = false;            
 
             std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> mediaList;
             
@@ -73,22 +74,39 @@ namespace Raumserver
             // that he has to load the stuff
             if (lpid.empty())
             {
-                connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);                
+                connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged); 
 
+                // the id has to be formated well. That measn that the part after the last "/" has to be encoded
+                auto parts = Raumkernel::Tools::StringUtil::explodeString(id, "/");
+                if (parts.size() > 1)
+                {
+                    parts[parts.size() - 1] = Raumkernel::Tools::UriUtil::encodeUriPart(parts[parts.size() - 1]);
+                    for (auto part : parts)
+                    {
+                        if (!formatedContainerId.empty())
+                            formatedContainerId += "/";
+                        formatedContainerId += part;
+                    }
+                }
+                else
+                {
+                    formatedContainerId = id;
+                }             
+       
                 // we do have a simple cache option whcih will look if there is already a list with items loaded into the
                 // media list manager. The drawback of the simple caching is, that if the size of the list is 0 there is no caching
                 if (useCache)
                 {
-                    mediaList = managerEngineer->getMediaListManager()->getList(id);
-                    if (!mediaList.size())
-                        managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
+                    mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
+                    if (!mediaList.size())                    
+                        managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
                     else
                         listGotFromCache = true;
                 }
                 // Caching is disabled, we inform the media list manager that he has to load/reload the list
                 else
                 {
-                    managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(id);
+                    managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
                 }
 
                 // wait till the list is loaded by the media lits manager. if the list was loaded from cache
@@ -102,12 +120,12 @@ namespace Raumserver
             // now the list is ready, no matter if t was retrieved by the media list manager or if it was loaded
             // from the cache. If it was loaded from the cache (listGotFromCache) we do not need to get it again from the media manager
             if (!listGotFromCache)
-                mediaList = managerEngineer->getMediaListManager()->getList(id);
+                mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
 
             rapidjson::StringBuffer jsonStringBuffer;
             rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
             
-            addMediaListToJson(id, mediaList, jsonWriter);
+            addMediaListToJson(formatedContainerId, mediaList, jsonWriter);
 
             setResponseData(jsonStringBuffer.GetString());
 

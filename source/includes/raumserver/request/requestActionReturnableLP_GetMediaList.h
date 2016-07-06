@@ -45,6 +45,7 @@ namespace Raumserver
                 virtual void onMediaListDataChanged(std::string _listId);
                 void addMediaListToJson(const std::string &_id, std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> &_mediaList, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);
 
+                std::string formatedContainerId;
                 std::atomic_bool listRetrieved;
                 sigs::connections connections;
         };
