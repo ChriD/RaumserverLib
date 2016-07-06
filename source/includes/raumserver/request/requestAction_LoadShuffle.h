@@ -41,6 +41,11 @@ namespace Raumserver
                 EXPORT virtual bool isValid() override;
 
             protected:
+                virtual void onMediaListDataChanged(std::string _listId);
+
+                std::string shuffleContainerId;
+                std::atomic_bool listRetrieved;
+                sigs::connections connections;
         };
     }
 }

@@ -8,12 +8,16 @@ namespace Raumserver
         RequestAction_LoadShuffle::RequestAction_LoadShuffle(std::string _url) : RequestAction(_url)
         {
             action = RequestActionType::RAA_LOADSHUFFLE;
+            listRetrieved = false;
+            shuffleContainerId = "";
         }
 
 
         RequestAction_LoadShuffle::RequestAction_LoadShuffle(std::string _path, std::string _query) : RequestAction(_path, _query)
         {
             action = RequestActionType::RAA_LOADSHUFFLE;
+            listRetrieved = false;
+            shuffleContainerId = "";
         }
 
 
@@ -45,6 +49,13 @@ namespace Raumserver
             }
 
             return isValid;
+        }
+
+
+        void RequestAction_LoadShuffle::onMediaListDataChanged(std::string _listId)
+        {
+            if (!_listId.empty() && shuffleContainerId == _listId)
+                listRetrieved = true;
         }
 
 
@@ -85,7 +96,9 @@ namespace Raumserver
                 object.container.playlistContainer.shuffle.search 0/Playlists/Shuffles/Artists
                 */
 
-                auto lastUpdateId = mediaRenderer->getLastRendererStateUpdateId();
+                //connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestAction_LoadShuffle::onMediaListDataChanged);
+
+                //auto lastUpdateId = mediaRenderer->getLastRendererStateUpdateId();
 
                 mediaRenderer->loadShuffle(source, selection);
 
@@ -114,7 +127,12 @@ namespace Raumserver
 
                 // TODO: wait till list is loaded in the list manager?!
                 
-                
+                // wait till the list is loaded by the media lits manager. if the list was loaded from cache
+                // we do not have to wait for it (would lead to an endless loop)
+                // while (!listRetrieved)
+                //{
+                //    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                //}
                 
 
             }
