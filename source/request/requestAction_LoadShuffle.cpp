@@ -62,7 +62,7 @@ namespace Raumserver
         bool RequestAction_LoadShuffle::executeAction()
         {
             auto id = getOptionValue("id");
-            auto source = getOptionValue("source");
+            auto source = Raumkernel::Tools::StringUtil::tolower(getOptionValue("source"));
             auto selection = getOptionValue("selection");
 
             // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
