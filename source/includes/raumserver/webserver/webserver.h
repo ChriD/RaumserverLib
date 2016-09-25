@@ -34,8 +34,7 @@
 #include <raumserver/manager/managerEngineerServer.h>
 #include <raumserver/webserver/civetweb/civetServer.h>
 
-//#define DOCUMENT_ROOT "docroot"
-#define DOCUMENT_ROOT "."
+#define DOCUMENT_ROOT "docroot"
 
 #define fopen_recursive fopen
 
@@ -77,21 +76,6 @@ namespace Raumserver
         };
 
 
-        class RequestHandlerVoid : public RequestHandlerBase
-        {
-            public:
-                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
-        };
-
-
-        class RequestHandlerWebClient : public RequestHandlerBase
-        {
-            public:
-                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
-                bool handlePut(CivetServer *_server, struct mg_connection *_conn) override;
-        };
-
-
         class Webserver : public RaumserverBaseMgr
         {
             public:
@@ -103,9 +87,7 @@ namespace Raumserver
             protected:                  
                 std::shared_ptr<CivetServer> serverObject;             
                 std::shared_ptr<RequestHandlerController> serverRequestHandlerController;
-                std::shared_ptr<RequestHandlerData> serverRequestHandlerData;
-                std::shared_ptr<RequestHandlerVoid> serverRequestHandlerVoid;                
-                std::shared_ptr<RequestHandlerWebClient> serverRequestHandlerWebClient;
+                std::shared_ptr<RequestHandlerData> serverRequestHandlerData;           
 
                 bool isStarted;
         };

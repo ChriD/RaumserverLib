@@ -55,21 +55,6 @@ namespace Raumserver
                 serverRequestHandlerData->setLogObject(getLogObject());
                 serverObject->addHandler("/raumserver/data", serverRequestHandlerData.get());
 
-                // add a general handler for wrong path requests
-                /*
-                serverRequestHandlerVoid = std::shared_ptr<RequestHandlerVoid>(new RequestHandlerVoid());
-                serverRequestHandlerVoid->setManagerEngineerServer(getManagerEngineerServer());
-                serverRequestHandlerVoid->setManagerEngineerKernel(getManagerEngineer());
-                serverRequestHandlerVoid->setLogObject(getLogObject());
-                serverObject->addHandler("", serverRequestHandlerVoid.get());
-                */
-
-                // add awebClient document root for 3rd party web clients
-                serverRequestHandlerWebClient = std::shared_ptr<RequestHandlerWebClient>(new RequestHandlerWebClient());
-                serverRequestHandlerWebClient->setManagerEngineerServer(getManagerEngineerServer());
-                serverRequestHandlerWebClient->setManagerEngineerKernel(getManagerEngineer());
-                serverRequestHandlerWebClient->setLogObject(getLogObject());
-                serverObject->addHandler("", serverRequestHandlerWebClient.get());
                                                          
                 logInfo("Webserver for requests started (Port: " + std::to_string(_port) + ")", CURRENT_POSITION);
                 isStarted = true;
@@ -165,23 +150,6 @@ namespace Raumserver
         }
 
 
-
-        bool RequestHandlerVoid::handleGet(CivetServer *_server, struct mg_connection *_conn)
-        {
-            // Check if system is online, otherwise don't execute!
-            if (!getManagerEngineerServer() || !getManagerEngineerServer()->isSystemReady())
-            {
-                sendResponse(_conn, "Raumfeld System is not ready to receive requests!", true);
-                return false;
-            }
-
-            const struct mg_request_info *request_info = mg_get_request_info(_conn);
-            sendResponse(_conn, "Wrong request path! Please check to the documentation for the valid path!", true);
-            return true;         
-        }
-
-
-
         bool RequestHandlerController::handleGet(CivetServer *_server, struct mg_connection *_conn)
         {
             // Check if system is online, otherwise don't execute!
@@ -254,107 +222,6 @@ namespace Raumserver
         bool RequestHandlerData::handleGet(CivetServer *_server, struct mg_connection *_conn)
         {
             return RequestHandlerController::handleGet(_server, _conn);
-        }
-
-
-        // TODO: @@@
-        bool RequestHandlerWebClient::handleGet(CivetServer *server, struct mg_connection *_conn)
-        {
-            /* Handler may access the request info using mg_get_request_info */
-            /*
-            const struct mg_request_info *req_info = mg_get_request_info(conn);
-
-            mg_printf(conn,
-                "HTTP/1.1 200 OK\r\nContent-Type: "
-                "text/html\r\nConnection: close\r\n\r\n");
-
-            mg_printf(conn, "<html><body>\n");
-            mg_printf(conn, "<h2>This is the Foo GET handler!!!</h2>\n");
-            mg_printf(conn,
-                "<p>The request was:<br><pre>%s %s HTTP/%s</pre></p>\n",
-                req_info->request_method,
-                req_info->uri,
-                req_info->http_version);
-            mg_printf(conn, "</body></html>\n");
-
-            return true;
-            */            
-            /* In this handler, we ignore the req_info and send the file "fileName". */
-            const struct mg_request_info *req_info = mg_get_request_info(_conn);
-            const char *fileName = (const char *)req_info->local_uri;
-            //const char *fileName = "index.html";
-            mg_send_file(_conn, fileName);
-            return true;
-        }
-
-        bool RequestHandlerWebClient::handlePut(CivetServer *_server, struct mg_connection *_conn)
-        {
-            // web client should always be enabled, no matter if raumfeld system is ready or not
-            //const struct mg_request_info *request_info = mg_get_request_info(_conn);
-            //sendResponse(_conn, "Wrong request path! Please check to the documentation for the valid path!", true);
-            // TODO: @@@
-            const struct mg_request_info *req_info = mg_get_request_info(_conn);
-            long long rlen, wlen;
-            long long nlen = 0;
-            long long tlen = req_info->content_length;
-            FILE * f;
-            char buf[1024];
-            int fail = 0;
-
-            #ifdef _WIN32
-                        _snprintf(buf, sizeof(buf), "docroot\\%s", req_info->local_uri);
-                        //_snprintf(buf, sizeof(buf), "docroot\\%s", "index.html"); // TODO: @@@@ test!!!
-                        buf[sizeof(buf)-1] = 0; /* TODO: check overflow */
-                        f = fopen_recursive(buf, "wb");
-            #else
-                        snprintf(buf, sizeof(buf), "docroot/%s", req_info->local_uri);
-                        buf[sizeof(buf)-1] = 0; /* TODO: check overflow */
-                        f = fopen_recursive(buf, "w");
-            #endif
-
-            if (!f) {
-                fail = 1;
-            }
-            else {
-                while (nlen < tlen) {
-                    rlen = tlen - nlen;
-                    if (rlen > sizeof(buf)) {
-                        rlen = sizeof(buf);
-                    }
-                    rlen = mg_read(_conn, buf, (size_t)rlen);
-                    if (rlen <= 0) {
-                        fail = 1;
-                        break;
-                    }
-                    wlen = fwrite(buf, 1, (size_t)rlen, f);
-                    if (rlen != rlen) {
-                        fail = 1;
-                        break;
-                    }
-                    nlen += wlen;
-                }
-                fclose(f);
-            }
-
-            if (fail) {
-                mg_printf(_conn,
-                    "HTTP/1.1 409 Conflict\r\n"
-                    "Content-Type: text/plain\r\n"
-                    "Access-Control-Allow-Origin: *\r\n"
-                    "Connection: close\r\n\r\n");
-            }
-            else {
-                mg_printf(_conn,
-                    "HTTP/1.1 201 Created\r\n"
-                    "Content-Type: text/plain\r\n"
-                    "Access-Control-Allow-Origin: *\r\n"
-                    "Connection: close\r\n\r\n");
-            }
-
-            return true;
-
-
-            return true;
         }
    
     }
