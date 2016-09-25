@@ -128,7 +128,7 @@ namespace Raumserver
 
         void RequestHandlerBase::sendResponse(struct mg_connection *_conn, std::string _string, bool _error)
         {
-            mg_printf(_conn, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n\r\n");
+            mg_printf(_conn, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\nAccess-Control-Allow-Origin: *\r\n\r\n");
             mg_printf(_conn, "<html><body>\r\n");
             mg_printf(_conn, "<h2>Raumserver</h2>\r\n");
             mg_printf(_conn, _string.c_str());
@@ -145,7 +145,7 @@ namespace Raumserver
                 headers += pair.first + ":" + pair.second + "\r\n";
             }
 
-            mg_printf(_conn, std::string( "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n" + headers + "Connection: close\r\n\r\n").c_str());
+            mg_printf(_conn, std::string("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nAccess-Control-Allow-Origin: *\r\n" + headers + "Connection: close\r\n\r\n").c_str());
             mg_printf(_conn, _string.c_str());         
         }
 
