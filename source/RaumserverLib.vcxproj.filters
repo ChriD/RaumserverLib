@@ -177,6 +177,15 @@
     <ClInclude Include="includes\raumserver\request\requestAction_LoadShuffle.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_EnterAutomaticStandby.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_EnterManualStandby.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_LeaveStandby.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -294,6 +303,15 @@
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestAction_LoadShuffle.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_EnterAutomaticStandby.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_EnterManualStandby.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_LeaveStandby.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

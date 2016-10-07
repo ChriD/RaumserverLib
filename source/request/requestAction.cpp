@@ -318,6 +318,9 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_SLEEPTIMER) return "SLEEPTIMER";
             if (_requestActionType == RequestActionType::RAA_SEEKTOTRACK) return "SEEKTOTRACK";
             if (_requestActionType == RequestActionType::RAA_LOADSHUFFLE) return "LOADSHUFFLE";
+            if (_requestActionType == RequestActionType::RAA_ENTERAUTOMATICSTANDBY) return "ENTERAUTOMATICSTANDBY";
+            if (_requestActionType == RequestActionType::RAA_ENTERMANUALSTANDBY) return "ENTERMANUALSTANDBY";
+            if (_requestActionType == RequestActionType::RAA_LEAVESTANDBY) return "LEAVESTANDBY";
 
             // Returnable requests
             if (_requestActionType == RequestActionType::RAA_GETVERSION) return "GETVERSION";
@@ -360,6 +363,9 @@ namespace Raumserver
             if (_requestActionTypeString == "SLEEPTIMER") return RequestActionType::RAA_SLEEPTIMER;
             if (_requestActionTypeString == "SEEKTOTRACK") return RequestActionType::RAA_SEEKTOTRACK;
             if (_requestActionTypeString == "LOADSHUFFLE") return RequestActionType::RAA_LOADSHUFFLE;
+            if (_requestActionTypeString == "ENTERAUTOMATICSTANDBY") return RequestActionType::RAA_ENTERAUTOMATICSTANDBY;
+            if (_requestActionTypeString == "ENTERMANUALSTANDBY") return RequestActionType::RAA_ENTERMANUALSTANDBY;
+            if (_requestActionTypeString == "LEAVESTANDBY") return RequestActionType::RAA_LEAVESTANDBY;
 
             // Returnable requests
             if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_GETVERSION;       
@@ -447,6 +453,9 @@ namespace Raumserver
                 case RequestActionType::RAA_TOGGLEMUTE: return std::shared_ptr<RequestAction_ToggleMute>(new RequestAction_ToggleMute(_path, _queryString));
                 case RequestActionType::RAA_SLEEPTIMER: return std::shared_ptr<RequestAction_SleepTimer>(new RequestAction_SleepTimer(_path, _queryString));
                 case RequestActionType::RAA_LOADSHUFFLE: return std::shared_ptr<RequestAction_LoadShuffle>(new RequestAction_LoadShuffle(_path, _queryString));
+                case RequestActionType::RAA_ENTERAUTOMATICSTANDBY: return std::shared_ptr<RequestAction_EnterAutomaticStandby>(new RequestAction_EnterAutomaticStandby(_path, _queryString));
+                case RequestActionType::RAA_ENTERMANUALSTANDBY: return std::shared_ptr<RequestAction_EnterManualStandby>(new RequestAction_EnterManualStandby(_path, _queryString));
+                case RequestActionType::RAA_LEAVESTANDBY: return std::shared_ptr<RequestAction_LeaveStandby>(new RequestAction_LeaveStandby(_path, _queryString));
 
                  // Returnable requests 
                 case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));

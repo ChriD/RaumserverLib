@@ -48,6 +48,9 @@
 #include <raumserver/request/requestAction_FadeToVolume.h>
 #include <raumserver/request/requestAction_SleepTimer.h>
 #include <raumserver/request/requestAction_LoadShuffle.h>
+#include <raumserver/request/requestAction_EnterAutomaticStandby.h>
+#include <raumserver/request/requestAction_EnterManualStandby.h>
+#include <raumserver/request/requestAction_LeaveStandby.h>
 
 #include <raumserver/request/requestActionReturnable_GetVersion.h>
 

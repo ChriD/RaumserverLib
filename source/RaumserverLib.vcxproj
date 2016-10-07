@@ -101,7 +101,10 @@
     <ClInclude Include="includes\raumserver\request\requestAction_AddToZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_CreateZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_DropFromZone.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_EnterAutomaticStandby.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_EnterManualStandby.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_FadeToVolume.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_LeaveStandby.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadContainer.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadPlaylist.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadShuffle.h" />
@@ -145,7 +148,10 @@
     <ClCompile Include="request\requestAction_AddToZone.cpp" />
     <ClCompile Include="request\requestAction_CreateZone.cpp" />
     <ClCompile Include="request\requestAction_DropFromZone.cpp" />
+    <ClCompile Include="request\requestAction_EnterAutomaticStandby.cpp" />
+    <ClCompile Include="request\requestAction_EnterManualStandby.cpp" />
     <ClCompile Include="request\requestAction_FadeToVolume.cpp" />
+    <ClCompile Include="request\requestAction_LeaveStandby.cpp" />
     <ClCompile Include="request\requestAction_LoadContainer.cpp" />
     <ClCompile Include="request\requestAction_LoadPlaylist.cpp" />
     <ClCompile Include="request\requestAction_LoadShuffle.cpp" />
