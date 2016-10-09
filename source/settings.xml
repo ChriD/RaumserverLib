@@ -37,6 +37,7 @@
   <Raumserver>
     <!-- port where the server listens to requests -->
     <Port>8080</Port>
+    <Docroot>docroot</Docroot>
   </Raumserver>
   
 </Application>

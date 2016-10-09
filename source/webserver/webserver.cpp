@@ -10,12 +10,19 @@ namespace Raumserver
         {
             serverObject = nullptr;
             isStarted = false;
+            docroot = DOCUMENT_ROOT;
         }
 
 
         Webserver::~Webserver()
         {
             stop();
+        }
+
+
+        void Webserver::setDocumentRoot(std::string _docroot)
+        {
+            docroot = _docroot;
         }
 
      
@@ -34,7 +41,7 @@ namespace Raumserver
                 serverOptions.push_back(std::to_string(_port));
                 
                 serverOptions.push_back("document_root");
-                serverOptions.push_back(DOCUMENT_ROOT);
+                serverOptions.push_back(docroot);
 
                 serverOptions.push_back("error_log_file");
                 serverOptions.push_back("error.log");

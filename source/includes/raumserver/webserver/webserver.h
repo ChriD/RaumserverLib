@@ -48,7 +48,7 @@ namespace Raumserver
             public:
                 EXPORT void setManagerEngineerServer(std::shared_ptr<Manager::ManagerEngineerServer> _managerEngineer);
                 EXPORT void setManagerEngineerKernel(std::shared_ptr<Raumkernel::Manager::ManagerEngineer> _managerEngineer);
-                EXPORT void setLogObject(std::shared_ptr<Raumkernel::Log::Log> _logObject);
+                EXPORT void setLogObject(std::shared_ptr<Raumkernel::Log::Log> _logObject);               
                 EXPORT std::shared_ptr<Manager::ManagerEngineerServer> getManagerEngineerServer();
                 EXPORT std::shared_ptr<Raumkernel::Manager::ManagerEngineer> getManagerEngineerKernel();
                 EXPORT std::shared_ptr<Raumkernel::Log::Log> getLogObject();
@@ -57,7 +57,7 @@ namespace Raumserver
                 virtual void sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string,std::string> _headerVars = std::map<std::string, std::string>(), bool _error = false);
                 std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
                 std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
-                std::shared_ptr<Raumkernel::Log::Log> logObject;
+                std::shared_ptr<Raumkernel::Log::Log> logObject;                
         };
 
 
@@ -83,6 +83,7 @@ namespace Raumserver
                 EXPORT virtual ~Webserver();    
                 EXPORT virtual void start(std::uint32_t _port);
                 EXPORT virtual void stop();
+                EXPORT virtual void setDocumentRoot(std::string _docroot);
 
             protected:                  
                 std::shared_ptr<CivetServer> serverObject;             
@@ -90,6 +91,7 @@ namespace Raumserver
                 std::shared_ptr<RequestHandlerData> serverRequestHandlerData;           
 
                 bool isStarted;
+                std::string docroot;
         };
   
 

@@ -91,12 +91,20 @@ namespace Raumserver
             serverPort = SETTINGS_RAUMSERVER_PORT_DEFAULT;
         }
 
+        std::string docRoot = managerEngineerKernel->getSettingsManager()->getValue(SETTINGS_RAUMSERVER_DOCROOT);
+        if (docRoot.empty())
+        {
+            logWarning("No docroot is specified for the server! Using ''" + SETTINGS_RAUMSERVER_DOCROOT_DEFAULT + "'", CURRENT_POSITION);
+            docRoot = SETTINGS_RAUMSERVER_DOCROOT_DEFAULT;
+        }
+
         // create the webserver object and try to start it. 
         // If the Webserver can not be startet the lib will throw an error which should be non recoverable
         webserver = std::shared_ptr<Server::Webserver>(new Server::Webserver());
         webserver->setManagerEngineer(managerEngineerKernel); 
         webserver->setManagerEngineerServer(managerEngineerServer);
         webserver->setLogObject(getLogObject());
+        webserver->setDocumentRoot(docRoot);
         webserver->start(std::stoi(serverPort));
     }
 
