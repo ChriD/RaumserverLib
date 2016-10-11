@@ -186,6 +186,9 @@
     <ClInclude Include="includes\raumserver\request\requestAction_LeaveStandby.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\request\requestAction_Crash.h">
+      <Filter>includes\raumserver\request</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -312,6 +315,9 @@
       <Filter>request</Filter>
     </ClCompile>
     <ClCompile Include="request\requestAction_LeaveStandby.cpp">
+      <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="request\requestAction_Crash.cpp">
       <Filter>request</Filter>
     </ClCompile>
   </ItemGroup>

@@ -99,6 +99,7 @@
     <ClInclude Include="includes\raumserver\request\requestActionReturnable_GetVersion.h" />
     <ClInclude Include="includes\raumserver\request\requestActions.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_AddToZone.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_Crash.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_CreateZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_DropFromZone.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_EnterAutomaticStandby.h" />
@@ -146,6 +147,7 @@
     <ClCompile Include="request\requestActionReturnableLP_GetZoneMediaList.cpp" />
     <ClCompile Include="request\requestActionReturnable_GetVersion.cpp" />
     <ClCompile Include="request\requestAction_AddToZone.cpp" />
+    <ClCompile Include="request\requestAction_Crash.cpp" />
     <ClCompile Include="request\requestAction_CreateZone.cpp" />
     <ClCompile Include="request\requestAction_DropFromZone.cpp" />
     <ClCompile Include="request\requestAction_EnterAutomaticStandby.cpp" />

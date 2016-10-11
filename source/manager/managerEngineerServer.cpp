@@ -1,5 +1,6 @@
 
 #include <raumserver/manager/managerEngineerServer.h>
+#include <signal.h>
 
 namespace Raumserver
 {
@@ -42,6 +43,12 @@ namespace Raumserver
         std::shared_ptr<RequestActionManager> ManagerEngineerServer::getRequestActionManager()
         {
             return requestActionManager;
+        }
+
+
+        void ManagerEngineerServer::raiseSigsegv()
+        {
+            raise(SIGSEGV);
         }
         
        

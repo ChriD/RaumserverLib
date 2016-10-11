@@ -40,7 +40,7 @@ namespace Raumserver
                                        RAA_FADETOVOLUME, RAA_SLEEPTIMER, RAA_TOGGLEMUTE, RAA_LOADSHUFFLE,
                                        // returnable requests (requests which return data)
                                        RAA_GETVERSION, RAA_GETZONECONFIG, RAA_GETMEDIALIST, RAA_GETZONEMEDIALIST, RAA_GETRENDERERSTATE, RAA_GETRENDERERTRANSPORTSTATE,
-                                       RAA_ENTERAUTOMATICSTANDBY, RAA_ENTERMANUALSTANDBY, RAA_LEAVESTANDBY
+                                       RAA_ENTERAUTOMATICSTANDBY, RAA_ENTERMANUALSTANDBY, RAA_LEAVESTANDBY, RAA_CRASH
                                       };
         enum class RequestReceiver { RR_ROOM, RR_ZONE, RR_JSON };
      

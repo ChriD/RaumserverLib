@@ -321,6 +321,7 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_ENTERAUTOMATICSTANDBY) return "ENTERAUTOMATICSTANDBY";
             if (_requestActionType == RequestActionType::RAA_ENTERMANUALSTANDBY) return "ENTERMANUALSTANDBY";
             if (_requestActionType == RequestActionType::RAA_LEAVESTANDBY) return "LEAVESTANDBY";
+            if (_requestActionType == RequestActionType::RAA_CRASH) return "CRASH";
 
             // Returnable requests
             if (_requestActionType == RequestActionType::RAA_GETVERSION) return "GETVERSION";
@@ -366,6 +367,7 @@ namespace Raumserver
             if (_requestActionTypeString == "ENTERAUTOMATICSTANDBY") return RequestActionType::RAA_ENTERAUTOMATICSTANDBY;
             if (_requestActionTypeString == "ENTERMANUALSTANDBY") return RequestActionType::RAA_ENTERMANUALSTANDBY;
             if (_requestActionTypeString == "LEAVESTANDBY") return RequestActionType::RAA_LEAVESTANDBY;
+            if (_requestActionTypeString == "CRASH") return RequestActionType::RAA_CRASH;
 
             // Returnable requests
             if (_requestActionTypeString == "GETVERSION") return RequestActionType::RAA_GETVERSION;       
@@ -437,7 +439,7 @@ namespace Raumserver
                 case RequestActionType::RAA_STOP: return std::shared_ptr<RequestAction_Stop>(new RequestAction_Stop(_path, _queryString));
                 case RequestActionType::RAA_SETVOLUME: return std::shared_ptr<RequestAction_SetVolume>(new RequestAction_SetVolume(_path, _queryString));
                 case RequestActionType::RAA_VOLUMEDOWN: return std::shared_ptr<RequestAction_VolumeDown>(new RequestAction_VolumeDown(_path, _queryString));
-                case RequestActionType::RAA_VOLUMEUP: return std::shared_ptr<RequestAction_VolumeUp>(new RequestAction_VolumeUp(_path, _queryString));
+                case RequestActionType::RAA_VOLUMEUP: return std::shared_ptr<RequestAction_VolumeUp>(new RequestAction_VolumeUp(_path, _queryString));                
                 case RequestActionType::RAA_CREATEZONE: return std::shared_ptr<RequestAction_CreateZone>(new RequestAction_CreateZone(_path, _queryString));
                 case RequestActionType::RAA_ADDTOZONE: return std::shared_ptr<RequestAction_AddToZone>(new RequestAction_AddToZone(_path, _queryString));
                 case RequestActionType::RAA_DROPFROMZONE: return std::shared_ptr<RequestAction_DropFromZone>(new RequestAction_DropFromZone(_path, _queryString));
@@ -456,6 +458,7 @@ namespace Raumserver
                 case RequestActionType::RAA_ENTERAUTOMATICSTANDBY: return std::shared_ptr<RequestAction_EnterAutomaticStandby>(new RequestAction_EnterAutomaticStandby(_path, _queryString));
                 case RequestActionType::RAA_ENTERMANUALSTANDBY: return std::shared_ptr<RequestAction_EnterManualStandby>(new RequestAction_EnterManualStandby(_path, _queryString));
                 case RequestActionType::RAA_LEAVESTANDBY: return std::shared_ptr<RequestAction_LeaveStandby>(new RequestAction_LeaveStandby(_path, _queryString));
+                case RequestActionType::RAA_CRASH: return std::shared_ptr<RequestAction_Crash>(new RequestAction_Crash(_path, _queryString));
 
                  // Returnable requests 
                 case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));

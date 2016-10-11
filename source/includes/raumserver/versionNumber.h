@@ -28,7 +28,7 @@
 #include <string>
 
 const std::string Server_AppName = "Raumserver Library";
-const std::string Server_VersionNumber = "1.0.1";
+const std::string Server_VersionNumber = "1.0.2";
 const std::string Server_VersionName = "";
 
 #endif

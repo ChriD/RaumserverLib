@@ -1,6 +1,7 @@
 
 #include <raumserver/raumserver.h>
 #include <raumkernel/manager/managerEngineer.h>
+#include <signal.h>
 
 namespace Raumserver
 {
@@ -20,6 +21,12 @@ namespace Raumserver
 
     Raumserver::~Raumserver()
     {
+    }
+
+
+    void Raumserver::raiseSigsegv()
+    {
+        raise(SIGSEGV);
     }
 
 

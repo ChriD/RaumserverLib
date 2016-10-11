@@ -69,7 +69,11 @@ namespace Raumserver
             /**
             * sets the path and filename where the settings file is stored
             */
-            EXPORT virtual void setSettingsFile(const std::string &_settingsFile);           
+            EXPORT virtual void setSettingsFile(const std::string &_settingsFile);     
+            /**
+            * do a SIGSEV
+            */
+            EXPORT virtual void raiseSigsegv();
             /**
             * this signal will be fired if a the raumkernel is ready (
             * (in fact that means that the media server is online!)

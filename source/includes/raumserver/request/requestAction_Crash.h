@@ -1,7 +1,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 by ChriD
+// Copyright (c) 2016 by ChriD
 //
 // Permission is hereby granted, free of charge,  to any person obtaining a copy of
 // this software and  associated documentation  files  (the "Software"), to deal in
@@ -22,37 +22,25 @@
 //
 
 #pragma once
-#ifndef RAUMSERVER_MANAGERENGINEERSERVER_H
-#define RAUMSERVER_MANAGERENGINEERSERVER_H
+#ifndef RAUMSERVER_REQUESTACTION_CRASH_H
+#define RAUMSERVER_REQUESTACTION_CRASH_H
 
-#include <raumserver/raumserverBase.h>
-#include <raumserver/manager/requestActionManager.h>
+#include <raumserver/request/requestAction.h>
 
 namespace Raumserver
 {
-    namespace Manager
+    namespace Request
     {
-        /*
-        This class holds pointers to all the available managers loaded in the server object
-        */
-        class ManagerEngineerServer : public RaumserverBase
+        class RequestAction_Crash : public RequestAction
         {
-            public:
-                EXPORT ManagerEngineerServer();
-                EXPORT virtual ~ManagerEngineerServer();
-                void createManagers();
-
-                EXPORT void setSystemReady(bool _isReady = true);
-                EXPORT bool isSystemReady();
-                
-                EXPORT virtual void raiseSigsegv();
-
-                EXPORT std::shared_ptr<Manager::RequestActionManager> getRequestActionManager();              
+            public:                
+                EXPORT RequestAction_Crash(std::string _url);
+                EXPORT RequestAction_Crash(std::string _path, std::string _query);
+                EXPORT virtual ~RequestAction_Crash();
+                EXPORT virtual bool executeAction() override;
+                EXPORT virtual bool isValid() override;
 
             protected:
-                std::shared_ptr<Manager::RequestActionManager> requestActionManager;
-                bool systemReady;
-               
         };
     }
 }
