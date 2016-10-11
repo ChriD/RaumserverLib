@@ -75,6 +75,10 @@ namespace Raumserver
             */
             EXPORT virtual void raiseSigsegv();
             /**
+            *
+            */
+            EXPORT virtual void addSystemSignalHandlers();
+            /**
             * this signal will be fired if a the raumkernel is ready (
             * (in fact that means that the media server is online!)
             */

@@ -1,7 +1,9 @@
 
 #include <raumserver/raumserver.h>
 #include <raumkernel/manager/managerEngineer.h>
+
 #include <signal.h>
+#include <raumkernel/backtrace.hpp>
 
 namespace Raumserver
 {
@@ -29,6 +31,12 @@ namespace Raumserver
         raise(SIGSEGV);
     }
 
+
+    void Raumserver::addSystemSignalHandlers()
+    {
+        Backtrace::AddSignalHandlers();
+    }
+   
 
     void Raumserver::initLogObject(Raumkernel::Log::LogType _defaultLogLevel, const std::string &_logFilePath, const std::vector<std::shared_ptr<Raumkernel::Log::LogAdapter>> &_adapterList)
     {                
