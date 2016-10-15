@@ -1,5 +1,7 @@
 
 #include <raumserver/request/requestAction_Crash.h>
+#include <raumserver/manager/managerEngineerServer.h>
+
 
 namespace Raumserver
 {
@@ -39,12 +41,12 @@ namespace Raumserver
             auto type = getOptionValue("type");
 
             if (type == "2")
-            {                
-                // TODO: crash kernel
+            {                                
+                getManagerEngineer()->raiseSigsegv();
             }
             else
-            {
-                // TODO: crash server
+            {                
+                getManagerEngineerServer()->raiseSigsegv();                
             }                
             return true;
         }
