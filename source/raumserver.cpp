@@ -18,6 +18,9 @@ namespace Raumserver
 
         // create a new log object for this library which we will provide to the kernel library too so both libraries use the same logger object
         logObject = std::shared_ptr<Raumkernel::Log::Log>(new Raumkernel::Log::Log());
+
+        // try to catch segfaults
+        this->addSystemSignalHandlers();
     }
 
 
