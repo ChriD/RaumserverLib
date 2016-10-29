@@ -42,8 +42,7 @@ namespace Raumserver
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Container>(_mediaItem)) addJsonForMediaItem_Container(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Container>(_mediaItem), _jsonWriter);
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Artist>(_mediaItem)) addJsonForMediaItem_Artist(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Artist>(_mediaItem), _jsonWriter);
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Album>(_mediaItem)) addJsonForMediaItem_Album(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Album>(_mediaItem), _jsonWriter);
-                if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Track>(_mediaItem)) addJsonForMediaItem_Track(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Track>(_mediaItem), _jsonWriter);
-                if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio>(_mediaItem)) addJsonForMediaItem_Radio(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio>(_mediaItem), _jsonWriter);
+                if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Track>(_mediaItem)) addJsonForMediaItem_Track(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Track>(_mediaItem), _jsonWriter);                
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_RadioTime>(_mediaItem)) addJsonForMediaItem_Radio_RadioTime(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_RadioTime>(_mediaItem), _jsonWriter);
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_Rhapsody>(_mediaItem)) addJsonForMediaItem_Radio_Rhapsody(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_Rhapsody>(_mediaItem), _jsonWriter);
                 // TODO: @@@
