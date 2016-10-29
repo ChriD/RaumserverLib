@@ -43,6 +43,9 @@ namespace Raumserver
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Artist>(_mediaItem)) addJsonForMediaItem_Artist(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Artist>(_mediaItem), _jsonWriter);
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Album>(_mediaItem)) addJsonForMediaItem_Album(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Album>(_mediaItem), _jsonWriter);
                 if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Track>(_mediaItem)) addJsonForMediaItem_Track(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Track>(_mediaItem), _jsonWriter);
+                if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio>(_mediaItem)) addJsonForMediaItem_Radio(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio>(_mediaItem), _jsonWriter);
+                if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_RadioTime>(_mediaItem)) addJsonForMediaItem_Radio_RadioTime(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_RadioTime>(_mediaItem), _jsonWriter);
+                if (std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_Rhapsody>(_mediaItem)) addJsonForMediaItem_Radio_Rhapsody(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio_Rhapsody>(_mediaItem), _jsonWriter);
                 // TODO: @@@
                 // we have to add more
             }
@@ -83,6 +86,30 @@ namespace Raumserver
             {
                 addJsonForMediaItem_Album(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Album>(_mediaItem), _jsonWriter);
                 _jsonWriter.Key("title"); _jsonWriter.String(_mediaItem->title.c_str());                
+            }
+
+
+            static void addJsonForMediaItem_Radio(std::shared_ptr<Raumkernel::Media::Item::MediaItem_Radio> _mediaItem, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
+            {       
+                _jsonWriter.Key("title"); _jsonWriter.String(_mediaItem->title.c_str());
+                _jsonWriter.Key("description"); _jsonWriter.String(_mediaItem->description.c_str());
+                _jsonWriter.Key("albumArtUri"); _jsonWriter.String(_mediaItem->albumArtUri.c_str());
+                _jsonWriter.Key("region"); _jsonWriter.String(_mediaItem->region.c_str());
+                _jsonWriter.Key("signalStrength"); _jsonWriter.Int(_mediaItem->signalStrength);
+                _jsonWriter.Key("durability"); _jsonWriter.Int(_mediaItem->durability);
+                _jsonWriter.Key("bitrate"); _jsonWriter.Int(_mediaItem->bitrate);            
+            }
+
+
+            static void addJsonForMediaItem_Radio_RadioTime(std::shared_ptr<Raumkernel::Media::Item::MediaItem_Radio_RadioTime> _mediaItem, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
+            {                
+                addJsonForMediaItem_Radio(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio>(_mediaItem), _jsonWriter);                
+            }
+
+
+            static void addJsonForMediaItem_Radio_Rhapsody(std::shared_ptr<Raumkernel::Media::Item::MediaItem_Radio_Rhapsody> _mediaItem, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
+            {
+                addJsonForMediaItem_Radio(std::dynamic_pointer_cast<Raumkernel::Media::Item::MediaItem_Radio>(_mediaItem), _jsonWriter);
             }
 
             // TODO: @@@
