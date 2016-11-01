@@ -58,9 +58,9 @@ endif
 
 INCPATH = -I includes/ -I ../../RaumkernelLib/source/includes/
 
-CFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
-CXXFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
-LDFLAGS = $(ARCHITECTURE) -Wl,--no-as-needed -shared -pthread -static-libgcc -static-libstdc++ -ldl
+CFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
+CXXFLAGS = $(ARCHITECTURE) -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 $(DEBUG) -c -pthread $(INCPATH)
+LDFLAGS = $(ARCHITECTURE) -Wl,--no-as-needed -shared -pthread -static-libgcc -static-libstdc++ -rdynamic -ldl
 
 RM = rm -f 
 
