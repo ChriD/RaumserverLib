@@ -40,6 +40,11 @@ namespace Raumserver
                 EXPORT virtual bool executeAction() override;
                 EXPORT virtual bool isValid() override;
 
+                EXPORT virtual void crashLevel1();
+                EXPORT virtual void crashLevel2();
+                EXPORT virtual void crashLevel3();
+                EXPORT virtual void crashLevel4();
+
             protected:
         };
     }

@@ -38,17 +38,40 @@ namespace Raumserver
 
         bool RequestAction_Crash::executeAction()
         {
-            auto type = getOptionValue("type");
-
+            auto type = getOptionValue("type");            
             if (type == "2")
             {                                
-                getManagerEngineer()->raiseSigsegv();
+                getManagerEngineerServer()->raiseSigsegv();
             }
             else
-            {                
-                getManagerEngineerServer()->raiseSigsegv();                
+            {       
+                crashLevel1();                
             }                
             return true;
         }
+
+
+        void RequestAction_Crash::crashLevel1()
+        {
+            crashLevel2();
+        }
+
+
+        void RequestAction_Crash::crashLevel2()
+        {
+            crashLevel3();
+        }
+
+        void RequestAction_Crash::crashLevel3()
+        {
+            crashLevel4();
+        }
+
+        void RequestAction_Crash::crashLevel4()
+        {
+            getManagerEngineer()->raiseSigsegv();
+        }
+
+
     }
 }
