@@ -5,10 +5,10 @@ STARGET := build/testStat
 # defining the source files for the project
 SRCFILES := tests/test.cpp
 
-INCPATH    := -I includes/
+INCPATH     := -I includes/ -I ../../RaumkernelLib/source/includes/
 LIBSPATH    := build/linux_$(arch)/libs/
 LIBSPATHEXE := libs
-DLIBSDEF    :=  -lraumkernel -lraumserver
+DLIBSDEF    :=  -lraumserver -lraumkernel 
 SLIBSDEF    :=  -Bstatic $(LIBSPATH)libraumserver.a libs/linux_$(arch)/libraumkernel.a libs/linux_$(arch)/libohNetCore.a libs/linux_$(arch)/libohNetDevices.a libs/linux_$(arch)/libohNetProxies.a
 
 
@@ -38,7 +38,7 @@ endif
 
 
 COMPILERFLAGS :=  -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 -c -pthread 
-LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE) 
+LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -Wl,--no-as-needed -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE) 
 
 
 DEBUG = 

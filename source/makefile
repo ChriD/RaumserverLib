@@ -10,10 +10,11 @@ SRCFILES += $(wildcard webserver/*.cpp)
 SRCFILES += $(wildcard webserver/civetweb/*.cpp)
 SRCFILES += $(wildcard webserver/civetweb/*.c)
 
-INCPATH  := -I includes/
-LIBSPATH := libs/linux_$(arch)/
-DLIBSDEF  :=  $(LIBSPATH)libraumkernel.so
-SLIBSDEF  :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a $(LIBSPATH)libraumkernel.a
+INCPATH     := -I includes/ -I ../../RaumkernelLib/source/includes/
+LIBSPATH    := libs/linux_$(arch)/
+LIBSPATHEXE := libs
+DLIBSDEF    := -lraumkernel
+SLIBSDEF    :=  $(LIBSPATH)libohNetCore.a $(LIBSPATH)libohNetDevices.a $(LIBSPATH)libohNetProxies.a $(LIBSPATH)libraumkernel.a
 
 
 ifeq ($(arch),) 
@@ -42,7 +43,8 @@ endif
 
 
 COMPILERFLAGS :=  -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 -c -pthread 
-LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic
+#LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE) -Wl,-rpath-link,$(LIBSPATHEXE)
+LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -Wl,--no-as-needed -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE)
 
 
 DEBUG = 
@@ -73,6 +75,7 @@ SOBJFILES := $(addprefix $(SOBJDIR), $(SRCFILES:.cpp=.o))
 
 ### when calling make then build static and dynamic target
 all: ${DTARGET} ${STARGET}
+#all: ${DTARGET}
 	
 
 ### create dynamic library
