@@ -52,6 +52,7 @@
 #include <raumserver/request/requestAction_EnterManualStandby.h>
 #include <raumserver/request/requestAction_LeaveStandby.h>
 #include <raumserver/request/requestAction_Crash.h>
+#include <raumserver/request/requestAction_KillSession.h>
 
 #include <raumserver/request/requestActionReturnable_GetVersion.h>
 

@@ -105,6 +105,7 @@
     <ClInclude Include="includes\raumserver\request\requestAction_EnterAutomaticStandby.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_EnterManualStandby.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_FadeToVolume.h" />
+    <ClInclude Include="includes\raumserver\request\requestAction_KillSession.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LeaveStandby.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadContainer.h" />
     <ClInclude Include="includes\raumserver\request\requestAction_LoadPlaylist.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="request\requestAction_EnterAutomaticStandby.cpp" />
     <ClCompile Include="request\requestAction_EnterManualStandby.cpp" />
     <ClCompile Include="request\requestAction_FadeToVolume.cpp" />
+    <ClCompile Include="request\requestAction_KillSession.cpp" />
     <ClCompile Include="request\requestAction_LeaveStandby.cpp" />
     <ClCompile Include="request\requestAction_LoadContainer.cpp" />
     <ClCompile Include="request\requestAction_LoadPlaylist.cpp" />

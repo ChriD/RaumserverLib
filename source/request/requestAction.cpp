@@ -332,6 +332,7 @@ namespace Raumserver
             if (_requestActionType == RequestActionType::RAA_GETZONEMEDIALIST) return "GETZONEMEDIALIST";
             if (_requestActionType == RequestActionType::RAA_GETRENDERERSTATE) return "GETRENDERERSTATE";
             if (_requestActionType == RequestActionType::RAA_GETRENDERERTRANSPORTSTATE) return "GETRENDERERTRANSPORTSTATE";            
+            if (_requestActionType == RequestActionType::RAA_KILLSESSION) return "KILLSESSION";
 
             return "";
         }
@@ -378,6 +379,7 @@ namespace Raumserver
             if (_requestActionTypeString == "GETZONEMEDIALIST") return RequestActionType::RAA_GETZONEMEDIALIST;
             if (_requestActionTypeString == "GETRENDERERSTATE") return RequestActionType::RAA_GETRENDERERSTATE;
             if (_requestActionTypeString == "GETRENDERERTRANSPORTSTATE") return RequestActionType::RAA_GETRENDERERTRANSPORTSTATE;
+            if (_requestActionTypeString == "KILLSESSION") return RequestActionType::RAA_KILLSESSION;
 
             return RequestActionType::RAA_UNDEFINED;
         }
@@ -459,6 +461,7 @@ namespace Raumserver
                 case RequestActionType::RAA_ENTERMANUALSTANDBY: return std::shared_ptr<RequestAction_EnterManualStandby>(new RequestAction_EnterManualStandby(_path, _queryString));
                 case RequestActionType::RAA_LEAVESTANDBY: return std::shared_ptr<RequestAction_LeaveStandby>(new RequestAction_LeaveStandby(_path, _queryString));
                 case RequestActionType::RAA_CRASH: return std::shared_ptr<RequestAction_Crash>(new RequestAction_Crash(_path, _queryString));
+                case RequestActionType::RAA_KILLSESSION: return std::shared_ptr<RequestAction_KillSession>(new RequestAction_KillSession(_path, _queryString));
 
                  // Returnable requests 
                 case RequestActionType::RAA_GETVERSION: return std::shared_ptr<RequestActionReturnable_GetVersion>(new RequestActionReturnable_GetVersion(_path, _queryString));
