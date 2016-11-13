@@ -53,7 +53,7 @@ namespace Raumserver
                 serverRequestHandlerController->setManagerEngineerServer(getManagerEngineerServer());
                 serverRequestHandlerController->setManagerEngineerKernel(getManagerEngineer());
                 serverRequestHandlerController->setLogObject(getLogObject());
-                serverObject->addHandler("/raumserver/controller", serverRequestHandlerController.get());
+                serverObject->addHandler("/raumserver/controller", serverRequestHandlerController.get());                
 
                 // add a general handler for fetching data 
                 serverRequestHandlerData = std::shared_ptr<RequestHandlerData>(new RequestHandlerData());
@@ -133,9 +133,37 @@ namespace Raumserver
             return logObject;
         }
 
-        void RequestHandlerBase::sendResponse(struct mg_connection *_conn, std::string _string, bool _error)
+
+        std::string RequestHandlerBase::buildCorsHeader(std::map<std::string, std::string>* _headerVars)
         {
-            mg_printf(_conn, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\nAccess-Control-Allow-Origin: *\r\n\r\n");
+            std::string corsHeader = "Access-Control-Allow-Origin: *";  
+            std::string headerVarListInp = "sessionId";
+            std::string headerVarListExp = "sessionId";
+
+            if (_headerVars && _headerVars->size())
+            {                
+                for (auto it = _headerVars->begin(); it != _headerVars->end(); it++)
+                //for (auto pair : *_headerVars)
+                {
+                    headerVarListInp += "," +  it->first;
+                }
+                //headerVarListInp.pop_back();
+                headerVarListExp = headerVarListInp;
+            }
+            else
+            {
+               // headerVarListInp = "*";
+               // headerVarListExp = "*";
+            }
+
+            corsHeader += "\r\nAccess-Control-Allow-Headers: " + headerVarListInp;
+            corsHeader += "\r\nAccess-Control-Expose-Headers: " + headerVarListExp;           
+            return corsHeader;
+        }
+
+        void RequestHandlerBase::sendResponse(struct mg_connection *_conn, std::string _string, bool _error)
+        {            
+            mg_printf(_conn, std::string("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n" + buildCorsHeader() + "\r\n\r\n").c_str());
             mg_printf(_conn, "<html><body>\r\n");
             mg_printf(_conn, "<h2>Raumserver</h2>\r\n");
             mg_printf(_conn, _string.c_str());
@@ -152,7 +180,7 @@ namespace Raumserver
                 headers += pair.first + ":" + pair.second + "\r\n";
             }
 
-            mg_printf(_conn, std::string("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nAccess-Control-Allow-Origin: *\r\n" + headers + "Connection: close\r\n\r\n").c_str());
+            mg_printf(_conn, std::string("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n" + buildCorsHeader(&_headerVars) + "\r\n" + headers + "Connection: close\r\n\r\n").c_str());
             mg_printf(_conn, _string.c_str());         
         }
 
@@ -226,9 +254,21 @@ namespace Raumserver
         }
 
 
+        bool RequestHandlerController::handleOptions(CivetServer *_server, struct mg_connection *_conn)
+        {
+            return handleGet(_server, _conn);
+        }
+
+
         bool RequestHandlerData::handleGet(CivetServer *_server, struct mg_connection *_conn)
         {
             return RequestHandlerController::handleGet(_server, _conn);
+        }
+
+
+        bool RequestHandlerData::handleOptions(CivetServer *_server, struct mg_connection *_conn)
+        {
+            return RequestHandlerController::handleOptions(_server, _conn);
         }
    
     }

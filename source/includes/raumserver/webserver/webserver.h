@@ -53,6 +53,7 @@ namespace Raumserver
                 EXPORT std::shared_ptr<Raumkernel::Manager::ManagerEngineer> getManagerEngineerKernel();
                 EXPORT std::shared_ptr<Raumkernel::Log::Log> getLogObject();
             protected:
+                virtual std::string buildCorsHeader(std::map<std::string, std::string>* _headerVars = nullptr);
                 virtual void sendResponse(struct mg_connection *_conn, std::string _string, bool _error = false);
                 virtual void sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string,std::string> _headerVars = std::map<std::string, std::string>(), bool _error = false);
                 std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
@@ -65,14 +66,16 @@ namespace Raumserver
         class RequestHandlerController : public RequestHandlerBase
         {
             public:
-                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
+                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;  
+                bool handleOptions(CivetServer *_server, struct mg_connection *_conn) override;
         };
 
 
         class RequestHandlerData : public RequestHandlerController
         {
             public:
-                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;
+                bool handleGet(CivetServer *_server, struct mg_connection *_conn) override;   
+                bool handleOptions(CivetServer *_server, struct mg_connection *_conn) override;
         };
 
 
