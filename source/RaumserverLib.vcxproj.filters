@@ -192,6 +192,9 @@
     <ClInclude Include="includes\raumserver\request\requestAction_KillSession.h">
       <Filter>includes\raumserver\request</Filter>
     </ClInclude>
+    <ClInclude Include="includes\raumserver\manager\sessionManager.h">
+      <Filter>includes\raumserver\manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="raumserver.cpp" />
@@ -325,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="request\requestAction_KillSession.cpp">
       <Filter>request</Filter>
+    </ClCompile>
+    <ClCompile Include="manager\sessionManager.cpp">
+      <Filter>manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

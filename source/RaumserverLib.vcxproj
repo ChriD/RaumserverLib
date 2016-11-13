@@ -85,6 +85,7 @@
     <ClInclude Include="includes\raumserver\manager\managerBaseServer.h" />
     <ClInclude Include="includes\raumserver\manager\managerEngineerServer.h" />
     <ClInclude Include="includes\raumserver\manager\requestActionManager.h" />
+    <ClInclude Include="includes\raumserver\manager\sessionManager.h" />
     <ClInclude Include="includes\raumserver\raumserver.h" />
     <ClInclude Include="includes\raumserver\raumserverBase.h" />
     <ClInclude Include="includes\raumserver\raumserverBaseMgr.h" />
@@ -135,6 +136,7 @@
     <ClCompile Include="manager\managerBaseServer.cpp" />
     <ClCompile Include="manager\managerEngineerServer.cpp" />
     <ClCompile Include="manager\requestActionManager.cpp" />
+    <ClCompile Include="manager\sessionManager.cpp" />
     <ClCompile Include="raumserver.cpp" />
     <ClCompile Include="raumserverBase.cpp" />
     <ClCompile Include="raumserverBaseMgr.cpp" />

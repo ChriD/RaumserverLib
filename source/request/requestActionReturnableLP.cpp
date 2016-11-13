@@ -1,5 +1,6 @@
 
 #include <raumserver/request/requestActionReturnableLP.h>
+#include <raumserver/manager/managerEngineerServer.h>
 
 namespace Raumserver
 {
@@ -58,11 +59,9 @@ namespace Raumserver
         bool RequestActionReturnableLongPolling::executeAction()
         {          
             bool ret = false;            
-
-            // get long polling id 
-            std::string lpid = getOptionValue("updateId");
-            // get session id
-            //std::string sessionId = getOptionValue("sessionId");
+            
+            auto lpid = getOptionValue("updateId");
+            auto sessionId = getOptionValue("sessionId");       
             
             // when there is no longpolling then only execute request
             if (lpid.empty())
@@ -82,7 +81,12 @@ namespace Raumserver
                         break;
                     }
 
-                    // TODO: check if session was killed, if so then return
+                    // check if session was killed, if so then return from the request                   
+                    if (!sessionId.empty() && getManagerEngineerServer()->getSessionManager()->isSessionAborted(sessionId))
+                    {
+                        ret = false;
+                        break;
+                    }                                    
 
                     // wait a little bit to keep cpu load and lockings low
                     std::this_thread::sleep_for(std::chrono::milliseconds(200));

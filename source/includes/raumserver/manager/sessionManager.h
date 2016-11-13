@@ -1,7 +1,7 @@
 //
 // The MIT License (MIT)
 //
-// Copyright (c) 2015 by ChriD
+// Copyright (c) 201 by ChriD
 //
 // Permission is hereby granted, free of charge,  to any person obtaining a copy of
 // this software and  associated documentation  files  (the "Software"), to deal in
@@ -22,40 +22,29 @@
 //
 
 #pragma once
-#ifndef RAUMSERVER_MANAGERENGINEERSERVER_H
-#define RAUMSERVER_MANAGERENGINEERSERVER_H
+#ifndef RAUMSERVER_SESSIONMANAGER_H
+#define RAUMSERVER_SESSIONMANAGER_H
 
-#include <raumserver/raumserverBase.h>
-#include <raumserver/manager/requestActionManager.h>
-#include <raumserver/manager/sessionManager.h>
+#include <raumserver/manager/managerBaseServer.h>
+
 
 namespace Raumserver
 {
     namespace Manager
-    {
-        /*
-        This class holds pointers to all the available managers loaded in the server object
-        */
-        class ManagerEngineerServer : public RaumserverBase
+    {        
+        class SessionManager : public ManagerBaseServer
         {
             public:
-                EXPORT ManagerEngineerServer();
-                EXPORT virtual ~ManagerEngineerServer();
-                void createManagers();
-
-                EXPORT void setSystemReady(bool _isReady = true);
-                EXPORT bool isSystemReady();
-                
-                EXPORT virtual void raiseSigsegv();
-
-                EXPORT std::shared_ptr<Manager::RequestActionManager> getRequestActionManager();              
-                EXPORT std::shared_ptr<Manager::SessionManager> getSessionManager();
+                EXPORT SessionManager();
+                EXPORT virtual ~SessionManager();                
+                EXPORT virtual void abortSession(std::string _sessionId);
+                EXPORT virtual bool isSessionAborted(std::string _sessionId);
 
             protected:
-                std::shared_ptr<Manager::RequestActionManager> requestActionManager;
-                std::shared_ptr<Manager::SessionManager> sessionManager;
-                bool systemReady;
-               
+                std::vector<std::string> sessionsToAbort;
+
+                std::mutex mutesSessionsToAbort;
+                
         };
     }
 }

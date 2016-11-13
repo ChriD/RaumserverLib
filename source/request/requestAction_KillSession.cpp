@@ -1,5 +1,6 @@
 
 #include <raumserver/request/requestAction_KillSession.h>
+#include <raumserver/manager/managerEngineerServer.h>
 
 namespace Raumserver
 {
@@ -31,9 +32,12 @@ namespace Raumserver
        
         bool RequestAction_KillSession::executeAction()
         {
-            auto session = getOptionValue("session");
-            
-            // TODO: @@@
+            auto sessionId = getOptionValue("sessionId");
+                        
+            // write the session id into a global session storage for killing
+            // the manager will take care of killing the open requests
+            if (!sessionId.empty())
+                getManagerEngineerServer()->getSessionManager()->abortSession(sessionId);
             
             return true;
         }      

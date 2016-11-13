@@ -36,6 +36,10 @@ namespace Raumserver
             logDebug("Create RequestActionManager-Manager...", CURRENT_FUNCTION);
             requestActionManager = std::shared_ptr<Manager::RequestActionManager>(new Manager::RequestActionManager());
             requestActionManager->setLogObject(getLogObject());
+
+            logDebug("Create SessionManager-Manager...", CURRENT_FUNCTION);
+            sessionManager = std::shared_ptr<Manager::SessionManager>(new Manager::SessionManager());
+            sessionManager->setLogObject(getLogObject());
         }
 
 
@@ -43,6 +47,12 @@ namespace Raumserver
         std::shared_ptr<RequestActionManager> ManagerEngineerServer::getRequestActionManager()
         {
             return requestActionManager;
+        }
+
+
+        std::shared_ptr<SessionManager> ManagerEngineerServer::getSessionManager()
+        {
+            return sessionManager;
         }
 
 
