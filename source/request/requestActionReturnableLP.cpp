@@ -61,6 +61,8 @@ namespace Raumserver
 
             // get long polling id 
             std::string lpid = getOptionValue("updateId");
+            // get session id
+            //std::string sessionId = getOptionValue("sessionId");
             
             // when there is no longpolling then only execute request
             if (lpid.empty())
@@ -79,6 +81,9 @@ namespace Raumserver
                         ret = executeActionLongPolling();
                         break;
                     }
+
+                    // TODO: check if session was killed, if so then return
+
                     // wait a little bit to keep cpu load and lockings low
                     std::this_thread::sleep_for(std::chrono::milliseconds(200));
                 }
