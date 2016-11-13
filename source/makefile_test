@@ -19,19 +19,19 @@ ifeq ($(arch),)
 endif
 
 ifeq ($(arch),X64) 
-  COMPILER          := g++-4.9
+  COMPILER          := g++-5
   ARCHITECTURE      := -m64
   ARCHCOMPILERFLAGS :=
 endif
 
 ifeq ($(arch),ARMV7HF)
-  COMPILER          := arm-linux-gnueabihf-g++-4.9 
+  COMPILER          := arm-linux-gnueabihf-g++-5 
   ARCHITECTURE      := -march=armv7-a
   ARCHCOMPILERFLAGS := -fasynchronous-unwind-tables -mapcs-frame
 endif
 
 ifeq ($(arch),ARMV5TE)
-  COMPILER          := arm-linux-gnueabi-g++-4.9 
+  COMPILER          := arm-linux-gnueabi-g++-5 
   ARCHITECTURE      := -march=armv5te -mtune=xscale
   ARCHCOMPILERFLAGS := -fasynchronous-unwind-tables -mapcs-frame
 endif 
