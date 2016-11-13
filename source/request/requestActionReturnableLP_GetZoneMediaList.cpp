@@ -35,15 +35,40 @@ namespace Raumserver
 
         std::string RequestActionReturnableLongPolling_GetZoneMediaList::getLastUpdateId()
         {
+            std::string lastUpdateIdCur, rendererUDN, lastUpdateIdSum;
+            std::uint32_t lastUpdateSum = 0;
             auto id = getOptionValue("id");
-            auto mediaRenderer = getVirtualMediaRenderer(id);
-            if (!mediaRenderer)            
-                return "";      
 
-            std::string zonePlaylistId = Raumkernel::Manager::LISTID_ZONEIDENTIFIER + mediaRenderer->getUDN();
-            auto lastUpdateId = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(zonePlaylistId);
+            if (!id.empty())
+            {
+                auto mediaRenderer = getVirtualMediaRenderer(id);
+                if (!mediaRenderer)
+                    return "";
 
-            return lastUpdateId;
+                std::string zonePlaylistId = Raumkernel::Manager::LISTID_ZONEIDENTIFIER + mediaRenderer->getUDN();
+                lastUpdateIdSum = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(zonePlaylistId);
+            }
+            // run through the renderers and get current update id by summing up the values
+            // if the value is other than given in header something has changed.             
+            else
+            {
+                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                for (auto it : zoneInfoMap)
+                {
+                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                    if (mediaRenderer)
+                    {
+                        std::string zonePlaylistId = Raumkernel::Manager::LISTID_ZONEIDENTIFIER + mediaRenderer->getUDN();
+                        lastUpdateIdCur = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(zonePlaylistId);                       
+                        if (!lastUpdateIdCur.empty())
+                            lastUpdateSum += std::stoi(lastUpdateIdCur);
+                    }
+                }
+                lastUpdateIdSum = std::to_string(lastUpdateSum);
+            }
+
+            return lastUpdateIdSum;
         }
 
 
