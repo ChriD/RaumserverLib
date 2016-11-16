@@ -5,6 +5,8 @@
          To get the available options for 'LogLevel' and 'LogAdapter' please take a look at the documentation -->
     <Log>
       <Level>DEBUG</Level>
+      <LevelUpnp>ERROR</LevelUpnp>
+      <!--<LevelUpnp>ALL,ADAPTERCHANGE,BONJOUR,DEVICE,DVDEVICE,DVEVENT,DVWEBSOCKET,DVINVOCATION,DVSSDPNOTIFIER,ERROR,EVENT,HTTP,LPEC,NETWORK,NONE,SERVICE,SSDPMULTICAST,;SSDPUNICAST,TRACE,THREAD,TIMER,VERBOSE,XMLFETCH</LevelUpnp>-->
     </Log>
     
     <!-- the kernel uses the first available networkadapter found in the system. This may not be the one you like to use! -->
