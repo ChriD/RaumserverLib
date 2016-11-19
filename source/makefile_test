@@ -38,7 +38,8 @@ endif
 
 
 COMPILERFLAGS :=  -std=c++11 -fPIC -Wall -Wno-unknown-pragmas -Wno-unused-parameter -funwind-tables -Wextra -O2 -c -pthread 
-LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -Wl,--no-as-needed -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE) 
+#LINKERFLAGS   :=  -pthread -static-libgcc -static-libstdc++ -rdynamic -Wl,--no-as-needed -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE)
+LINKERFLAGS   :=  -pthread -rdynamic -static-libstdc++ -Wl,--no-as-needed -ldl -L$(LIBSPATH) -Wl,-rpath,$(LIBSPATHEXE)  
 
 
 DEBUG = 
