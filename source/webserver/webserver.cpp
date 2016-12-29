@@ -137,8 +137,8 @@ namespace Raumserver
         std::string RequestHandlerBase::buildCorsHeader(std::map<std::string, std::string>* _headerVars)
         {
             std::string corsHeader = "Access-Control-Allow-Origin: *";  
-            std::string headerVarListInp = "sessionId";
-            std::string headerVarListExp = "sessionId";
+            std::string headerVarListInp = "sessionId,updateId";
+            std::string headerVarListExp = "sessionId,updateId";
 
             if (_headerVars && _headerVars->size())
             {                
