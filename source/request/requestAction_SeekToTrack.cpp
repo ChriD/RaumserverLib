@@ -56,38 +56,52 @@ namespace Raumserver
             auto trackIndexString = getOptionValue("trackIndex");
             auto trackNumberString = getOptionValue("trackNumber");
 
-            // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+
+                    // convert the seek string to a enum
+                    auto seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR;           
+                
+                    std::int32_t trackIndex = 0;
+                    if (!trackNumberString.empty())
+                        trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackNumberString) - 1;
+                    else
+                        trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackIndexString);              
+
+                    // load the current media info from the renderer (we may get it from the subscripted info but to be save we get it directly)
+                    auto mediaInfo = mediaRenderer->getMediaInfo(true);
+
+                    if (trackIndex < 0)
+                        trackIndex = 0;
+
+                    if ((std::uint32_t)trackIndex > mediaInfo.nrTracks)
+                        trackIndex = mediaInfo.nrTracks - 1;              
+
+                    // only seek to track if there is a ist to seek!
+                    if (mediaInfo.nrTracks > 1)
+                        mediaRenderer->seek(seekType, trackIndex + 1, sync);
                 }
 
-                // convert the seek string to a enum
-                auto seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR;           
-                
-                std::int32_t trackIndex = 0;
-                if (!trackNumberString.empty())
-                    trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackNumberString) - 1;
-                else
-                    trackIndex = Raumkernel::Tools::CommonUtil::toInt32(trackIndexString);              
-
-                // load the current media info from the renderer (we may get it from the subscripted info but to be save we get it directly)
-                auto mediaInfo = mediaRenderer->getMediaInfo(true);
-
-                if (trackIndex < 0)
-                    trackIndex = 0;
-
-                if ((std::uint32_t)trackIndex > mediaInfo.nrTracks)
-                    trackIndex = mediaInfo.nrTracks - 1;              
-
-                // only seek to track if there is a ist to seek!
-                if (mediaInfo.nrTracks > 1)
-                    mediaRenderer->seek(seekType, trackIndex + 1, sync);
             }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return true;
         }

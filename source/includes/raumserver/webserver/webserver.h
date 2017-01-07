@@ -34,6 +34,10 @@
 #include <raumserver/manager/managerEngineerServer.h>
 #include <raumserver/webserver/civetweb/civetServer.h>
 
+#include <raumserver/json/rapidjson/rapidjson.h>
+#include <raumserver/json/rapidjson/writer.h>
+#include <raumserver/json/rapidjson/stringbuffer.h>
+
 #define DOCUMENT_ROOT "docroot"
 
 #define fopen_recursive fopen
@@ -54,8 +58,8 @@ namespace Raumserver
                 EXPORT std::shared_ptr<Raumkernel::Log::Log> getLogObject();
             protected:
                 virtual std::string buildCorsHeader(std::map<std::string, std::string>* _headerVars = nullptr);
-                virtual void sendResponse(struct mg_connection *_conn, std::string _string, bool _error = false);
-                virtual void sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string,std::string> _headerVars = std::map<std::string, std::string>(), bool _error = false);
+                virtual void sendResponse(struct mg_connection *_conn, std::string _string, bool _error = false, Request::RequestAction * _reqAction = nullptr);
+                virtual void sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string, std::string> _headerVars = std::map<std::string, std::string>(), bool _error = false, Request::RequestAction * _reqAction = nullptr);
                 std::shared_ptr<Manager::ManagerEngineerServer> managerEngineerServer;
                 std::shared_ptr<Raumkernel::Manager::ManagerEngineer> managerEngineerKernel;
                 std::shared_ptr<Raumkernel::Log::Log> logObject;                

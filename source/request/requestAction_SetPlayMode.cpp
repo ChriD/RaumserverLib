@@ -57,27 +57,41 @@ namespace Raumserver
             auto playModeString = getOptionValue("mode");
             auto playMode = Raumkernel::Devices::ConversionTool::stringToPlayMode(playModeString);
 
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+                    mediaRenderer->setPlayMode(playMode, sync);
                 }
-                mediaRenderer->setPlayMode(playMode, sync);
+                else
+                {
+                    auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                    for (auto it : zoneInfoMap)
+                    {
+                        auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                        auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                        if (mediaRenderer)
+                            mediaRenderer->setPlayMode(playMode, sync);
+                    }
+                }
+
             }
-            else
+            catch (...)
             {
-                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
-                for (auto it : zoneInfoMap)
-                {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
-                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
-                    if (mediaRenderer)
-                        mediaRenderer->setPlayMode(playMode, sync);
-                }
+                logError("Unknown Exception!", CURRENT_POSITION);
             }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return true;
         }

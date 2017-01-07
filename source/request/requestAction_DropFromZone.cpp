@@ -48,16 +48,51 @@ namespace Raumserver
             
             if (!id.empty())
             {
-                auto roomUDN = getRoomUDNFromId(id);
-                if (getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
+                std::string roomUDN;
+                bool roomOk = false;
+
+                getManagerEngineer()->getDeviceManager()->lock();
+                getManagerEngineer()->getZoneManager()->lock();
+
+                try
+                {
+                    roomUDN = getRoomUDNFromId(id);
+                    roomOk = getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN);
+                }
+                catch (...)
+                {
+                    logError("Unknown Exception!", CURRENT_POSITION);
+                }
+
+                getManagerEngineer()->getDeviceManager()->unlock();
+                getManagerEngineer()->getZoneManager()->unlock();
+
+                if (roomOk)
                 {
                     getManagerEngineer()->getZoneManager()->dropRoom(roomUDN);
                     if (sync)
                     {
+                        bool zoneOfroomEmpty = false;
                         // wait until room is dropped from zone or a timout happens      
                         // INFO: We may register a signal of the zoneManager like "zoneOfRoomChanged" and poll a var which will change on this signal
-                        while (!getManagerEngineer()->getZoneManager()->isRoomInZone(roomUDN, "") && processTime <= timeout)
+                        while (!zoneOfroomEmpty && processTime <= timeout)
                         {
+                            getManagerEngineer()->getDeviceManager()->lock();
+                            getManagerEngineer()->getZoneManager()->lock();
+
+                            try
+                            {
+                                zoneOfroomEmpty = getManagerEngineer()->getZoneManager()->isRoomInZone(roomUDN, "");
+                            }
+                            catch (...)
+                            {
+                                logError("Unknown Exception!", CURRENT_POSITION);
+                            }
+
+                            getManagerEngineer()->getDeviceManager()->unlock();
+                            getManagerEngineer()->getZoneManager()->unlock();
+
+
                             std::this_thread::sleep_for(std::chrono::milliseconds(waitTimeForRequestActionKernelResponse));
                             processTime += waitTimeForRequestActionKernelResponse;
                         }

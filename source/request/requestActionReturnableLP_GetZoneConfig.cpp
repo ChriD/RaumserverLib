@@ -41,8 +41,8 @@ namespace Raumserver
             std::unordered_map<std::string, Raumkernel::Manager::ZoneInformation> zoneInfoMap;
             std::unordered_map<std::string, Raumkernel::Manager::RoomInformation> roomInfoMap;
 
-            getManagerEngineer()->getDeviceManager()->lockDeviceList();
-            getManagerEngineer()->getZoneManager()->lockLists();
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
 
             try
             {
@@ -54,8 +54,8 @@ namespace Raumserver
                 logError("Unknown error", CURRENT_POSITION);
             }                    
 
-            getManagerEngineer()->getZoneManager()->unlockLists();
-            getManagerEngineer()->getDeviceManager()->unlockDeviceList(); 
+            getManagerEngineer()->getZoneManager()->unlock();
+            getManagerEngineer()->getDeviceManager()->unlock(); 
 
             rapidjson::StringBuffer jsonStringBuffer;
             rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);

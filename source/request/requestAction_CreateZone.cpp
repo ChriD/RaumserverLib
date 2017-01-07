@@ -50,13 +50,26 @@ namespace Raumserver
             bool allRoomsAdded = false;
 
             if (!id.empty())
-            {
-                for (auto it : id)
+            {              
+                getManagerEngineer()->getDeviceManager()->lock();
+                getManagerEngineer()->getZoneManager()->lock();
+
+                try
                 {
-                    auto roomUDN = getRoomUDNFromId(it);
-                    if (getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
-                        roomUDNs.push_back(roomUDN);       
+                    for (auto it : id)
+                    {
+                        auto roomUDN = getRoomUDNFromId(it);
+                        if (getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
+                            roomUDNs.push_back(roomUDN);
+                    }           
                 }
+                catch (...)
+                {
+                    logError("Unknown Exception!", CURRENT_POSITION);
+                }
+
+                getManagerEngineer()->getDeviceManager()->unlock();
+                getManagerEngineer()->getZoneManager()->unlock();
 
                 if (!roomUDNs.empty())
                 {
@@ -71,27 +84,40 @@ namespace Raumserver
                         // wait until room is added to a new zoneUDN or a timout happens                              
                         while (!allRoomsAdded && processTime <= timeout)
                         {
-                            // get the current infos of the room to check if zone has changed
-                            auto roomInfoMapNew = getManagerEngineer()->getZoneManager()->getRoomInformationMap();
-                            allRoomsAdded = true;
+                            getManagerEngineer()->getDeviceManager()->lock();
+                            getManagerEngineer()->getZoneManager()->lock();
 
-                            for (auto it : roomUDNs)
+                            try
                             {
-                                auto oldRoomDataIt = roomInfoMapOld.find(it);
-                                auto newRoomDataIt = roomInfoMapNew.find(it);
+                                // get the current infos of the room to check if zone has changed
+                                auto roomInfoMapNew = getManagerEngineer()->getZoneManager()->getRoomInformationMap();
+                                allRoomsAdded = true;
 
-                                if (oldRoomDataIt != roomInfoMapOld.end() && newRoomDataIt != roomInfoMapNew.end())
+                                for (auto it : roomUDNs)
                                 {
-                                    if (oldRoomDataIt->second.zoneUDN != newRoomDataIt->second.zoneUDN && !newRoomDataIt->second.zoneUDN.empty())
+                                    auto oldRoomDataIt = roomInfoMapOld.find(it);
+                                    auto newRoomDataIt = roomInfoMapNew.find(it);
+
+                                    if (oldRoomDataIt != roomInfoMapOld.end() && newRoomDataIt != roomInfoMapNew.end())
                                     {
-                                        // the room is in a new zone. Thats great, but we have to wait for the other rooms too
-                                    }
-                                    else
-                                    {
-                                        allRoomsAdded = false;
+                                        if (oldRoomDataIt->second.zoneUDN != newRoomDataIt->second.zoneUDN && !newRoomDataIt->second.zoneUDN.empty())
+                                        {
+                                            // the room is in a new zone. Thats great, but we have to wait for the other rooms too
+                                        }
+                                        else
+                                        {
+                                            allRoomsAdded = false;
+                                        }
                                     }
                                 }
-                            }                            
+                            }
+                            catch (...)
+                            {
+                                logError("Unknown Exception!", CURRENT_POSITION);
+                            }
+
+                            getManagerEngineer()->getDeviceManager()->unlock();
+                            getManagerEngineer()->getZoneManager()->unlock();
                                 
                             std::this_thread::sleep_for(std::chrono::milliseconds(waitTimeForRequestActionKernelResponse));
                             processTime += waitTimeForRequestActionKernelResponse;

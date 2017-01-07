@@ -39,29 +39,42 @@ namespace Raumserver
         {
             auto id = getOptionValue("id");
             
-            // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+                    mediaRenderer->stop(sync);
                 }
-                mediaRenderer->stop(sync);
-            }
-            // if we have no id provided, then we stop all zones
-            else
-            {
-                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
-                for (auto it : zoneInfoMap)
+                // if we have no id provided, then we stop all zones
+                else
                 {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);                    
-                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
-                    if (mediaRenderer)
-                        mediaRenderer->stop(sync);                        
-                }   
-            }            
+                    auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                    for (auto it : zoneInfoMap)
+                    {
+                        auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);                    
+                        auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                        if (mediaRenderer)
+                            mediaRenderer->stop(sync);                        
+                    }   
+                }     
+            }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return true;
         }      

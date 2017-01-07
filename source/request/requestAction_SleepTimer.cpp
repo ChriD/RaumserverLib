@@ -69,47 +69,58 @@ namespace Raumserver
             auto secondsUntilSleep = Raumkernel::Tools::CommonUtil::toInt32(secondsUntilSleepString);
             auto secondsForVolumeRamp = Raumkernel::Tools::CommonUtil::toInt32(secondsForVolumeRampString);          
          
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+                    if (secondsUntilSleep == 0)
+                    {                    
+                        mediaRenderer->cancelSleepTimer();
+                    }
+                    else
+                    {
+                        mediaRenderer->startSleepTimer(secondsUntilSleep, secondsForVolumeRamp);                    
+                    }                               
                 }
-                if (secondsUntilSleep == 0)
-                {                    
-                    mediaRenderer->cancelSleepTimer();
-                }
+                // if we have no id provided, we do action on all renderers
                 else
                 {
-                    mediaRenderer->startSleepTimer(secondsUntilSleep, secondsForVolumeRamp);                    
-                }
-                
-               
-            }
-            // if we have no id provided, we do action on all renderers
-            else
-            {
-                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
-                for (auto it : zoneInfoMap)
-                {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
-                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
-                    if (mediaRenderer)
-                    {                       
-                        if (secondsUntilSleep == 0)
-                        {                                                        
-                            mediaRenderer->cancelSleepTimer();
-                        }
-                        else
-                        {
-                            mediaRenderer->startSleepTimer(secondsUntilSleep, secondsForVolumeRamp);                            
+                    auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                    for (auto it : zoneInfoMap)
+                    {
+                        auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                        auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                        if (mediaRenderer)
+                        {                       
+                            if (secondsUntilSleep == 0)
+                            {                                                        
+                                mediaRenderer->cancelSleepTimer();
+                            }
+                            else
+                            {
+                                mediaRenderer->startSleepTimer(secondsUntilSleep, secondsForVolumeRamp);                            
+                            }
                         }
                     }
                 }
+
+            }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
             }
 
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return true;
         }

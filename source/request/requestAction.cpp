@@ -47,6 +47,11 @@ namespace Raumserver
             return true;
         }
 
+        RequestActionType RequestAction::getActionType()
+        {
+            return action;
+        }
+
 
         void RequestAction::parseQueryOptions()
         {
@@ -120,15 +125,16 @@ namespace Raumserver
         }
 
 
-        std::shared_ptr<Raumkernel::Devices::MediaRenderer> RequestAction::getMediaRenderer(std::string _id)
+       Raumkernel::Devices::MediaRenderer* RequestAction::getMediaRenderer(std::string _id)
         {
-            std::shared_ptr<Raumkernel::Devices::MediaRenderer> renderer = nullptr;
+            Raumkernel::Devices::MediaRenderer* renderer = nullptr;
             std::string rendererUDN;
 
             if (!_id.empty())
             {
-                getManagerEngineer()->getDeviceManager()->lockDeviceList();
-                getManagerEngineer()->getZoneManager()->lockLists();
+                // TODO: remove locks and do in reuqest itself???
+                //getManagerEngineer()->getDeviceManager()->lock);
+                //getManagerEngineer()->getZoneManager()->lockLists();
 
                 try
                 {
@@ -138,28 +144,28 @@ namespace Raumserver
                     else
                         rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForRoomUDN(roomUDN);                
                     if (!rendererUDN.empty())
-                        renderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+                        renderer = getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN);
                 }
                 catch (...)
                 {
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getZoneManager()->unlockLists();
-                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+                //getManagerEngineer()->getZoneManager()->unlockLists();
+                //getManagerEngineer()->getDeviceManager()->unlock();
             }
             return renderer;
         }
           
 
-        std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> RequestAction::getVirtualMediaRenderer(std::string _id)
+        Raumkernel::Devices::MediaRenderer_RaumfeldVirtual* RequestAction::getVirtualMediaRenderer(std::string _id)
         {
-            std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
+            Raumkernel::Devices::MediaRenderer_RaumfeldVirtual* virtualRenderer = nullptr;
 
             if (!_id.empty())
             {
-                getManagerEngineer()->getDeviceManager()->lockDeviceList();
-                getManagerEngineer()->getZoneManager()->lockLists();
+                //getManagerEngineer()->getDeviceManager()->lock();
+                //getManagerEngineer()->getZoneManager()->lockLists();
 
                 try
                 {
@@ -168,40 +174,40 @@ namespace Raumserver
                     zoneUDN = getZoneUDNFromId(_id);
                     rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(zoneUDN);
                     if (!rendererUDN.empty())
-                        virtualRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
+                        virtualRenderer = dynamic_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual*>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(rendererUDN));
                 }
                 catch (...)
                 {
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getZoneManager()->unlockLists();
-                getManagerEngineer()->getDeviceManager()->unlockDeviceList();
+                //getManagerEngineer()->getZoneManager()->unlockLists();
+                //getManagerEngineer()->getDeviceManager()->unlock();
             }
             return virtualRenderer;
         }
 
 
-        std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> RequestAction::getVirtualMediaRendererFromUDN(std::string _udn)
+        Raumkernel::Devices::MediaRenderer_RaumfeldVirtual* RequestAction::getVirtualMediaRendererFromUDN(std::string _udn)
         {
-            std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> virtualRenderer = nullptr;
+            Raumkernel::Devices::MediaRenderer_RaumfeldVirtual* virtualRenderer = nullptr;
 
             if (!_udn.empty())
             {                
-                getManagerEngineer()->getDeviceManager()->lockDeviceList();
-                getManagerEngineer()->getZoneManager()->lockLists();
+                //getManagerEngineer()->getDeviceManager()->lock();
+                //getManagerEngineer()->getZoneManager()->lockLists();
 
                 try
                 {                   
-                    virtualRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(_udn));
+                    virtualRenderer = dynamic_cast<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual*>(getManagerEngineer()->getDeviceManager()->getMediaRenderer(_udn));
                 }
                 catch (...)
                 {
                     logError("Unresolved Error!", CURRENT_FUNCTION);
                 }
 
-                getManagerEngineer()->getZoneManager()->unlockLists();
-                getManagerEngineer()->getDeviceManager()->unlockDeviceList();                
+                //getManagerEngineer()->getZoneManager()->unlockLists();
+                //getManagerEngineer()->getDeviceManager()->unlock();                
             }
             return virtualRenderer;
         }
@@ -227,6 +233,10 @@ namespace Raumserver
         {            
             bool ret = false;
             std::uint32_t waitTime = waitTimeAfterExecution;
+
+            auto syncString = getOptionValue("sync");
+            if (syncString == "false" || syncString == "0")
+                sync = false;
 
             // check if the request is valid (mostly used for checking mandatory request options)
             if (isValid())

@@ -161,17 +161,56 @@ namespace Raumserver
             return corsHeader;
         }
 
-        void RequestHandlerBase::sendResponse(struct mg_connection *_conn, std::string _string, bool _error)
-        {            
+        void RequestHandlerBase::sendResponse(struct mg_connection *_conn, std::string _string, bool _error, Request::RequestAction * _reqAction)
+        {    
+            /*
             mg_printf(_conn, std::string("HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nConnection: close\r\n" + buildCorsHeader() + "\r\n\r\n").c_str());
             mg_printf(_conn, "<html><body>\r\n");
             mg_printf(_conn, "<h2>Raumserver</h2>\r\n");
             mg_printf(_conn, _string.c_str());
             mg_printf(_conn, "</body></html>\r\n");
+            */
+
+            const struct mg_request_info *request_info = mg_get_request_info(_conn);
+            
+            rapidjson::StringBuffer jsonStringBuffer;
+            rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
+
+            jsonWriter.StartObject();
+            if (request_info->request_uri)
+            {
+                jsonWriter.Key("requestUrl");   jsonWriter.String(request_info->request_uri);
+            }
+            else
+            {
+                jsonWriter.Key("requestUrl");   jsonWriter.String("");
+            }
+            if (request_info->query_string)
+            {
+                jsonWriter.Key("requestQuery"); jsonWriter.String(request_info->query_string);
+            }
+            else
+            {
+                jsonWriter.Key("requestQuery"); jsonWriter.String("");
+            }
+            if (_reqAction != nullptr)
+            {
+                jsonWriter.Key("action");  jsonWriter.String(Request::RequestAction::requestActionTypeToString(_reqAction->getActionType()).c_str());
+            }
+            else
+            {
+                jsonWriter.Key("action");  jsonWriter.String("");
+            }
+            jsonWriter.Key("msg");          jsonWriter.String(_string.c_str());
+            jsonWriter.Key("error");        jsonWriter.Bool(_error);
+            jsonWriter.EndObject();
+
+            std::string reqReturn = jsonStringBuffer.GetString();
+            mg_printf(_conn, reqReturn.c_str());                        
         }
 
 
-        void RequestHandlerBase::sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string, std::string> _headerVars, bool _error)
+        void RequestHandlerBase::sendDataResponse(struct mg_connection *_conn, std::string _string, std::map<std::string, std::string> _headerVars, bool _error, Request::RequestAction * _reqAction)
         {       
             // create header string
             std::string headers = "";
@@ -202,7 +241,7 @@ namespace Raumserver
             // if there is no reuquest action the path is wrong or not existent!
             if (!requestAction)
             {
-                sendResponse(_conn, "Action for request '" + std::string(request_info->request_uri) + "' not found! Please check to the documentation for valid requests!", true);
+                sendResponse(_conn, "Action for request '" + std::string(request_info->request_uri) + "' not found! Please check to the documentation for valid requests!", true, requestAction.get());
                 return true;                
             }
 
@@ -217,11 +256,11 @@ namespace Raumserver
                 if (requestAction->isValid())
                 {
                     getManagerEngineerServer()->getRequestActionManager()->addRequestAction(requestAction);                    
-                    sendResponse(_conn, "Request '" + std::string(request_info->request_uri) + "' was added to queue!", false);                    
+                    sendResponse(_conn, "Request '" + std::string(request_info->request_uri) + "' was added to queue!", false, requestAction.get());
                 }
                 else
                 {                    
-                    sendResponse(_conn, "Error while executing request: '" + requestAction->getErrors(), true);
+                    sendResponse(_conn, "Error while executing request: '" + requestAction->getErrors(), true, requestAction.get());
                 }
             }
             // the request is not stackable, that means we have to execute it right now
@@ -234,12 +273,12 @@ namespace Raumserver
                     if (requestAction->execute())
                     {
                         auto requestActionReturnable = std::dynamic_pointer_cast<Request::RequestActionReturnable>(requestAction);
-                        sendDataResponse(_conn, requestActionReturnable->getResponseData(), requestActionReturnable->getResponseHeader(), false);
+                        sendDataResponse(_conn, requestActionReturnable->getResponseData(), requestActionReturnable->getResponseHeader(), false, requestAction.get());
                     }
                     else
                     {
                         // TODO: set better response!
-                        sendDataResponse(_conn, "ERROR'" + requestAction->getErrors(), std::map<std::string, std::string>(), true);
+                        sendDataResponse(_conn, "ERROR'" + requestAction->getErrors(), std::map<std::string, std::string>(), true, requestAction.get());
                     }
                     
                 }

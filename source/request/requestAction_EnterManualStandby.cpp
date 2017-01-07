@@ -39,29 +39,42 @@ namespace Raumserver
         {
             auto id = getOptionValue("id");
 
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_Raumfeld>(getMediaRenderer(id));
-                if (!mediaRenderer)
+                if (!id.empty())
                 {
-                    logError("Room with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
-                }
-                mediaRenderer->enterManualStandby(sync);
-            }
-            else
-            {
-                auto mediaRendererMap = getManagerEngineer()->getDeviceManager()->getMediaRenderers();
-                for (auto it : mediaRendererMap)
-                {
-                    if (!it.second->isZoneRenderer())
+                    auto mediaRenderer = dynamic_cast<Raumkernel::Devices::MediaRenderer_Raumfeld*>(getMediaRenderer(id));
+                    if (!mediaRenderer)
                     {
-                        auto mediaRenderer = std::dynamic_pointer_cast<Raumkernel::Devices::MediaRenderer_Raumfeld>(it.second);
-                        if (mediaRenderer)
-                            mediaRenderer->enterManualStandby(sync);
+                        logError("Room with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+                    mediaRenderer->enterManualStandby(sync);
+                }
+                else
+                {
+                    auto mediaRendererMap = getManagerEngineer()->getDeviceManager()->getMediaRenderers();
+                    for (auto it : mediaRendererMap)
+                    {
+                        if (!it.second->isZoneRenderer())
+                        {
+                            auto mediaRenderer = dynamic_cast<Raumkernel::Devices::MediaRenderer_Raumfeld*>(it.second);
+                            if (mediaRenderer)
+                                mediaRenderer->enterManualStandby(sync);
+                        }
                     }
                 }
             }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return true;
         }

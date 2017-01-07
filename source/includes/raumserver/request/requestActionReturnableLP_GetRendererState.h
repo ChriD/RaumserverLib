@@ -42,7 +42,7 @@ namespace Raumserver
 
             protected:
                 virtual std::string getLastUpdateId() override;                       
-                void addRendererStateToJson(const std::string &_zoneUDN, Raumkernel::Devices::MediaRendererState &_rendererState, std::shared_ptr<Raumkernel::Devices::MediaRenderer> _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);                                
+                void addRendererStateToJson(const std::string &_zoneUDN, Raumkernel::Devices::MediaRendererState &_rendererState, Raumkernel::Devices::MediaRenderer* _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter);                                
         };
     }
 }

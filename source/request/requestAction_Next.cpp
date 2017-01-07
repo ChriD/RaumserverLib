@@ -45,17 +45,30 @@ namespace Raumserver
         {
             auto id = getOptionValue("id");
 
-            // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+            
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+                    mediaRenderer->next(sync);
                 }
-                mediaRenderer->next(sync);                
             }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
            
             return true;
         }

@@ -49,18 +49,32 @@ namespace Raumserver
             std::vector<std::string> roomUDNs;
             auto id = getOptionValueMultiple("id");
             auto zoneId = getOptionValue("zoneid");
+            std::string zoneUDN;
             bool allRoomsAdded = false;
 
             if (!id.empty())
-            {
-                for (auto it : id)
-                {
-                    auto roomUDN = getRoomUDNFromId(it);
-                    if (getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
-                        roomUDNs.push_back(roomUDN);
-                }
+            {            
 
-                auto zoneUDN = getZoneUDNFromId(zoneId);
+                getManagerEngineer()->getDeviceManager()->lock();
+                getManagerEngineer()->getZoneManager()->lock();
+
+                try
+                {
+                    for (auto it : id)
+                    {
+                        auto roomUDN = getRoomUDNFromId(it);
+                        if (getManagerEngineer()->getZoneManager()->existsRoomUDN(roomUDN))
+                            roomUDNs.push_back(roomUDN);
+                    }
+                    zoneUDN = getZoneUDNFromId(zoneId);
+                }
+                catch (...)
+                {
+                    logError("Unknown Exception!", CURRENT_POSITION);
+                }
+                
+                getManagerEngineer()->getDeviceManager()->unlock();
+                getManagerEngineer()->getZoneManager()->unlock();
 
                 // no valid request if zone is not found and its defined!
                 if (zoneUDN.empty() && !zoneId.empty())
@@ -78,13 +92,27 @@ namespace Raumserver
                     {
                         // wait until room is added to a new zoneUDN or a timout happens                              
                         while (!allRoomsAdded && processTime <= timeout)
-                        {                    
-                            allRoomsAdded = true;
-                            for (auto it : roomUDNs)
-                            {                            
-                                if (!getManagerEngineer()->getZoneManager()->isRoomInZone(it, zoneUDN))                               
-                                    allRoomsAdded = false;                               
+                        {     
+
+                            getManagerEngineer()->getDeviceManager()->lock();
+                            getManagerEngineer()->getZoneManager()->lock();
+
+                            try
+                            {
+                                allRoomsAdded = true;
+                                for (auto it : roomUDNs)
+                                {                            
+                                    if (!getManagerEngineer()->getZoneManager()->isRoomInZone(it, zoneUDN))                               
+                                        allRoomsAdded = false;                               
+                                }
                             }
+                            catch (...)
+                            {
+                                logError("Unknown Exception!", CURRENT_POSITION);
+                            }
+
+                            getManagerEngineer()->getDeviceManager()->unlock();
+                            getManagerEngineer()->getZoneManager()->unlock();
 
                             std::this_thread::sleep_for(std::chrono::milliseconds(waitTimeForRequestActionKernelResponse));
                             processTime += waitTimeForRequestActionKernelResponse;

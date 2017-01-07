@@ -67,50 +67,21 @@ namespace Raumserver
             auto zoneScope = isZoneScope(scope);
             std::int32_t newVolumeValue = 0;
 
-            // we have got an id that might be a room or a zone. we have to get the scope to know what we should set the volume
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                // we have got an id that might be a room or a zone. we have to get the scope to know what we should set the volume
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
-                }
-                if (zoneScope)
-                {
-                    if (relative)
-                        newVolumeValue = mediaRenderer->getVolume(true) + valueVolume;
-                    else
-                        newVolumeValue = valueVolume;
-
-                    if (newVolumeValue > 100) newVolumeValue = 100;
-                    if (newVolumeValue < 0) newVolumeValue = 0;
-                
-                    mediaRenderer->setVolume(newVolumeValue, sync);
-
-                }
-                else
-                {
-                    if (relative)
-                        newVolumeValue = mediaRenderer->getRoomVolume(getRoomUDNFromId(id), true) + valueVolume;
-                    else
-                        newVolumeValue = valueVolume;
-
-                    if (newVolumeValue > 100) newVolumeValue = 100;
-                    if (newVolumeValue < 0) newVolumeValue = 0;
-
-                    mediaRenderer->setRoomVolume(getRoomUDNFromId(id), newVolumeValue, sync);
-                }
-            }
-            // if we have no id provided, we do action on all renderers
-            else
-            {
-                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
-                for (auto it : zoneInfoMap)
-                {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
-                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
-                    if (mediaRenderer)
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
+                    if (zoneScope)
                     {
                         if (relative)
                             newVolumeValue = mediaRenderer->getVolume(true) + valueVolume;
@@ -119,11 +90,54 @@ namespace Raumserver
 
                         if (newVolumeValue > 100) newVolumeValue = 100;
                         if (newVolumeValue < 0) newVolumeValue = 0;
-
+                
                         mediaRenderer->setVolume(newVolumeValue, sync);
+
+                    }
+                    else
+                    {
+                        if (relative)
+                            newVolumeValue = mediaRenderer->getRoomVolume(getRoomUDNFromId(id), true) + valueVolume;
+                        else
+                            newVolumeValue = valueVolume;
+
+                        if (newVolumeValue > 100) newVolumeValue = 100;
+                        if (newVolumeValue < 0) newVolumeValue = 0;
+
+                        mediaRenderer->setRoomVolume(getRoomUDNFromId(id), newVolumeValue, sync);
                     }
                 }
+                // if we have no id provided, we do action on all renderers
+                else
+                {
+                    auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                    for (auto it : zoneInfoMap)
+                    {
+                        auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                        auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                        if (mediaRenderer)
+                        {
+                            if (relative)
+                                newVolumeValue = mediaRenderer->getVolume(true) + valueVolume;
+                            else
+                                newVolumeValue = valueVolume;
+
+                            if (newVolumeValue > 100) newVolumeValue = 100;
+                            if (newVolumeValue < 0) newVolumeValue = 0;
+
+                            mediaRenderer->setVolume(newVolumeValue, sync);
+                        }
+                    }
+                }
+
             }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return true;
         }

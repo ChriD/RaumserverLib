@@ -109,7 +109,7 @@ namespace Raumserver
                     managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
                 }
 
-                // wait till the list is loaded by the media lits manager. if the list was loaded from cache
+                // wait till the list is loaded by the media list manager. if the list was loaded from cache
                 // we do not have to wait for it (would lead to an endless loop)
                 while (!listRetrieved && !listGotFromCache)
                 {

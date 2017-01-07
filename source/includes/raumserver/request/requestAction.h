@@ -102,6 +102,10 @@ namespace Raumserver
                 * returns a zone UDN for a room UDN or a room name or a zoneUDN
                 */
                 EXPORT std::string getZoneUDNFromId(std::string _id);
+                /**
+                * returns the action type of the request
+                */
+                EXPORT RequestActionType getActionType();
      
             protected:                
                 /**
@@ -111,17 +115,17 @@ namespace Raumserver
                 /**
                 * returns a shared pointer to a media renderer            
                 */
-                virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer> getMediaRenderer(std::string _id);
+                virtual Raumkernel::Devices::MediaRenderer* getMediaRenderer(std::string _id);
                 /**
                 * returns a shared pointer to a vertiual media renderer (zone)
                 * all actions will be performed on that rendeerer (even volume for each rooms)
                 */
-                virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> getVirtualMediaRenderer(std::string _id);
+                virtual Raumkernel::Devices::MediaRenderer_RaumfeldVirtual* getVirtualMediaRenderer(std::string _id);
                 /**
                 * returns a shared pointer to a vertiual media renderer (zone)
                 * all actions will be performed on that rendeerer (even volume for each rooms)
                 */
-                virtual std::shared_ptr<Raumkernel::Devices::MediaRenderer_RaumfeldVirtual> getVirtualMediaRendererFromUDN(std::string _udn);
+                virtual Raumkernel::Devices::MediaRenderer_RaumfeldVirtual* getVirtualMediaRendererFromUDN(std::string _udn);
                 /**
                 * 
                 */

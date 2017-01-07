@@ -74,7 +74,7 @@ namespace Raumserver
         }
 
 
-        void RequestActionReturnableLongPolling_GetRendererState::addRendererStateToJson(const std::string &_UDN, Raumkernel::Devices::MediaRendererState &_rendererState, std::shared_ptr<Raumkernel::Devices::MediaRenderer> _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
+        void RequestActionReturnableLongPolling_GetRendererState::addRendererStateToJson(const std::string &_UDN, Raumkernel::Devices::MediaRendererState &_rendererState, Raumkernel::Devices::MediaRenderer* _mediaRenderer, rapidjson::Writer<rapidjson::StringBuffer> &_jsonWriter)
         {                       
             _jsonWriter.StartObject();
             _jsonWriter.Key("udn"); _jsonWriter.String(_UDN.c_str());            

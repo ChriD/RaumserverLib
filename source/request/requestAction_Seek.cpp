@@ -57,44 +57,59 @@ namespace Raumserver
             auto valueString = getOptionValue("value");
             auto seekTypeString = getOptionValue("seektype");
 
-            // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
+                // if we got an id we try to stop the playing for the id (which may be a roomUDN, a zoneUDM or a roomName)
+                if (!id.empty())
                 {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
-                }
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        return false;
+                    }
 
-                // convert the seek string to a enum
-                auto seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_ABS_TIME;
-                if (!seekTypeString.empty())
-                {
-                    if (Raumkernel::Tools::StringUtil::tolower(seekTypeString) == "rel" || Raumkernel::Tools::StringUtil::tolower(seekTypeString) == "relative") seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_REL_TIME;
-                    if (Raumkernel::Tools::StringUtil::tolower(seekTypeString) == "track") seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR;
-                }
+                    // convert the seek string to a enum
+                    auto seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_ABS_TIME;
+                    if (!seekTypeString.empty())
+                    {
+                        if (Raumkernel::Tools::StringUtil::tolower(seekTypeString) == "rel" || Raumkernel::Tools::StringUtil::tolower(seekTypeString) == "relative") seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_REL_TIME;
+                        if (Raumkernel::Tools::StringUtil::tolower(seekTypeString) == "track") seekType = Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR;
+                    }
 
-                // convert the value to an integer
-                auto msOrTrack = Raumkernel::Tools::CommonUtil::toInt32(valueString);
+                    // convert the value to an integer
+                    auto msOrTrack = Raumkernel::Tools::CommonUtil::toInt32(valueString);
 
-                // load the current media info from the renderer (we may get it from the subscripted info but to be save we get it directly)
-                auto mediaInfo = mediaRenderer->getMediaInfo(true);
+                    // load the current media info from the renderer (we may get it from the subscripted info but to be save we get it directly)
+                    auto mediaInfo = mediaRenderer->getMediaInfo(true);
 
-                if (seekType != Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_REL_TIME)
-                {
-                    if (msOrTrack < 0)
-                        msOrTrack = 0;
-                }
+                    if (seekType != Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_REL_TIME)
+                    {
+                        if (msOrTrack < 0)
+                            msOrTrack = 0;
+                    }
 
-                if (seekType == Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR)
-                {
-                    if ((std::uint32_t)msOrTrack > mediaInfo.nrTracks)
-                        msOrTrack = mediaInfo.nrTracks - 1;
-                }
+                    if (seekType == Raumkernel::Devices::MediaRenderer_Seek::MRSEEK_TRACK_NR)
+                    {
+                        if ((std::uint32_t)msOrTrack > mediaInfo.nrTracks)
+                            msOrTrack = mediaInfo.nrTracks - 1;
+                    }
 
-                mediaRenderer->seek(seekType, msOrTrack, sync);
-            }            
+                    mediaRenderer->seek(seekType, msOrTrack, sync);
+                }  
+
+            }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
+
 
             return true;
         }
