@@ -32,7 +32,20 @@ namespace Raumserver
 
         std::string RequestActionReturnableLongPolling_GetZoneConfig::getLastUpdateId()
         {
-            return managerEngineer->getZoneManager()->getLastUpdateId();                        
+            //getManagerEngineer()->getDeviceManager()->lock();
+            //getManagerEngineer()->getZoneManager()->lock();
+
+            try
+            {
+                return managerEngineer->getZoneManager()->getLastUpdateId();
+            }
+            catch (...)
+            {
+                logError("Unknown error", CURRENT_POSITION);
+            }
+
+            //getManagerEngineer()->getZoneManager()->unlock();
+            //getManagerEngineer()->getDeviceManager()->unlock();
         }
 
 

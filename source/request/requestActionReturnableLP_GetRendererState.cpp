@@ -34,41 +34,59 @@ namespace Raumserver
         std::string RequestActionReturnableLongPolling_GetRendererState::getLastUpdateId()
         {                                 
             std::string lastUpdateIdCur, rendererUDN, lastUpdateIdSum;
-            std::uint32_t lastUpdateSum = 0;
+            std::uint64_t lastUpdateSum = 0;
 
-            // if we are called by a specific zone renderer id we only check this for a new update id
-            auto id = getOptionValue("id");
-            auto lpid = getOptionValue("updateId");
 
-            if (!id.empty())
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
+
+            try
             {
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
-                {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return "";
-                }
 
-                lastUpdateIdSum = mediaRenderer->getLastRendererStateUpdateId();
-            }
-            // run through the renderers and get current update id by summing up the values
-            // if the value is other than given in header something has changed. 
-            // It could be that the sum of the update ids may be the same (imaging bchanges on 2 renderers and the invidious case that the values would be the same sum) 
-            else
-            {
-                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
-                for (auto it : zoneInfoMap)
+                // if we are called by a specific zone renderer id we only check this for a new update id
+                auto id = getOptionValue("id");
+                auto lpid = getOptionValue("updateId");
+
+                if (!id.empty())
                 {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
-                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
-                    if (mediaRenderer)
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
                     {
-                        lastUpdateIdCur = mediaRenderer->getLastRendererStateUpdateId();                        
-                        lastUpdateSum += std::stoi(lastUpdateIdCur);
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);              
+                        lastUpdateIdSum = "";
+                    }
+                    else
+                    {
+                        lastUpdateIdSum = mediaRenderer->getLastRendererStateUpdateId();
                     }
                 }
-                lastUpdateIdSum = std::to_string(lastUpdateSum);
+                // run through the renderers and get current update id by summing up the values
+                // if the value is other than given in header something has changed. 
+                // It could be that the sum of the update ids may be the same (imaging bchanges on 2 renderers and the invidious case that the values would be the same sum) 
+                else
+                {
+                    auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                    for (auto it : zoneInfoMap)
+                    {
+                        auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                        auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                        if (mediaRenderer)
+                        {
+                            lastUpdateIdCur = mediaRenderer->getLastRendererStateUpdateId();
+                            lastUpdateSum += std::stoull(lastUpdateIdCur);
+                        }
+                    }
+                    lastUpdateIdSum = std::to_string(lastUpdateSum);
+                }
+            
             }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }
+
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
             return lastUpdateIdSum;
         }
@@ -124,72 +142,89 @@ namespace Raumserver
             auto id = getOptionValue("id");
             auto listAllStr = getOptionValue("listAll");            
             bool listAll = (listAllStr == "1" || listAllStr == "true") ? true : false;
+            bool ret = true;
 
-            rapidjson::StringBuffer jsonStringBuffer;
-            rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
+            getManagerEngineer()->getDeviceManager()->lock();
+            getManagerEngineer()->getZoneManager()->lock();
 
-            jsonWriter.StartArray();
-
-            if (!id.empty())
-            {                
-                auto mediaRenderer = getVirtualMediaRenderer(id);
-                if (!mediaRenderer)
-                {
-                    logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
-                    return false;
-                }
-
-                rendererState = mediaRenderer->state();
-                addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
-            }
-            // if we have no id provided, then we get the renderer state for all virtual renderers
-            // and for all other non virtual renderers
-            else
+            try
             {
-                // run through all virtual (zone) renderers
-                auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
+                rapidjson::StringBuffer jsonStringBuffer;
+                rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
 
-                for (auto it : zoneInfoMap)
+                jsonWriter.StartArray();
+
+                if (!id.empty())
                 {
-                    auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
-                    auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
-                    if (mediaRenderer)
+                    auto mediaRenderer = getVirtualMediaRenderer(id);
+                    if (!mediaRenderer)
+                    {
+                        logError("Room or Zone with ID: " + id + " not found!", CURRENT_FUNCTION);
+                        ret = false;
+                    }
+                    else
                     {
                         rendererState = mediaRenderer->state();
                         addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
                     }
                 }
-
-                // run through all renderers which are not in a zone
-                // the 'empty' udn of the zone map tells us that this is the 'rooms without zone' gathering zone
-                if (listAll)
+                // if we have no id provided, then we get the renderer state for all virtual renderers
+                // and for all other non virtual renderers
+                else
                 {
-                    auto roomInfoMap = getManagerEngineer()->getZoneManager()->getRoomInformationMap();
+                    // run through all virtual (zone) renderers
+                    auto zoneInfoMap = getManagerEngineer()->getZoneManager()->getZoneInformationMap();
 
-                    for (auto pair : roomInfoMap)
+                    for (auto it : zoneInfoMap)
                     {
-                        if (pair.second.zoneUDN.empty())
+                        auto rendererUDN = getManagerEngineer()->getZoneManager()->getRendererUDNForZoneUDN(it.first);
+                        auto mediaRenderer = getVirtualMediaRendererFromUDN(rendererUDN);
+                        if (mediaRenderer)
                         {
-                            for (auto rendererUDN : pair.second.rendererUDN)
-                            {                                
-                                auto mediaRenderer = getMediaRenderer(rendererUDN);
-                                if (mediaRenderer)
-                                {
-                                    rendererState = mediaRenderer->state();                                    
-                                    addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
+                            rendererState = mediaRenderer->state();
+                            addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
+                        }
+                    }
+
+                    // run through all renderers which are not in a zone
+                    // the 'empty' udn of the zone map tells us that this is the 'rooms without zone' gathering zone
+                    if (listAll)
+                    {
+                        auto roomInfoMap = getManagerEngineer()->getZoneManager()->getRoomInformationMap();
+
+                        for (auto pair : roomInfoMap)
+                        {
+                            if (pair.second.zoneUDN.empty())
+                            {
+                                for (auto rendererUDN : pair.second.rendererUDN)
+                                {                                
+                                    auto mediaRenderer = getMediaRenderer(rendererUDN);
+                                    if (mediaRenderer)
+                                    {
+                                        rendererState = mediaRenderer->state();                                    
+                                        addRendererStateToJson(mediaRenderer->getUDN(), rendererState, mediaRenderer, jsonWriter);
+                                    }
                                 }
                             }
                         }
                     }
+
                 }
 
+                jsonWriter.EndArray();
+
+                setResponseData(jsonStringBuffer.GetString());
+
+            }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
             }
 
-            jsonWriter.EndArray();
+            getManagerEngineer()->getDeviceManager()->unlock();
+            getManagerEngineer()->getZoneManager()->unlock();
 
-            setResponseData(jsonStringBuffer.GetString());
-
-            return true;
+            return ret;
         }
     }
 }

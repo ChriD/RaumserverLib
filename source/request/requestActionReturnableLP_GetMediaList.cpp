@@ -48,7 +48,21 @@ namespace Raumserver
         std::string RequestActionReturnableLongPolling_GetMediaList::getLastUpdateId()
         {              
             auto id = getOptionValue("id");
-            auto lastUpdateId = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(id);
+            std::string lastUpdateId = "";
+
+            getManagerEngineer()->getMediaListManager()->lock();
+
+            try
+            {
+                lastUpdateId = getManagerEngineer()->getMediaListManager()->getLastUpdateIdForList(id);
+            }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+            }            
+
+            getManagerEngineer()->getMediaListManager()->unlock();
+
             return lastUpdateId;
         }
 
@@ -66,70 +80,84 @@ namespace Raumserver
             auto useCacheOption = getOptionValue("useCache");
             std::string lpid = getOptionValue("updateId");
             bool useCache = (useCacheOption == "1" || useCacheOption == "true") ? true : false;
-            bool listGotFromCache = false;            
+            bool listGotFromCache = false;     
+            bool ret = true;
 
-            std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> mediaList;
-            
-            // if we do no long polling on a list id we haven't loaded it yet, so for this we have to tell the manager
-            // that he has to load the stuff
-            if (lpid.empty())
+            getManagerEngineer()->getMediaListManager()->lock();
+
+            try
             {
-                connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged); 
 
-                // the id has to be formated well. That measn that the part after the last "/" has to be encoded
-                auto parts = Raumkernel::Tools::StringUtil::explodeString(id, "/");
-                if (parts.size() > 1)
+                std::vector<std::shared_ptr<Raumkernel::Media::Item::MediaItem>> mediaList;
+
+                // if we do no long polling on a list id we haven't loaded it yet, so for this we have to tell the manager
+                // that he has to load the stuff
+                if (lpid.empty())
                 {
-                    parts[parts.size() - 1] = Raumkernel::Tools::UriUtil::encodeUriPart(parts[parts.size() - 1]);
-                    for (auto part : parts)
+                    connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);
+
+                    // the id has to be formated well. That measn that the part after the last "/" has to be encoded
+                    auto parts = Raumkernel::Tools::StringUtil::explodeString(id, "/");
+                    if (parts.size() > 1)
                     {
-                        if (!formatedContainerId.empty())
-                            formatedContainerId += "/";
-                        formatedContainerId += part;
+                        parts[parts.size() - 1] = Raumkernel::Tools::UriUtil::encodeUriPart(parts[parts.size() - 1]);
+                        for (auto part : parts)
+                        {
+                            if (!formatedContainerId.empty())
+                                formatedContainerId += "/";
+                            formatedContainerId += part;
+                        }
+                    }
+                    else
+                    {
+                        formatedContainerId = id;
+                    }
+
+                    // we do have a simple cache option whcih will look if there is already a list with items loaded into the
+                    // media list manager. The drawback of the simple caching is, that if the size of the list is 0 there is no caching
+                    if (useCache)
+                    {
+                        mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
+                        if (!mediaList.size())
+                            managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
+                        else
+                            listGotFromCache = true;
+                    }
+                    // Caching is disabled, we inform the media list manager that he has to load/reload the list
+                    else
+                    {
+                        managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
+                    }
+
+                    // wait till the list is loaded by the media list manager. if the list was loaded from cache
+                    // we do not have to wait for it (would lead to an endless loop)
+                    while (!listRetrieved && !listGotFromCache)
+                    {
+                        std::this_thread::sleep_for(std::chrono::milliseconds(50));
                     }
                 }
-                else
-                {
-                    formatedContainerId = id;
-                }             
-       
-                // we do have a simple cache option whcih will look if there is already a list with items loaded into the
-                // media list manager. The drawback of the simple caching is, that if the size of the list is 0 there is no caching
-                if (useCache)
-                {
-                    mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
-                    if (!mediaList.size())                    
-                        managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
-                    else
-                        listGotFromCache = true;
-                }
-                // Caching is disabled, we inform the media list manager that he has to load/reload the list
-                else
-                {
-                    managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
-                }
 
-                // wait till the list is loaded by the media list manager. if the list was loaded from cache
-                // we do not have to wait for it (would lead to an endless loop)
-                while (!listRetrieved && !listGotFromCache)
-                {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                }
+                // now the list is ready, no matter if t was retrieved by the media list manager or if it was loaded
+                // from the cache. If it was loaded from the cache (listGotFromCache) we do not need to get it again from the media manager
+                if (!listGotFromCache)
+                    mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
+
+                rapidjson::StringBuffer jsonStringBuffer;
+                rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
+
+                addMediaListToJson(formatedContainerId, mediaList, jsonWriter);
+
+                setResponseData(jsonStringBuffer.GetString());
+            }
+            catch (...)
+            {
+                logError("Unknown Exception!", CURRENT_POSITION);
+                ret = false;
             }
 
-            // now the list is ready, no matter if t was retrieved by the media list manager or if it was loaded
-            // from the cache. If it was loaded from the cache (listGotFromCache) we do not need to get it again from the media manager
-            if (!listGotFromCache)
-                mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
+            getManagerEngineer()->getMediaListManager()->unlock();
 
-            rapidjson::StringBuffer jsonStringBuffer;
-            rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
-            
-            addMediaListToJson(formatedContainerId, mediaList, jsonWriter);
-
-            setResponseData(jsonStringBuffer.GetString());
-
-            return true;
+            return ret;
          
         }
 
