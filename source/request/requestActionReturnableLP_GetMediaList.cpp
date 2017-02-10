@@ -82,9 +82,7 @@ namespace Raumserver
             bool useCache = (useCacheOption == "1" || useCacheOption == "true") ? true : false;
             bool listGotFromCache = false;     
             bool ret = true;
-
-            getManagerEngineer()->getMediaListManager()->lock();
-
+          
             try
             {
 
@@ -94,40 +92,56 @@ namespace Raumserver
                 // that he has to load the stuff
                 if (lpid.empty())
                 {
-                    connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);
 
-                    // the id has to be formated well. That measn that the part after the last "/" has to be encoded
-                    auto parts = Raumkernel::Tools::StringUtil::explodeString(id, "/");
-                    if (parts.size() > 1)
+                    //getManagerEngineer()->getMediaListManager()->lock();
+
+                    try
                     {
-                        parts[parts.size() - 1] = Raumkernel::Tools::UriUtil::encodeUriPart(parts[parts.size() - 1]);
-                        for (auto part : parts)
+                        connections.connect(managerEngineer->getMediaListManager()->sigMediaListDataChanged, this, &RequestActionReturnableLongPolling_GetMediaList::onMediaListDataChanged);
+
+                        // the id has to be formated well. That measn that the part after the last "/" has to be encoded
+                        auto parts = Raumkernel::Tools::StringUtil::explodeString(id, "/");
+                        if (parts.size() > 1)
                         {
-                            if (!formatedContainerId.empty())
-                                formatedContainerId += "/";
-                            formatedContainerId += part;
+                            parts[parts.size() - 1] = Raumkernel::Tools::UriUtil::encodeUriPart(parts[parts.size() - 1]);
+                            for (auto part : parts)
+                            {
+                                if (!formatedContainerId.empty())
+                                    formatedContainerId += "/";
+                                formatedContainerId += part;
+                            }
                         }
+                        else
+                        {
+                            formatedContainerId = id;
+                        }
+
+                        // we do have a simple cache option whcih will look if there is already a list with items loaded into the
+                        // media list manager. The drawback of the simple caching is, that if the size of the list is 0 there is no caching
+                        if (useCache)
+                        {
+                            mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
+                            if (!mediaList.size())
+                                managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
+                            else
+                                listGotFromCache = true;
+                        }
+                        // Caching is disabled, we inform the media list manager that he has to load/reload the list
+                        else
+                        {
+                            managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
+                        }
+
                     }
-                    else
+                    catch (...)
                     {
-                        formatedContainerId = id;
+                        logError("Unknown Exception!", CURRENT_POSITION);
+                        ret = false;
                     }
 
-                    // we do have a simple cache option whcih will look if there is already a list with items loaded into the
-                    // media list manager. The drawback of the simple caching is, that if the size of the list is 0 there is no caching
-                    if (useCache)
-                    {
-                        mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
-                        if (!mediaList.size())
-                            managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
-                        else
-                            listGotFromCache = true;
-                    }
-                    // Caching is disabled, we inform the media list manager that he has to load/reload the list
-                    else
-                    {
-                        managerEngineer->getMediaListManager()->loadMediaItemListByContainerId(formatedContainerId);
-                    }
+                    // unlock the list while waiting for data
+                    //getManagerEngineer()->getMediaListManager()->unlock();
+                    
 
                     // wait till the list is loaded by the media list manager. if the list was loaded from cache
                     // we do not have to wait for it (would lead to an endless loop)
@@ -137,25 +151,35 @@ namespace Raumserver
                     }
                 }
 
-                // now the list is ready, no matter if t was retrieved by the media list manager or if it was loaded
-                // from the cache. If it was loaded from the cache (listGotFromCache) we do not need to get it again from the media manager
-                if (!listGotFromCache)
-                    mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
+                //getManagerEngineer()->getMediaListManager()->lock();
 
-                rapidjson::StringBuffer jsonStringBuffer;
-                rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
+                try
+                {
+                    // now the list is ready, no matter if was retrieved by the media list manager or if it was loaded
+                    // from the cache. If it was loaded from the cache (listGotFromCache) we do not need to get it again from the media manager
+                    if (!listGotFromCache)
+                        mediaList = managerEngineer->getMediaListManager()->getList(formatedContainerId);
 
-                addMediaListToJson(formatedContainerId, mediaList, jsonWriter);
+                    rapidjson::StringBuffer jsonStringBuffer;
+                    rapidjson::Writer<rapidjson::StringBuffer> jsonWriter(jsonStringBuffer);
 
-                setResponseData(jsonStringBuffer.GetString());
+                    addMediaListToJson(formatedContainerId, mediaList, jsonWriter);
+
+                    setResponseData(jsonStringBuffer.GetString());
+                }
+                catch (...)
+                {
+                    logError("Unknown Exception!", CURRENT_POSITION);
+                    ret = false;
+                }
+
+                //getManagerEngineer()->getMediaListManager()->unlock();
             }
             catch (...)
             {
                 logError("Unknown Exception!", CURRENT_POSITION);
                 ret = false;
-            }
-
-            getManagerEngineer()->getMediaListManager()->unlock();
+            }            
 
             return ret;
          
